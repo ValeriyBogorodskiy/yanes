@@ -1,8 +1,8 @@
 ﻿namespace NesEmulator.Registers
 {
-    internal abstract class CpuRegister8Bit
+    internal abstract class CpuRegister8Bit : IReadOnlyCpuRegister8Bit
     {
         private byte state;
-        protected byte State { get { return state; } set { state = value; } }
+        public byte State { get { return state; } protected set { state = value; } }
     }
 }
