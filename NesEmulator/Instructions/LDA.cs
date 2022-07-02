@@ -1,0 +1,37 @@
+﻿using NesEmulator.Registers;
+using NesEmulator.Tools;
+
+namespace NesEmulator.Instructions
+{
+    internal class LDA : Instruction
+    {
+        private readonly LoadedProgram loadedProgram;
+        private readonly ProgramCounter programCounter;
+        private readonly Accumulator accumulator;
+        private readonly ProcessorStatus processorStatus;
+
+        // TODO: reduce number of arguments?
+        public LDA(LoadedProgram loadedProgram, ProgramCounter programCounter, Accumulator accumulator, ProcessorStatus processorStatus)
+        {
+            this.loadedProgram = loadedProgram;
+            this.programCounter = programCounter;
+            this.accumulator = accumulator;
+            this.processorStatus = processorStatus;
+        }
+
+        public override void Execute()
+        {
+            var valueAddress = programCounter.Fetch();
+            var value = loadedProgram.Fetch(valueAddress);
+
+            accumulator.Load(value);
+            programCounter.Increment();
+
+            var isValueZero = value == 0;
+            var isValueNegative = (value & BitMasks.Negative) != 0;
+
+            processorStatus.Zero.Set(isValueZero);
+            processorStatus.Negative.Set(isValueNegative);
+        }
+    }
+}

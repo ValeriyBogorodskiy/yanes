@@ -1,4 +1,5 @@
-﻿using NesEmulator.Registers;
+﻿using NesEmulator.Instructions;
+using NesEmulator.Registers;
 
 namespace NesEmulator
 {
@@ -11,24 +12,34 @@ namespace NesEmulator
         private IndexRegisterY indexRegisterY = new();
         private ProcessorStatus processorStatus = new();
 
-        public void Run(Opcode[] program)
+        // TODO: i don't like this abstraction
+        private LoadedProgram loadedProgram;
+
+        public void Run(byte[] rawProgram)
         {
+            loadedProgram = new LoadedProgram(rawProgram);
+
             while (true)
             {
-                var opcode = program[programCounter.NextInstructionAddress];
+                var nextInstructionAddress = programCounter.Fetch();
+                var rawOpcode = loadedProgram.Fetch(nextInstructionAddress);
+                var opcode = (Opcodes)rawOpcode;
+
                 programCounter.Increment();
 
-                if (opcode.Instruction == Opcodes.BRK)
+                if (opcode == Opcodes.BRK)
                     break;
 
-                var instruction = OpcodeToInstruction(opcode.Instruction);
+                var instruction = Decode(opcode);
                 instruction.Execute();
             }
         }
 
-        private Instruction OpcodeToInstruction(Opcodes opcode)
+        // TODO: cache instructions to reduce GC utilization
+        private Instruction Decode(Opcodes opcode) => opcode switch
         {
-            return null;
-        }
+            Opcodes.LDA => new LDA(loadedProgram, programCounter, accumulator, processorStatus),
+            _ => throw new ArgumentException($"Unhandled opcode - {Enum.GetName(typeof(Opcodes), opcode)}")
+        };
     }
 }

@@ -7,9 +7,6 @@
             State++;
         }
 
-        public ushort NextInstructionAddress
-        {
-            get => State;
-        }
+        public ushort Fetch() => State;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace NesEmulator
+﻿namespace NesEmulator.Instructions
 {
     internal abstract class Instruction
     {
