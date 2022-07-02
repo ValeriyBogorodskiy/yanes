@@ -2,6 +2,13 @@
 {
     internal class Opcode
     {
-        public byte Value { get; }
+        private readonly Opcodes instruction;
+
+        public Opcode(byte rawInstruction)
+        {
+            instruction = (Opcodes)rawInstruction;
+        }
+
+        public Opcodes Instruction => instruction;
     }
 }
