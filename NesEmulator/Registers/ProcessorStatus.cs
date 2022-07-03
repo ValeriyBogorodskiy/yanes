@@ -4,7 +4,7 @@ namespace NesEmulator.Registers
 {
     internal class ProcessorStatus : CpuRegister8Bit
     {
-        public enum Flags
+        internal enum Flags
         {
             Negative = 1 << 7,
             Overflow = 1 << 6,
@@ -15,7 +15,7 @@ namespace NesEmulator.Registers
             Carry = 1 << 0
         }
 
-        public void Set(Flags flag, bool value)
+        internal void Set(Flags flag, bool value)
         {
             if (value)
                 State |= (byte)flag;
@@ -23,6 +23,6 @@ namespace NesEmulator.Registers
                 State &= (byte)~flag;
         }
 
-        public bool Get(Flags flag) => (State & (byte)flag) > 0;
+        internal bool Get(Flags flag) => (State & (byte)flag) > 0;
     }
 }

@@ -4,7 +4,7 @@
     {
         private readonly byte[] rawProgram;
 
-        public LoadedProgram(byte[] rawProgram)
+        internal LoadedProgram(byte[] rawProgram)
         {
             this.rawProgram = rawProgram;
         }

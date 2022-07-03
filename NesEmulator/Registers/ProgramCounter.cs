@@ -2,11 +2,11 @@
 {
     internal class ProgramCounter : CpuRegister16Bit
     {
-        public void Increment()
+        internal void Increment()
         {
             State++;
         }
 
-        public ushort Fetch() => State;
+        internal ushort Fetch() => State;
     }
 }

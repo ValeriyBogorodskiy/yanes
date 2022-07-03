@@ -2,6 +2,6 @@
 {
     internal class BitMasks
     {
-        public const byte Negative = 0b10000000;
+        internal const byte Negative = 0b10000000;
     }
 }

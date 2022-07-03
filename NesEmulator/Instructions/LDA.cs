@@ -11,7 +11,7 @@ namespace NesEmulator.Instructions
         private readonly ProcessorStatus processorStatus;
 
         // TODO: reduce number of arguments?
-        public LDA(LoadedProgram loadedProgram, ProgramCounter programCounter, Accumulator accumulator, ProcessorStatus processorStatus)
+        internal LDA(LoadedProgram loadedProgram, ProgramCounter programCounter, Accumulator accumulator, ProcessorStatus processorStatus)
         {
             this.loadedProgram = loadedProgram;
             this.programCounter = programCounter;
@@ -19,7 +19,7 @@ namespace NesEmulator.Instructions
             this.processorStatus = processorStatus;
         }
 
-        public override void Execute()
+        internal override void Execute()
         {
             var valueAddress = programCounter.Fetch();
             var value = loadedProgram.Fetch(valueAddress);

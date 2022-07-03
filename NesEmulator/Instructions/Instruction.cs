@@ -2,6 +2,6 @@
 {
     internal abstract class Instruction
     {
-        public abstract void Execute();
+        internal abstract void Execute();
     }
 }
