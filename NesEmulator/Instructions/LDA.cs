@@ -30,8 +30,8 @@ namespace NesEmulator.Instructions
             var isValueZero = value == 0;
             var isValueNegative = (value & BitMasks.Negative) != 0;
 
-            processorStatus.Zero.Set(isValueZero);
-            processorStatus.Negative.Set(isValueNegative);
+            processorStatus.Set(ProcessorStatus.Flags.Zero, isValueZero);
+            processorStatus.Set(ProcessorStatus.Flags.Negative, isValueNegative);
         }
     }
 }
