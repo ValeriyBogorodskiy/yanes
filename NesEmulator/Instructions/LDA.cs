@@ -4,15 +4,15 @@ namespace NesEmulator.Instructions
 {
     internal class LDA : Instruction
     {
-        private readonly LoadedProgram loadedProgram;
+        private readonly RAM ram;
         private readonly ProgramCounter programCounter;
         private readonly Accumulator accumulator;
         private readonly ProcessorStatus processorStatus;
 
         // TODO: reduce number of arguments?
-        internal LDA(LoadedProgram loadedProgram, ProgramCounter programCounter, Accumulator accumulator, ProcessorStatus processorStatus)
+        internal LDA(RAM ram, ProgramCounter programCounter, Accumulator accumulator, ProcessorStatus processorStatus)
         {
-            this.loadedProgram = loadedProgram;
+            this.ram = ram;
             this.programCounter = programCounter;
             this.accumulator = accumulator;
             this.processorStatus = processorStatus;
@@ -21,7 +21,7 @@ namespace NesEmulator.Instructions
         internal override void Execute()
         {
             var valueAddress = programCounter.Fetch();
-            var value = loadedProgram.Fetch(valueAddress);
+            var value = ram.Read(valueAddress);
 
             accumulator.Load(value);
             programCounter.Increment();
