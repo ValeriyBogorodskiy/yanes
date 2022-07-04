@@ -1,5 +1,4 @@
 ﻿using NesEmulator.Registers;
-using NesEmulator.Tools;
 
 namespace NesEmulator.Instructions
 {
@@ -26,12 +25,8 @@ namespace NesEmulator.Instructions
 
             accumulator.Load(value);
             programCounter.Increment();
-
-            var isValueZero = value == 0;
-            var isValueNegative = (value & BitMasks.Negative) != 0;
-
-            processorStatus.Set(ProcessorStatus.Flags.Zero, isValueZero);
-            processorStatus.Set(ProcessorStatus.Flags.Negative, isValueNegative);
+            processorStatus.UpdateNegativeFlag(value);
+            processorStatus.UpdateZeroFlag(value);
         }
     }
 }

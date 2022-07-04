@@ -15,7 +15,7 @@ namespace NesEmulator.Registers
             Carry = 1 << 0
         }
 
-        internal void Set(Flags flag, bool value)
+        private void Set(Flags flag, bool value)
         {
             if (value)
                 State |= (byte)flag;
@@ -24,5 +24,17 @@ namespace NesEmulator.Registers
         }
 
         internal bool Get(Flags flag) => (State & (byte)flag) > 0;
+
+        internal void UpdateNegativeFlag(byte value)
+        {
+            var isValueNegative = (value & BitMasks.Negative) != 0;
+            Set(Flags.Negative, isValueNegative);
+        }
+
+        internal void UpdateZeroFlag(byte value)
+        {
+            var isValueZero = value == 0;
+            Set(Flags.Zero, isValueZero);
+        }
     }
 }

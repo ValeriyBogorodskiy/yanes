@@ -45,9 +45,11 @@ namespace NesEmulator.Cpu
         }
 
         // TODO: cache instructions to reduce GC utilization
+        // TODO: add opcode value to Instruction class and create dictionary on startup (?)
         private Instruction Decode(Opcodes opcode) => opcode switch
         {
             Opcodes.LDA => new LDA(loadedProgram, programCounter, accumulator, processorStatus),
+            Opcodes.TAX => new TAX(accumulator, indexRegisterX, processorStatus),
             _ => throw new ArgumentException($"Unhandled opcode - {Enum.GetName(typeof(Opcodes), opcode)}")
         };
     }
