@@ -32,25 +32,25 @@ namespace NesEmulator.Cpu
             {
                 var nextInstructionAddress = programCounter.Fetch();
                 var rawOpcode = loadedProgram.Fetch(nextInstructionAddress);
-                var opcode = (Opcodes)rawOpcode;
 
                 programCounter.Increment();
 
-                if (opcode == Opcodes.BRK)
+                if (rawOpcode == (byte)Opcodes.BRK)
                     break;
 
-                var instruction = Decode(opcode);
+                var instruction = Decode(rawOpcode);
                 instruction.Execute();
             }
         }
 
         // TODO: cache instructions to reduce GC utilization
         // TODO: add opcode value to Instruction class and create dictionary on startup (?)
-        private Instruction Decode(Opcodes opcode) => opcode switch
+        private Instruction Decode(byte rawOpcode) => (Opcodes)rawOpcode switch
         {
             Opcodes.LDA => new LDA(loadedProgram, programCounter, accumulator, processorStatus),
             Opcodes.TAX => new TAX(accumulator, indexRegisterX, processorStatus),
-            _ => throw new ArgumentException($"Unhandled opcode - {Enum.GetName(typeof(Opcodes), opcode)}")
+            Opcodes.INX => new INX(indexRegisterX, processorStatus),
+            _ => throw new ArgumentException($"Unhandled opcode - {rawOpcode:X}")
         };
     }
 }
