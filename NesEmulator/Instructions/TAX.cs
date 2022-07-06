@@ -15,6 +15,8 @@ namespace NesEmulator.Instructions
             this.processorStatus = processorStatus;
         }
 
+        internal override byte Opcode => 0XAA;
+
         internal override void Execute()
         {
             var value = accumulator.State;

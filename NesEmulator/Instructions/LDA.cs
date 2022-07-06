@@ -1,4 +1,5 @@
-﻿using NesEmulator.Registers;
+﻿using NesEmulator.Cpu;
+using NesEmulator.Registers;
 
 namespace NesEmulator.Instructions
 {
@@ -9,7 +10,6 @@ namespace NesEmulator.Instructions
         private readonly Accumulator accumulator;
         private readonly ProcessorStatus processorStatus;
 
-        // TODO: reduce number of arguments?
         internal LDA(RAM ram, ProgramCounter programCounter, Accumulator accumulator, ProcessorStatus processorStatus)
         {
             this.ram = ram;
@@ -18,10 +18,12 @@ namespace NesEmulator.Instructions
             this.processorStatus = processorStatus;
         }
 
+        internal override byte Opcode => 0xA9;
+
         internal override void Execute()
         {
-            var valueAddress = programCounter.Fetch();
-            var value = ram.Read(valueAddress);
+            var valueAddress = programCounter.State;
+            var value = ram.Read8bit(valueAddress);
 
             accumulator.Load(value);
             programCounter.Increment();

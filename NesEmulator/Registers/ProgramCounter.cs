@@ -1,19 +1,15 @@
 ﻿namespace NesEmulator.Registers
 {
-    internal class ProgramCounter : IReadOnlyCpuRegister16Bit
+    internal class ProgramCounter
     {
-        public ProgramCounter(ushort startingProgramAddress)
-        {
-            State = startingProgramAddress;
-        }
-
         public ushort State { get; private set; }
+
+        internal void SetState(ushort value) => State = value;
 
         internal void Increment()
         {
             State++;
         }
-
-        internal ushort Fetch() => State;
+        internal void Reset() => State = 0;
     }
 }

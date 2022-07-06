@@ -1,57 +1,45 @@
-﻿using NesEmulator.Instructions;
-using NesEmulator.Registers;
+﻿using NesEmulator.Tools;
 
 namespace NesEmulator.Cpu
 {
     // TODO: i have ICpu to hide implementation but how can i create Cpu instance without making class public (abstract factory?) 
     public class Cpu : ICpu
     {
-        private const ushort StartingProgramAddress = 0x8000;
+        public ushort ProgramCounter => registers.ProgramCounter.State;
+        public byte StackPointer => registers.StackPointer.State;
+        public byte Accumulator => registers.Accumulator.State;
+        public byte IndexRegisterX => registers.IndexRegisterX.State;
+        public byte IndexRegisterY => registers.IndexRegisterY.State;
+        public byte ProcessorStatus => registers.ProcessorStatus.State;
 
-        // TODO: added this for testing and maybe debugging. Not sure if this is a good decision
-        public IReadOnlyCpuRegister16Bit ProgramCounter => programCounter;
-        public IReadOnlyCpuRegister8Bit StackPointer => stackPointer;
-        public IReadOnlyCpuRegister8Bit Accumulator => accumulator;
-        public IReadOnlyCpuRegister8Bit IndexRegisterX => indexRegisterX;
-        public IReadOnlyCpuRegister8Bit IndexRegisterY => indexRegisterY;
-        public IReadOnlyCpuRegister8Bit ProcessorStatus => processorStatus;
+        private readonly Registers registers = new();
+        private readonly RAM ram = new();
+        private readonly Instructions instructions;
 
-        private ProgramCounter programCounter = new(StartingProgramAddress);
-        private StackPointer stackPointer = new();
-        private Accumulator accumulator = new();
-        private IndexRegisterX indexRegisterX = new();
-        private IndexRegisterY indexRegisterY = new();
-        private ProcessorStatus processorStatus = new();
-
-        private RAM ram = new();
+        internal Cpu()
+        {
+            instructions = new Instructions(registers, ram);
+        }
 
         public void Run(byte[] program)
         {
-            ram.LoadProgram(StartingProgramAddress, program);
+            registers.Reset();
+            ram.LoadProgram(program);
+            var programStartAddress = ram.Read16bit(ReservedAddresses.ProgramStartPointerAddress);
+            registers.ProgramCounter.SetState(programStartAddress);
 
             while (true)
             {
-                var nextInstructionAddress = programCounter.Fetch();
-                var rawOpcode = ram.Read(nextInstructionAddress);
+                var nextInstructionAddress = registers.ProgramCounter.State;
+                var opcode = ram.Read8bit(nextInstructionAddress);
 
-                programCounter.Increment();
+                registers.ProgramCounter.Increment();
 
-                if (rawOpcode == (byte)Opcodes.BRK)
+                if (opcode == 0)
                     break;
 
-                var instruction = Decode(rawOpcode);
-                instruction.Execute();
+                instructions.GetInstructionForOpcode(opcode).Execute();
             }
         }
-
-        // TODO: cache instructions to reduce GC utilization
-        // TODO: add opcode value to Instruction class and create dictionary on startup (?)
-        private Instruction Decode(byte rawOpcode) => (Opcodes)rawOpcode switch
-        {
-            Opcodes.LDA => new LDA(ram, programCounter, accumulator, processorStatus),
-            Opcodes.TAX => new TAX(accumulator, indexRegisterX, processorStatus),
-            Opcodes.INX => new INX(indexRegisterX, processorStatus),
-            _ => throw new ArgumentException($"Unhandled opcode - {rawOpcode:X}")
-        };
     }
 }

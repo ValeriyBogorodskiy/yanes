@@ -13,6 +13,8 @@ namespace NesEmulator.Instructions
             this.processorStatus = processorStatus;
         }
 
+        internal override byte Opcode => 0XE8;
+
         internal override void Execute()
         {
             byte value = (byte)(indexRegisterX.State + 1);

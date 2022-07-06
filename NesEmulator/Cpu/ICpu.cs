@@ -1,16 +1,14 @@
-﻿using NesEmulator.Registers;
-
-namespace NesEmulator.Cpu
+﻿namespace NesEmulator.Cpu
 {
     public interface ICpu
     {
         void Run(byte[] program);
 
-        IReadOnlyCpuRegister16Bit ProgramCounter { get; }
-        IReadOnlyCpuRegister8Bit StackPointer { get; }
-        IReadOnlyCpuRegister8Bit Accumulator { get; }
-        IReadOnlyCpuRegister8Bit IndexRegisterX { get; }
-        IReadOnlyCpuRegister8Bit IndexRegisterY { get; }
-        IReadOnlyCpuRegister8Bit ProcessorStatus { get; }
+        ushort ProgramCounter { get; }
+        byte StackPointer { get; }
+        byte Accumulator { get; }
+        byte IndexRegisterX { get; }
+        byte IndexRegisterY { get; }
+        byte ProcessorStatus { get; }
     }
 }
