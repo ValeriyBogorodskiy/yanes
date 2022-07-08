@@ -12,14 +12,9 @@ namespace NesEmulator.Cpu
         public byte IndexRegisterY => registers.IndexRegisterY.State;
         public byte ProcessorStatus => registers.ProcessorStatus.State;
 
-        private readonly Registers registers = new();
         private readonly RAM ram = new();
-        private readonly Instructions instructions;
-
-        public Cpu()
-        {
-            instructions = new Instructions(registers, ram);
-        }
+        private readonly Registers registers = new();
+        private readonly Instructions instructions = new();
 
         public void Run(byte[] program)
         {
@@ -37,7 +32,7 @@ namespace NesEmulator.Cpu
                 if (opcode == 0)
                     break;
 
-                instructions.GetInstructionForOpcode(opcode).Execute();
+                instructions.GetInstructionForOpcode(opcode).Execute(ram, registers);
             }
         }
 

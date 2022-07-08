@@ -1,4 +1,5 @@
-﻿using NesEmulator.Instructions;
+﻿using NesEmulator.AddressingModes;
+using NesEmulator.Instructions;
 
 namespace NesEmulator.Cpu
 {
@@ -6,14 +7,14 @@ namespace NesEmulator.Cpu
     {
         private readonly Instruction[] instructions = new Instruction[byte.MaxValue];
 
-        internal Instructions(Registers registers, RAM ram)
+        internal Instructions()
         {
-            CreateInstruction(new LDA(ram, registers.ProgramCounter, registers.Accumulator, registers.ProcessorStatus));
-            CreateInstruction(new TAX(registers.Accumulator, registers.IndexRegisterX, registers.ProcessorStatus));
-            CreateInstruction(new INX(registers.IndexRegisterX, registers.ProcessorStatus));
+            RegisterInstruction(new INX(0XE8));
+            RegisterInstruction(new LDA<Immediate>(0xA9));
+            RegisterInstruction(new TAX(0XAA));
         }
 
-        private void CreateInstruction(Instruction instruction)
+        private void RegisterInstruction(Instruction instruction)
         {
             var opcode = instruction.Opcode;
 

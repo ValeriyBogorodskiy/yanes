@@ -1,8 +1,15 @@
-﻿namespace NesEmulator.Instructions
+﻿using NesEmulator.Cpu;
+
+namespace NesEmulator.Instructions
 {
     internal abstract class Instruction
     {
-        internal abstract byte Opcode { get; }
-        internal abstract void Execute();
+        internal Instruction(byte opcode)
+        {
+            Opcode = opcode;
+        }
+
+        internal byte Opcode { get; private set; }
+        internal abstract void Execute(RAM ram, Cpu.Registers registers);
     }
 }

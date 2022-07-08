@@ -1,27 +1,20 @@
-﻿using NesEmulator.Registers;
+﻿using NesEmulator.Cpu;
 
 namespace NesEmulator.Instructions
 {
     internal class INX : Instruction
     {
-        private readonly IndexRegisterX indexRegisterX;
-        private readonly ProcessorStatus processorStatus;
-
-        internal INX(IndexRegisterX indexRegisterX, ProcessorStatus processorStatus)
+        public INX(byte opcode) : base(opcode)
         {
-            this.indexRegisterX = indexRegisterX;
-            this.processorStatus = processorStatus;
         }
 
-        internal override byte Opcode => 0XE8;
-
-        internal override void Execute()
+        internal override void Execute(RAM ram, Cpu.Registers registers)
         {
-            byte value = (byte)(indexRegisterX.State + 1);
+            byte value = (byte)(registers.IndexRegisterX.State + 1);
 
-            indexRegisterX.Load(value);
-            processorStatus.UpdateNegativeFlag(value);
-            processorStatus.UpdateZeroFlag(value);
+            registers.IndexRegisterX.Load(value);
+            registers.ProcessorStatus.UpdateNegativeFlag(value);
+            registers.ProcessorStatus.UpdateZeroFlag(value);
         }
     }
 }

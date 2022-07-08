@@ -1,6 +1,4 @@
-﻿using NesEmulator.Tools;
-
-namespace NesEmulator.Cpu
+﻿namespace NesEmulator.Cpu
 {
     internal class RAM
     {

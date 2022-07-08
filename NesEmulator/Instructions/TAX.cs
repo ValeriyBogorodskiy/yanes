@@ -1,29 +1,20 @@
-﻿using NesEmulator.Registers;
+﻿using NesEmulator.Cpu;
 
 namespace NesEmulator.Instructions
 {
     internal class TAX : Instruction
     {
-        private readonly Accumulator accumulator;
-        private readonly IndexRegisterX indexRegisterX;
-        private readonly ProcessorStatus processorStatus;
-
-        internal TAX(Accumulator accumulator, IndexRegisterX indexRegisterX, ProcessorStatus processorStatus)
+        public TAX(byte opcode) : base(opcode)
         {
-            this.accumulator = accumulator;
-            this.indexRegisterX = indexRegisterX;
-            this.processorStatus = processorStatus;
         }
 
-        internal override byte Opcode => 0XAA;
-
-        internal override void Execute()
+        internal override void Execute(RAM ram, Cpu.Registers registers)
         {
-            var value = accumulator.State;
+            var value = registers.Accumulator.State;
 
-            indexRegisterX.Load(value);
-            processorStatus.UpdateNegativeFlag(value);
-            processorStatus.UpdateZeroFlag(value);
+            registers.IndexRegisterX.Load(value);
+            registers.ProcessorStatus.UpdateNegativeFlag(value);
+            registers.ProcessorStatus.UpdateZeroFlag(value);
         }
     }
 }

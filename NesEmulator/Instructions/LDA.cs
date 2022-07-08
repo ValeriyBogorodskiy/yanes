@@ -1,34 +1,21 @@
-﻿using NesEmulator.Cpu;
-using NesEmulator.Registers;
+﻿using NesEmulator.AddressingModes;
+using NesEmulator.Cpu;
 
 namespace NesEmulator.Instructions
 {
-    internal class LDA : Instruction
+    internal class LDA<T> : InstructionWithMultipleAddressingModes<T> where T : AddressingMode, new()
     {
-        private readonly RAM ram;
-        private readonly ProgramCounter programCounter;
-        private readonly Accumulator accumulator;
-        private readonly ProcessorStatus processorStatus;
-
-        internal LDA(RAM ram, ProgramCounter programCounter, Accumulator accumulator, ProcessorStatus processorStatus)
+        public LDA(byte opcode) : base(opcode)
         {
-            this.ram = ram;
-            this.programCounter = programCounter;
-            this.accumulator = accumulator;
-            this.processorStatus = processorStatus;
         }
 
-        internal override byte Opcode => 0xA9;
-
-        internal override void Execute()
+        internal override void Execute(RAM ram, Cpu.Registers registers)
         {
-            var valueAddress = programCounter.State;
-            var value = ram.Read8bit(valueAddress);
+            var value = addressingMode.ReadValue(ram, registers);
 
-            accumulator.Load(value);
-            programCounter.Increment();
-            processorStatus.UpdateNegativeFlag(value);
-            processorStatus.UpdateZeroFlag(value);
+            registers.Accumulator.Load(value);
+            registers.ProcessorStatus.UpdateNegativeFlag(value);
+            registers.ProcessorStatus.UpdateZeroFlag(value);
         }
     }
 }
