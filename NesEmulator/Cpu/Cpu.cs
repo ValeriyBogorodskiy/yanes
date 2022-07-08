@@ -16,17 +16,16 @@ namespace NesEmulator.Cpu
         private readonly RAM ram = new();
         private readonly Instructions instructions;
 
-        internal Cpu()
+        public Cpu()
         {
             instructions = new Instructions(registers, ram);
         }
 
         public void Run(byte[] program)
         {
-            registers.Reset();
-            ram.LoadProgram(program);
-            var programStartAddress = ram.Read16bit(ReservedAddresses.ProgramStartPointerAddress);
-            registers.ProgramCounter.SetState(programStartAddress);
+            ResetRegisters();
+            LoadProgramToRam(program);
+            SetupProgramCounter();
 
             while (true)
             {
@@ -40,6 +39,27 @@ namespace NesEmulator.Cpu
 
                 instructions.GetInstructionForOpcode(opcode).Execute();
             }
+        }
+
+        private void ResetRegisters() => registers.Reset();
+
+        private void LoadProgramToRam(byte[] program)
+        {
+            for (ushort i = 0; i < program.Length; i++)
+            {
+                var programByte = program[i];
+                var programAddress = (ushort)(ReservedAddresses.StartingProgramAddress + i);
+
+                ram.Write8Bit(programAddress, programByte);
+            }
+
+            ram.Write16Bit(ReservedAddresses.ProgramStartPointerAddress, ReservedAddresses.StartingProgramAddress);
+        }
+
+        private void SetupProgramCounter()
+        {
+            var programStartAddress = ram.Read16bit(ReservedAddresses.ProgramStartPointerAddress);
+            registers.ProgramCounter.SetState(programStartAddress);
         }
     }
 }

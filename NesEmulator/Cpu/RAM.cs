@@ -28,16 +28,5 @@ namespace NesEmulator.Cpu
             cells[address] = leastSignificantByte;
             cells[address + 1] = mostSignificantByte;
         }
-
-        internal void LoadProgram(byte[] program)
-        {
-            for (int i = 0; i < program.Length; i++)
-            {
-                var programByte = program[i];
-                cells[ReservedAddresses.StartingProgramAddress + i] = programByte;
-            }
-
-            Write16Bit(ReservedAddresses.ProgramStartPointerAddress, ReservedAddresses.StartingProgramAddress);
-        }
     }
 }

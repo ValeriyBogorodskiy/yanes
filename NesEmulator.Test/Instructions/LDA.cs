@@ -13,8 +13,8 @@ namespace NesEmulator.Test.Instructions
 
             cpu.Run(program);
 
-            Assert.That(cpu.Accumulator.State, Is.EqualTo(0x00));
-            Assert.That(cpu.ProcessorStatus.State, Is.EqualTo(0b00000010));
+            Assert.That(cpu.Accumulator, Is.EqualTo(0x00));
+            Assert.That(cpu.ProcessorStatus, Is.EqualTo(0b00000010));
         }
 
         [Test]
@@ -25,8 +25,8 @@ namespace NesEmulator.Test.Instructions
 
             cpu.Run(program);
 
-            Assert.That(cpu.Accumulator.State, Is.EqualTo(0x7F));
-            Assert.That(cpu.ProcessorStatus.State, Is.EqualTo(0b00000000));
+            Assert.That(cpu.Accumulator, Is.EqualTo(0x7F));
+            Assert.That(cpu.ProcessorStatus, Is.EqualTo(0b00000000));
         }
 
         [Test]
@@ -37,8 +37,8 @@ namespace NesEmulator.Test.Instructions
 
             cpu.Run(program);
 
-            Assert.That(cpu.Accumulator.State, Is.EqualTo(0xAA));
-            Assert.That(cpu.ProcessorStatus.State, Is.EqualTo(0b10000000));
+            Assert.That(cpu.Accumulator, Is.EqualTo(0xAA));
+            Assert.That(cpu.ProcessorStatus, Is.EqualTo(0b10000000));
         }
     }
 }
