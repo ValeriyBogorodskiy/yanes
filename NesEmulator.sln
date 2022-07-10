@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NesEmulatorCPU", "NesEmulator\NesEmulatorCPU.csproj", "{92ACAB79-4B29-4B3C-A743-5673A8D14E6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NesEmulatorCPU", "NesEmulatorCPU\NesEmulatorCPU.csproj", "{92ACAB79-4B29-4B3C-A743-5673A8D14E6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NesEmulatorCPU.Test", "NesEmulator.Test\NesEmulatorCPU.Test.csproj", "{96BE0095-D508-4A10-8636-048E922A7C83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NesEmulatorCPU.Test", "NesEmulatorCPU.Test\NesEmulatorCPU.Test.csproj", "{96BE0095-D508-4A10-8636-048E922A7C83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

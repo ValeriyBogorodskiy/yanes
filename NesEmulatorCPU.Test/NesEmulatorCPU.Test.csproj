@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\NesEmulator\NesEmulatorCPU.csproj" />
+		<ProjectReference Include="..\NesEmulatorCPU\NesEmulatorCPU.csproj" />
 	</ItemGroup>
 
 </Project>
