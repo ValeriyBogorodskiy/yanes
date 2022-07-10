@@ -11,7 +11,8 @@ namespace NesEmulatorCPU.Instructions
 
         internal override void Execute(RAM ram, RegistersProvider registers)
         {
-            var value = addressingMode.ReadValue(ram, registers);
+            var valueAddress = addressingMode.GetAddress(ram, registers);
+            var value = ram.Read8bit(valueAddress);
 
             registers.Accumulator.State = value;
             registers.ProcessorStatus.UpdateNegativeFlag(value);
