@@ -5,7 +5,7 @@ namespace NesEmulator.Instructions
 {
     internal class LDA<T> : InstructionWithMultipleAddressingModes<T> where T : AddressingMode, new()
     {
-        public LDA(byte opcode) : base(opcode)
+        internal LDA(byte opcode) : base(opcode)
         {
         }
 
@@ -13,7 +13,7 @@ namespace NesEmulator.Instructions
         {
             var value = addressingMode.ReadValue(ram, registers);
 
-            registers.Accumulator.Load(value);
+            registers.Accumulator.State = value;
             registers.ProcessorStatus.UpdateNegativeFlag(value);
             registers.ProcessorStatus.UpdateZeroFlag(value);
         }

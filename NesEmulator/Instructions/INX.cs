@@ -4,7 +4,7 @@ namespace NesEmulator.Instructions
 {
     internal class INX : Instruction
     {
-        public INX(byte opcode) : base(opcode)
+        internal INX(byte opcode) : base(opcode)
         {
         }
 
@@ -12,7 +12,7 @@ namespace NesEmulator.Instructions
         {
             byte value = (byte)(registers.IndexRegisterX.State + 1);
 
-            registers.IndexRegisterX.Load(value);
+            registers.IndexRegisterX.State = value;
             registers.ProcessorStatus.UpdateNegativeFlag(value);
             registers.ProcessorStatus.UpdateZeroFlag(value);
         }

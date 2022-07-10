@@ -27,7 +27,7 @@ namespace NesEmulator.Cpu
                 var nextInstructionAddress = registers.ProgramCounter.State;
                 var opcode = ram.Read8bit(nextInstructionAddress);
 
-                registers.ProgramCounter.Increment();
+                registers.ProgramCounter.State++;
 
                 if (opcode == 0)
                     break;
@@ -53,8 +53,7 @@ namespace NesEmulator.Cpu
 
         private void SetupProgramCounter()
         {
-            var programStartAddress = ram.Read16bit(ReservedAddresses.ProgramStartPointerAddress);
-            registers.ProgramCounter.SetState(programStartAddress);
+            registers.ProgramCounter.State = ram.Read16bit(ReservedAddresses.ProgramStartPointerAddress);
         }
     }
 }

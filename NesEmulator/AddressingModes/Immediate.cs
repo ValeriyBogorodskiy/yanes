@@ -9,7 +9,7 @@ namespace NesEmulator.AddressingModes
             var valueAddress = registers.ProgramCounter.State;
             var value = ram.Read8bit(valueAddress);
 
-            registers.ProgramCounter.Increment();
+            registers.ProgramCounter.State++;
 
             return value;
         }

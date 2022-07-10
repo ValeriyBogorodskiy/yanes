@@ -2,7 +2,6 @@
 {
     internal abstract class CpuRegister8Bit
     {
-        public byte State { get; protected set; }
-        internal void Reset() => State = 0;
+        public byte State { get; internal set; }
     }
 }

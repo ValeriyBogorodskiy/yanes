@@ -4,7 +4,7 @@ namespace NesEmulator.Instructions
 {
     internal class TAX : Instruction
     {
-        public TAX(byte opcode) : base(opcode)
+        internal TAX(byte opcode) : base(opcode)
         {
         }
 
@@ -12,7 +12,7 @@ namespace NesEmulator.Instructions
         {
             var value = registers.Accumulator.State;
 
-            registers.IndexRegisterX.Load(value);
+            registers.IndexRegisterX.State = value;
             registers.ProcessorStatus.UpdateNegativeFlag(value);
             registers.ProcessorStatus.UpdateZeroFlag(value);
         }

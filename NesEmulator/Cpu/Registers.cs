@@ -13,12 +13,12 @@ namespace NesEmulator.Cpu
 
         internal void Reset()
         {
-            ProgramCounter.Reset();
-            StackPointer.Reset();
-            Accumulator.Reset();
-            IndexRegisterX.Reset();
-            IndexRegisterY.Reset();
-            ProcessorStatus.Reset();
+            ProgramCounter.State = 0;
+            StackPointer.State = 0;
+            Accumulator.State = 0;
+            IndexRegisterX.State = 0;
+            IndexRegisterY.State = 0;
+            ProcessorStatus.State = 0;
         }
     }
 }
