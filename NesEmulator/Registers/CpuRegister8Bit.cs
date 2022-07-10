@@ -1,4 +1,4 @@
-﻿namespace NesEmulator.Registers
+﻿namespace NesEmulatorCPU.Registers
 {
     internal abstract class CpuRegister8Bit
     {

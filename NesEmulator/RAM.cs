@@ -1,4 +1,4 @@
-﻿namespace NesEmulator.Cpu
+﻿namespace NesEmulatorCPU
 {
     internal class RAM
     {

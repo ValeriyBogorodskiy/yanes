@@ -1,6 +1,6 @@
-﻿using NesEmulator.Tools;
+﻿using NesEmulatorCPU.Tools;
 
-namespace NesEmulator.Registers
+namespace NesEmulatorCPU.Registers
 {
     internal class ProcessorStatus : CpuRegister8Bit
     {

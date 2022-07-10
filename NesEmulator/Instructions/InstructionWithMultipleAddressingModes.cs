@@ -1,6 +1,6 @@
-﻿using NesEmulator.AddressingModes;
+﻿using NesEmulatorCPU.AddressingModes;
 
-namespace NesEmulator.Instructions
+namespace NesEmulatorCPU.Instructions
 {
     internal abstract class InstructionWithMultipleAddressingModes<T> : Instruction where T : AddressingMode, new()
     {

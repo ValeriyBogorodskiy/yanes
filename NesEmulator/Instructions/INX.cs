@@ -1,6 +1,6 @@
-﻿using NesEmulator.Cpu;
+﻿using NesEmulatorCPU.Registers;
 
-namespace NesEmulator.Instructions
+namespace NesEmulatorCPU.Instructions
 {
     internal class INX : Instruction
     {
@@ -8,7 +8,7 @@ namespace NesEmulator.Instructions
         {
         }
 
-        internal override void Execute(RAM ram, Cpu.Registers registers)
+        internal override void Execute(RAM ram, RegistersProvider registers)
         {
             byte value = (byte)(registers.IndexRegisterX.State + 1);
 

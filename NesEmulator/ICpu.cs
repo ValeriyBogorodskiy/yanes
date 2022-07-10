@@ -1,4 +1,4 @@
-﻿namespace NesEmulator.Cpu
+﻿namespace NesEmulatorCPU
 {
     public interface ICpu
     {

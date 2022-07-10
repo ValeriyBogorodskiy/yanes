@@ -1,13 +1,13 @@
-﻿using NesEmulator.AddressingModes;
-using NesEmulator.Instructions;
+﻿using NesEmulatorCPU.AddressingModes;
 
-namespace NesEmulator.Cpu
+namespace NesEmulatorCPU.Instructions
 {
-    internal class Instructions
+    // TODO : naming
+    internal class InstructionsProvider
     {
         private readonly Instruction[] instructions = new Instruction[byte.MaxValue];
 
-        internal Instructions()
+        internal InstructionsProvider()
         {
             RegisterInstruction(new INX(0XE8));
             RegisterInstruction(new LDA<Immediate>(0xA9));

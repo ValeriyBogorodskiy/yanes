@@ -1,9 +1,10 @@
-﻿using NesEmulator.Tools;
+﻿using NesEmulatorCPU.Tools;
+using NesEmulatorCPU.Registers;
+using NesEmulatorCPU.Instructions;
 
-namespace NesEmulator.Cpu
+namespace NesEmulatorCPU
 {
-    // TODO: i have ICpu to hide implementation but how can i create Cpu instance without making class public (abstract factory?) 
-    public class Cpu : ICpu
+    internal class Cpu : ICpu
     {
         public ushort ProgramCounter => registers.ProgramCounter.State;
         public byte StackPointer => registers.StackPointer.State;
@@ -13,8 +14,8 @@ namespace NesEmulator.Cpu
         public byte ProcessorStatus => registers.ProcessorStatus.State;
 
         private readonly RAM ram = new();
-        private readonly Registers registers = new();
-        private readonly Instructions instructions = new();
+        private readonly RegistersProvider registers = new();
+        private readonly InstructionsProvider instructions = new();
 
         public void Run(byte[] program)
         {

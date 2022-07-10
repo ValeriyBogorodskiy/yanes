@@ -1,8 +1,7 @@
-﻿using NesEmulator.Registers;
-
-namespace NesEmulator.Cpu
+﻿namespace NesEmulatorCPU.Registers
 {
-    internal class Registers
+    // TODO : naming
+    internal class RegistersProvider
     {
         internal ProgramCounter ProgramCounter { get; private set; } = new();
         internal StackPointer StackPointer { get; private set; } = new();

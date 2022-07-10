@@ -1,6 +1,6 @@
-﻿using NesEmulator.Cpu;
+﻿using NesEmulatorCPU.Registers;
 
-namespace NesEmulator.Instructions
+namespace NesEmulatorCPU.Instructions
 {
     internal class TAX : Instruction
     {
@@ -8,7 +8,7 @@ namespace NesEmulator.Instructions
         {
         }
 
-        internal override void Execute(RAM ram, Cpu.Registers registers)
+        internal override void Execute(RAM ram, RegistersProvider registers)
         {
             var value = registers.Accumulator.State;
 

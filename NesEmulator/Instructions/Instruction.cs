@@ -1,6 +1,6 @@
-﻿using NesEmulator.Cpu;
+﻿using NesEmulatorCPU.Registers;
 
-namespace NesEmulator.Instructions
+namespace NesEmulatorCPU.Instructions
 {
     internal abstract class Instruction
     {
@@ -10,6 +10,6 @@ namespace NesEmulator.Instructions
         }
 
         internal byte Opcode { get; private set; }
-        internal abstract void Execute(RAM ram, Cpu.Registers registers);
+        internal abstract void Execute(RAM ram, RegistersProvider registers);
     }
 }

@@ -1,14 +1,13 @@
-﻿using NesEmulator.Cpu;
-
-namespace NesEmulator.Test.Instructions
+﻿namespace NesEmulatorCPU.Test.Instructions
 {
+    // TODO : rewrite using internal classes
     [TestFixture]
     internal class INX
     {
         [Test]
         public void IncrementWithPositiveResult()
         {
-            ICpu cpu = new Cpu.Cpu();
+            ICpu cpu = new Cpu();
             var program = new byte[] { 0xA9, 0x3A, 0XAA, 0XE8, 0x00 };
 
             cpu.Run(program);
@@ -20,7 +19,7 @@ namespace NesEmulator.Test.Instructions
         [Test]
         public void IncrementWithNegativeResult()
         {
-            ICpu cpu = new Cpu.Cpu();
+            ICpu cpu = new Cpu();
             var program = new byte[] { 0xA9, 0xBA, 0XAA, 0XE8, 0x00 };
 
             cpu.Run(program);
@@ -32,7 +31,7 @@ namespace NesEmulator.Test.Instructions
         [Test]
         public void IncrementWithOverflow()
         {
-            ICpu cpu = new Cpu.Cpu();
+            ICpu cpu = new Cpu();
             var program = new byte[] { 0xA9, 0XFF, 0XAA, 0XE8, 0x00 };
 
             cpu.Run(program);

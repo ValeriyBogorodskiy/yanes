@@ -1,14 +1,13 @@
-﻿using NesEmulator.Cpu;
-
-namespace NesEmulator.Test.Instructions
+﻿namespace NesEmulatorCPU.Test.Instructions
 {
+    // TODO : rewrite using internal classes
     [TestFixture]
     internal class TAX
     {
         [Test]
         public void LoadingZeroValue()
         {
-            ICpu cpu = new Cpu.Cpu();
+            ICpu cpu = new Cpu();
             var program = new byte[] { 0xA9, 0x00, 0xAA, 0x00 };
 
             cpu.Run(program);
@@ -20,7 +19,7 @@ namespace NesEmulator.Test.Instructions
         [Test]
         public void LoadingPositiveValue()
         {
-            ICpu cpu = new Cpu.Cpu();
+            ICpu cpu = new Cpu();
             var program = new byte[] { 0xA9, 0x7F, 0xAA, 0x00 };
 
             cpu.Run(program);
@@ -32,7 +31,7 @@ namespace NesEmulator.Test.Instructions
         [Test]
         public void LoadingNegativeValue()
         {
-            ICpu cpu = new Cpu.Cpu();
+            ICpu cpu = new Cpu();
             var program = new byte[] { 0xA9, 0xAA, 0xAA, 0x00 };
 
             cpu.Run(program);

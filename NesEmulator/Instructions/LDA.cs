@@ -1,7 +1,7 @@
-﻿using NesEmulator.AddressingModes;
-using NesEmulator.Cpu;
+﻿using NesEmulatorCPU.AddressingModes;
+using NesEmulatorCPU.Registers;
 
-namespace NesEmulator.Instructions
+namespace NesEmulatorCPU.Instructions
 {
     internal class LDA<T> : InstructionWithMultipleAddressingModes<T> where T : AddressingMode, new()
     {
@@ -9,7 +9,7 @@ namespace NesEmulator.Instructions
         {
         }
 
-        internal override void Execute(RAM ram, Cpu.Registers registers)
+        internal override void Execute(RAM ram, RegistersProvider registers)
         {
             var value = addressingMode.ReadValue(ram, registers);
 

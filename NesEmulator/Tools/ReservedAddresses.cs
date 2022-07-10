@@ -1,4 +1,4 @@
-﻿namespace NesEmulator.Tools
+﻿namespace NesEmulatorCPU.Tools
 {
     internal class ReservedAddresses
     {
