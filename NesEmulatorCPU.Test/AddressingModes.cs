@@ -128,27 +128,53 @@ namespace NesEmulatorCPU.Test
             var ram = new RAM();
             var registers = new RegistersProvider();
 
-            registers.ProgramCounter.State = 0x00F0;
-            ram.Write8Bit(0x00F0, 0x01);
-            ram.Write8Bit(0x00F1, 0xCC);
+            registers.ProgramCounter.State = 0x0000;
+            ram.Write16Bit(0x0000, 0x00F0);
+            ram.Write16Bit(0x00F0, 0x01CC);
 
             var indirect = new Indirect();
             var address = indirect.GetAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0xCC01));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x00F2));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0002));
         }
 
         [Test]
-        public void IndirectX()
+        public void IndexedInderect()
         {
-            // TODO
+            var ram = new RAM();
+            var registers = new RegistersProvider();
+
+            registers.ProgramCounter.State = 0x0000;
+
+            ram.Write8Bit(0x0000, 0x20);
+            registers.IndexRegisterX.State = 0x04;
+            ram.Write16Bit(0x0024, 0x7420);
+
+            var indexedInderect = new IndexedInderect();
+            var address = indexedInderect.GetAddress(ram, registers);
+
+            Assert.That(address, Is.EqualTo(0x2074));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0001));
         }
 
         [Test]
-        public void IndirectY()
+        public void IndirectIndexed()
         {
-            // TODO
+            var ram = new RAM();
+            var registers = new RegistersProvider();
+
+            registers.ProgramCounter.State = 0x0000;
+
+            ram.Write8Bit(0x0000, 0x86);
+            registers.IndexRegisterY.State = 0x10;
+            ram.Write16Bit(0x0086, 0x2840);
+
+            var indirectIndexed = new IndirectIndexed();
+            var address = indirectIndexed.GetAddress(ram, registers);
+
+            Assert.That(address, Is.EqualTo(0x4038));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0001));
         }
     }
 }
