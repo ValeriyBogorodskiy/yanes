@@ -151,7 +151,7 @@ namespace NesEmulatorCPU.Test
             registers.IndexRegisterX.State = 0x04;
             ram.Write16Bit(0x0024, 0x7420);
 
-            var indexedInderect = new IndexedInderect();
+            var indexedInderect = new IndirectX();
             var address = indexedInderect.GetAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x2074));
@@ -170,7 +170,7 @@ namespace NesEmulatorCPU.Test
             registers.IndexRegisterY.State = 0x10;
             ram.Write16Bit(0x0086, 0x2840);
 
-            var indirectIndexed = new IndirectIndexed();
+            var indirectIndexed = new IndirectY();
             var address = indirectIndexed.GetAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x4038));

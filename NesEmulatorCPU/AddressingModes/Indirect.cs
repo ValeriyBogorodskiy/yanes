@@ -16,8 +16,7 @@ namespace NesEmulatorCPU.AddressingModes
 
             var valueAddress = BitConverter.ToUInt16(new byte[2] { leastSignificantByte, mostSignificantByte }, 0);
 
-            registers.ProgramCounter.State++;
-            registers.ProgramCounter.State++;
+            registers.ProgramCounter.State += 2;
 
             return valueAddress;
         }

@@ -9,8 +9,7 @@ namespace NesEmulatorCPU.AddressingModes
             var memoryAddress = registers.ProgramCounter.State;
             var valueAddress = (ushort)(ram.Read16bit(memoryAddress) + registers.IndexRegisterX.State);
 
-            registers.ProgramCounter.State++;
-            registers.ProgramCounter.State++;
+            registers.ProgramCounter.State += 2;
 
             return valueAddress;
         }
