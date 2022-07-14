@@ -2,13 +2,9 @@
 
 namespace NesEmulatorCPU.Instructions
 {
-    internal class INX : Instruction
+    internal class INX : IInstructionLogic
     {
-        internal INX(byte opcode) : base(opcode)
-        {
-        }
-
-        internal override void Execute(RAM ram, RegistersProvider registers)
+        void IInstructionLogic.Execute(RAM ram, RegistersProvider registers)
         {
             byte value = (byte)(registers.IndexRegisterX.State + 1);
 

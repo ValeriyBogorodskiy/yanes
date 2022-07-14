@@ -2,36 +2,27 @@
 
 namespace NesEmulatorCPU.Instructions
 {
-    // TODO : naming
     internal class InstructionsProvider
     {
-        private readonly Instruction[] instructions = new Instruction[byte.MaxValue];
+        private readonly IInstruction[] instructions = new IInstruction[byte.MaxValue];
 
         internal InstructionsProvider()
         {
-            RegisterInstruction(new INX(0XE8));
+            RegisterInstruction(new InstructionsBuilder().Opcode(0XE8).Logic<INX>().Cycles(2).Build());
 
-            RegisterInstruction(new LDA<Absolute>(0xAD));
-            RegisterInstruction(new LDA<AbsoluteX>(0xBD));
-            RegisterInstruction(new LDA<AbsoluteY>(0xB9));
-            RegisterInstruction(new LDA<Immediate>(0xA9));
-            RegisterInstruction(new LDA<IndirectX>(0xA1));
-            RegisterInstruction(new LDA<IndirectY>(0xB1));
-            RegisterInstruction(new LDA<ZeroPage>(0xA5));
-            RegisterInstruction(new LDA<ZeroPageX>(0xB5));
+            RegisterInstruction(new InstructionsBuilder().Opcode(0xAD).Logic<LDA, Absolute>().Cycles(4).Build());
+            RegisterInstruction(new InstructionsBuilder().Opcode(0xBD).Logic<LDA, AbsoluteX>().Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionsBuilder().Opcode(0xB9).Logic<LDA, AbsoluteY>().Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionsBuilder().Opcode(0xA9).Logic<LDA, Immediate>().Cycles(2).Build());
+            RegisterInstruction(new InstructionsBuilder().Opcode(0xA1).Logic<LDA, IndirectX>().Cycles(6).Build());
+            RegisterInstruction(new InstructionsBuilder().Opcode(0xB1).Logic<LDA, IndirectY>().Cycles(5).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionsBuilder().Opcode(0xA5).Logic<LDA, ZeroPage>().Cycles(3).Build());
+            RegisterInstruction(new InstructionsBuilder().Opcode(0xB5).Logic<LDA, ZeroPageX>().Cycles(4).Build());
 
-            RegisterInstruction(new STA<Absolute>(0x8D));
-            RegisterInstruction(new STA<AbsoluteX>(0x9D));
-            RegisterInstruction(new STA<AbsoluteY>(0x99));
-            RegisterInstruction(new STA<IndirectX>(0x81));
-            RegisterInstruction(new STA<IndirectY>(0x11));
-            RegisterInstruction(new STA<ZeroPage>(0x85));
-            RegisterInstruction(new STA<ZeroPageX>(0x95));
-
-            RegisterInstruction(new TAX(0XAA));
+            RegisterInstruction(new InstructionsBuilder().Opcode(0XAA).Logic<TAX>().Cycles(2).Build());
         }
 
-        private void RegisterInstruction(Instruction instruction)
+        private void RegisterInstruction(IInstruction instruction)
         {
             var opcode = instruction.Opcode;
 
@@ -41,6 +32,6 @@ namespace NesEmulatorCPU.Instructions
             instructions[opcode] = instruction;
         }
 
-        internal Instruction GetInstructionForOpcode(byte opcode) => instructions[opcode];
+        internal IInstruction GetInstructionForOpcode(byte opcode) => instructions[opcode];
     }
 }

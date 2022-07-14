@@ -2,13 +2,9 @@
 
 namespace NesEmulatorCPU.Instructions
 {
-    internal class TAX : Instruction
+    internal class TAX : IInstructionLogic
     {
-        internal TAX(byte opcode) : base(opcode)
-        {
-        }
-
-        internal override void Execute(RAM ram, RegistersProvider registers)
+        void IInstructionLogic.Execute(RAM ram, RegistersProvider registers)
         {
             var value = registers.Accumulator.State;
 

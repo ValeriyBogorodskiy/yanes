@@ -2,14 +2,19 @@
 
 namespace NesEmulatorCPU.Instructions
 {
-    internal abstract class Instruction
+    internal class Instruction : IInstruction
     {
-        internal Instruction(byte opcode)
+        private readonly byte opcode;
+        private readonly Func<RAM, RegistersProvider, int> logic;
+
+        internal Instruction(byte opcode, Func<RAM, RegistersProvider, int> logic)
         {
-            Opcode = opcode;
+            this.opcode = opcode;
+            this.logic = logic;
         }
 
-        internal byte Opcode { get; private set; }
-        internal abstract void Execute(RAM ram, RegistersProvider registers);
+        byte IInstruction.Opcode => opcode;
+
+        int IInstruction.Execute(RAM ram, RegistersProvider registers) => logic(ram, registers);
     }
 }

@@ -3,13 +3,9 @@ using NesEmulatorCPU.Registers;
 
 namespace NesEmulatorCPU.Instructions
 {
-    internal class LDA<T> : InstructionWithMultipleAddressingModes<T> where T : AddressingMode, new()
+    internal class LDA : IInstructionLogicWithAddressingMode
     {
-        internal LDA(byte opcode) : base(opcode)
-        {
-        }
-
-        internal override void Execute(RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
         {
             var valueAddress = addressingMode.GetAddress(ram, registers);
             var value = ram.Read8bit(valueAddress);

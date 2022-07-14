@@ -1,6 +1,5 @@
 ﻿namespace NesEmulatorCPU.Registers
 {
-    // TODO : naming
     internal class RegistersProvider
     {
         internal ProgramCounter ProgramCounter { get; private set; } = new();
