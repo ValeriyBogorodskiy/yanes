@@ -1,7 +1,7 @@
 ﻿using NesEmulatorCPU.AddressingModes;
 using NesEmulatorCPU.Registers;
 
-namespace NesEmulatorCPU.Instructions
+namespace NesEmulatorCPU.Instructions.Logic
 {
     internal class STA : IInstructionLogicWithAddressingMode
     {

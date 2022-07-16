@@ -3,7 +3,7 @@ using NesEmulatorCPU.Registers;
 
 namespace NesEmulatorCPU.Instructions
 {
-    internal class InstructionsBuilder
+    internal class InstructionBuilder
     {
         private byte? opcode;
         private int? cycles;
@@ -75,32 +75,32 @@ namespace NesEmulatorCPU.Instructions
             };
         }
 
-        internal InstructionsBuilder Opcode(byte opcode)
+        internal InstructionBuilder Opcode(byte opcode)
         {
             this.opcode = opcode;
             return this;
         }
 
-        internal InstructionsBuilder Cycles(int cycles)
+        internal InstructionBuilder Cycles(int cycles)
         {
             this.cycles = cycles;
             return this;
         }
 
-        internal InstructionsBuilder Logic<TLogic>() where TLogic : IInstructionLogic, new()
+        internal InstructionBuilder Logic<TLogic>() where TLogic : IInstructionLogic, new()
         {
             instructionLogic = new TLogic();
             return this;
         }
 
-        internal InstructionsBuilder Logic<TLogic, TMode>() where TLogic : IInstructionLogicWithAddressingMode, new() where TMode : AddressingMode, new()
+        internal InstructionBuilder Logic<TLogic, TMode>() where TLogic : IInstructionLogicWithAddressingMode, new() where TMode : AddressingMode, new()
         {
             instructionLogicWithAdressingMode = new TLogic();
             addressingMode = new TMode();
             return this;
         }
 
-        internal InstructionsBuilder WithPageCrossing(bool value = true)
+        internal InstructionBuilder WithPageCrossing(bool value = true)
         {
             withPageCrossing = value;
             return this;

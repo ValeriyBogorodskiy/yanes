@@ -1,6 +1,7 @@
 ﻿using NesEmulatorCPU.Registers;
+using NesEmulatorCPU.Tools;
 
-namespace NesEmulatorCPU.Instructions
+namespace NesEmulatorCPU.Instructions.Logic
 {
     internal class INX : IInstructionLogic
     {
@@ -9,8 +10,8 @@ namespace NesEmulatorCPU.Instructions
             byte value = (byte)(registers.IndexRegisterX.State + 1);
 
             registers.IndexRegisterX.State = value;
-            registers.ProcessorStatus.UpdateNegativeFlag(value);
-            registers.ProcessorStatus.UpdateZeroFlag(value);
+            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, value.IsNegative());
+            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, value.IsZero());
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using NesEmulatorCPU.Tools;
-
-namespace NesEmulatorCPU.Registers
+﻿namespace NesEmulatorCPU.Registers
 {
     internal class ProcessorStatus : CpuRegister8Bit
     {
@@ -15,26 +13,14 @@ namespace NesEmulatorCPU.Registers
             Carry = 1 << 0
         }
 
-        private void Set(Flags flag, bool value)
+        internal bool Get(Flags flag) => (State & (byte)flag) > 0;
+
+        internal void Set(Flags flag, bool value)
         {
             if (value)
                 State |= (byte)flag;
             else
                 State &= (byte)~flag;
-        }
-
-        internal bool Get(Flags flag) => (State & (byte)flag) > 0;
-
-        internal void UpdateNegativeFlag(byte value)
-        {
-            var isValueNegative = (value & BitMasks.Negative) != 0;
-            Set(Flags.Negative, isValueNegative);
-        }
-
-        internal void UpdateZeroFlag(byte value)
-        {
-            var isValueZero = value == 0;
-            Set(Flags.Zero, isValueZero);
         }
     }
 }
