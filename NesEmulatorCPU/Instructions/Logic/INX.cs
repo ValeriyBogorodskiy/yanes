@@ -1,5 +1,5 @@
 ﻿using NesEmulatorCPU.Registers;
-using NesEmulatorCPU.Tools;
+using NesEmulatorCPU.Utils;
 
 namespace NesEmulatorCPU.Instructions.Logic
 {

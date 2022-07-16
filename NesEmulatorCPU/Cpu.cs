@@ -1,4 +1,4 @@
-﻿using NesEmulatorCPU.Tools;
+﻿using NesEmulatorCPU.Utils;
 using NesEmulatorCPU.Registers;
 using NesEmulatorCPU.Instructions;
 
