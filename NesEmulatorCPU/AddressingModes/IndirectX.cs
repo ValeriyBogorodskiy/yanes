@@ -9,12 +9,7 @@ namespace NesEmulatorCPU.AddressingModes
             var memoryAddress = registers.ProgramCounter.State;
 
             var leastSignificantByteAddress = (byte)(ram.Read8bit(memoryAddress) + registers.IndexRegisterX.State);
-            var leastSignificantByte = ram.Read8bit(leastSignificantByteAddress);
-
-            var mostSignificantByteAddress = (byte)(leastSignificantByteAddress + 1);
-            var mostSignificantByte = ram.Read8bit(mostSignificantByteAddress);
-
-            var valueAddress = BitConverter.ToUInt16(new byte[2] { leastSignificantByte, mostSignificantByte }, 0);
+            var valueAddress = ram.Read16bit(leastSignificantByteAddress);
 
             registers.ProgramCounter.State++;
 

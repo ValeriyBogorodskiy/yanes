@@ -42,7 +42,7 @@ namespace NesEmulatorCPU.Instructions
             if (instructionLogicWithAdressingMode is not null && addressingMode is null)
                 throw new InvalidOperationException("Addressing mode for operation with multiple addressing modes support must be specified");
 
-            if (withPageCrossing && addressingMode is not IPageCrossingMode)
+            if (withPageCrossing && addressingMode is not IBoundaryCrossingMode)
                 throw new InvalidOperationException("Specified addressing mode doesn't support page crossing check");
         }
 
@@ -66,11 +66,11 @@ namespace NesEmulatorCPU.Instructions
 
         private Func<RAM, RegistersProvider, int> WrapLogicWithPageCrossingCheck(Func<RAM, RegistersProvider, int> logic)
         {
-            var pageCrossingMode = addressingMode as IPageCrossingMode;
+            var pageCrossingMode = addressingMode as IBoundaryCrossingMode;
 
             return (ram, registers) =>
             {
-                var additionalCycles = pageCrossingMode.CheckIfPageWillBeCrossed(ram, registers) ? 1 : 0;
+                var additionalCycles = pageCrossingMode.CheckIfBoundaryWillBeCrossed(ram, registers) ? 1 : 0;
                 return logic(ram, registers) + additionalCycles;
             };
         }

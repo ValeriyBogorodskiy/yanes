@@ -9,19 +9,17 @@
         internal ushort Read16bit(ushort address)
         {
             var leastSignificantByte = cells[address];
-            var mostSignificantByte = cells[address + 1];
+            var mostSignificantByte = cells[address + 1] << 8;
 
-            return BitConverter.ToUInt16(new byte[2] { mostSignificantByte, leastSignificantByte }, 0);
+            return (ushort)(mostSignificantByte + leastSignificantByte);
         }
 
         internal void Write8Bit(ushort address, byte value) => cells[address] = value;
 
         internal void Write16Bit(ushort address, ushort value)
         {
-            var bytes = BitConverter.GetBytes(value);
-
-            var leastSignificantByte = bytes[1];
-            var mostSignificantByte = bytes[0];
+            var leastSignificantByte = (byte)(value & 0X00FF);
+            var mostSignificantByte = (byte)(value >> 8);
 
             cells[address] = leastSignificantByte;
             cells[address + 1] = mostSignificantByte;

@@ -3,6 +3,9 @@ using NesEmulatorCPU.Registers;
 
 namespace NesEmulatorCPU.Test
 {
+    /// <summary>
+    /// Test cases source http://www.emulator101.com/6502-addressing-modes.html
+    /// </summary>
     [TestFixture]
     internal class AddressingModes
     {
@@ -79,12 +82,12 @@ namespace NesEmulatorCPU.Test
             var registers = new RegistersProvider();
 
             registers.ProgramCounter.State = 0x9F00;
-            ram.Write16Bit(0x9F00, 0x1111);
+            ram.Write16Bit(0x9F00, 0x1234);
 
             var absolute = new Absolute();
             var address = absolute.GetAddress(ram, registers);
 
-            Assert.That(address, Is.EqualTo(0x1111));
+            Assert.That(address, Is.EqualTo(0x1234));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9F02));
         }
 
@@ -95,14 +98,33 @@ namespace NesEmulatorCPU.Test
             var registers = new RegistersProvider();
 
             registers.ProgramCounter.State = 0x9FF0;
-            ram.Write16Bit(0x9FF0, 0x0200);
+            ram.Write16Bit(0x9FF0, 0x4032);
             registers.IndexRegisterX.State = 0x01;
 
             var absoluteX = new AbsoluteX();
             var address = absoluteX.GetAddress(ram, registers);
 
-            Assert.That(address, Is.EqualTo(0x0201));
+            Assert.That(address, Is.EqualTo(0x4033));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9FF2));
+        }
+
+        [Test]
+        public void AbsoluteXBoundaryCrossing()
+        {
+            var ram = new RAM();
+            var registers = new RegistersProvider();
+
+            ram.Write16Bit(0x0000, 0X00FF);
+            registers.IndexRegisterX.State = 0x01;
+
+            var absoluteX = new AbsoluteX();
+            var absoluteXBoundaryCrossing = (IBoundaryCrossingMode)absoluteX;
+
+            Assert.That(absoluteXBoundaryCrossing.CheckIfBoundaryWillBeCrossed(ram, registers), Is.True);
+
+            var address = absoluteX.GetAddress(ram, registers);
+
+            Assert.That(address, Is.EqualTo(0x0100));
         }
 
         [Test]
@@ -123,20 +145,39 @@ namespace NesEmulatorCPU.Test
         }
 
         [Test]
+        public void AbsoluteYBoundaryCrossing()
+        {
+            var ram = new RAM();
+            var registers = new RegistersProvider();
+
+            ram.Write16Bit(0x0000, 0X00FF);
+            registers.IndexRegisterY.State = 0x01;
+
+            var absoluteY = new AbsoluteY();
+            var absoluteYBoundaryCrossing = (IBoundaryCrossingMode)absoluteY;
+
+            Assert.That(absoluteYBoundaryCrossing.CheckIfBoundaryWillBeCrossed(ram, registers), Is.True);
+
+            var address = absoluteY.GetAddress(ram, registers);
+
+            Assert.That(address, Is.EqualTo(0x0100));
+        }
+
+        [Test]
         public void Indirect()
         {
             var ram = new RAM();
             var registers = new RegistersProvider();
 
-            registers.ProgramCounter.State = 0x0000;
-            ram.Write16Bit(0x0000, 0x00F0);
-            ram.Write16Bit(0x00F0, 0x01CC);
+            registers.ProgramCounter.State = 0x1000;
+            ram.Write8Bit(0x1000, 0x52);
+            ram.Write8Bit(0x1001, 0x3A);
 
             var indirect = new Indirect();
             var address = indirect.GetAddress(ram, registers);
 
-            Assert.That(address, Is.EqualTo(0xCC01));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0002));
+            Assert.That(address, Is.EqualTo(0x3A52));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x1002));
         }
 
         [Test]
@@ -149,7 +190,7 @@ namespace NesEmulatorCPU.Test
 
             ram.Write8Bit(0x0000, 0x20);
             registers.IndexRegisterX.State = 0x04;
-            ram.Write16Bit(0x0024, 0x7420);
+            ram.Write16Bit(0x0024, 0x2074);
 
             var indexedInderect = new IndirectX();
             var address = indexedInderect.GetAddress(ram, registers);
@@ -167,14 +208,44 @@ namespace NesEmulatorCPU.Test
             registers.ProgramCounter.State = 0x0000;
 
             ram.Write8Bit(0x0000, 0x86);
+            ram.Write16Bit(0x0086, 0x4028);
             registers.IndexRegisterY.State = 0x10;
-            ram.Write16Bit(0x0086, 0x2840);
 
             var indirectIndexed = new IndirectY();
             var address = indirectIndexed.GetAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x4038));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0001));
+        }
+
+        /// <summary>
+        /// https://skilldrick.github.io/easy6502/#addressing
+        /// </summary>
+        [Test]
+        public void IndirectIndexed_2()
+        {
+            var ram = new RAM();
+            var registers = new RegistersProvider();
+
+            registers.ProgramCounter.State = 0x0000;
+
+            ram.Write8Bit(0x0000, 0x01);
+
+            registers.IndexRegisterY.State = 0x01;
+            ram.Write8Bit(0x01, 0x03);
+            ram.Write8Bit(0x02, 0x07);
+
+            var indirectIndexed = new IndirectY();
+            var address = indirectIndexed.GetAddress(ram, registers);
+
+            Assert.That(address, Is.EqualTo(0x0704));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0001));
+        }
+
+        [Test]
+        public void IndirectIndexedBoundaryCrossing()
+        {
+            // TODO : implement
         }
     }
 }
