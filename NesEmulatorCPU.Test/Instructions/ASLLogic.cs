@@ -13,7 +13,6 @@ namespace NesEmulatorCPU.Test.Instructions
         {
             var ram = new RAM();
             var registers = new RegistersProvider();
-            var immediateAddressingMode = new Immediate();
 
             registers.Accumulator.State = 0b00001111;
 
@@ -32,7 +31,6 @@ namespace NesEmulatorCPU.Test.Instructions
         {
             var ram = new RAM();
             var registers = new RegistersProvider();
-            var immediateAddressingMode = new Immediate();
 
             registers.Accumulator.State = 0b10001111;
 
@@ -51,7 +49,6 @@ namespace NesEmulatorCPU.Test.Instructions
         {
             var ram = new RAM();
             var registers = new RegistersProvider();
-            var immediateAddressingMode = new Immediate();
 
             registers.Accumulator.State = 0b01001111;
 
@@ -70,7 +67,6 @@ namespace NesEmulatorCPU.Test.Instructions
         {
             var ram = new RAM();
             var registers = new RegistersProvider();
-            var immediateAddressingMode = new Immediate();
 
             registers.Accumulator.State = 0b11001111;
 
@@ -89,7 +85,6 @@ namespace NesEmulatorCPU.Test.Instructions
         {
             var ram = new RAM();
             var registers = new RegistersProvider();
-            var immediateAddressingMode = new Immediate();
 
             registers.Accumulator.State = 0b00000000;
 
@@ -108,7 +103,6 @@ namespace NesEmulatorCPU.Test.Instructions
         {
             var ram = new RAM();
             var registers = new RegistersProvider();
-            var immediateAddressingMode = new Immediate();
 
             registers.Accumulator.State = 0b10000000;
 

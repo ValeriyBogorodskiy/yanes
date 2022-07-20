@@ -34,6 +34,9 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<ASLWithAddressing, ZeroPageX>().Opcode(0x16).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<ASLWithAddressing, Absolute>().Opcode(0x0E).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<ASLWithAddressing, AbsoluteX>().Opcode(0x1E).Cycles(7).Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<BIT, ZeroPage>().Opcode(0x24).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<BIT, Absolute>().Opcode(0x2C).Cycles(4).Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)
