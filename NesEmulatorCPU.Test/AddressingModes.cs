@@ -245,7 +245,26 @@ namespace NesEmulatorCPU.Test
         [Test]
         public void IndirectIndexedBoundaryCrossing()
         {
-            // TODO : implement
+            var ram = new RAM();
+            var registers = new RegistersProvider();
+
+            registers.ProgramCounter.State = 0x0000;
+
+            ram.Write8Bit(0x0000, 0x01);
+
+            registers.IndexRegisterY.State = 0x02;
+            ram.Write8Bit(0x01, 0xFF);
+            ram.Write8Bit(0x02, 0x01);
+
+            var indirectIndexed = new IndirectY();
+            var indirectIndexedBoundaryCrossing = (IBoundaryCrossingMode)indirectIndexed;
+
+            Assert.That(indirectIndexedBoundaryCrossing.CheckIfBoundaryWillBeCrossed(ram, registers), Is.True);
+
+            var address = indirectIndexed.GetAddress(ram, registers);
+
+            Assert.That(address, Is.EqualTo(0x0201));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0001));
         }
     }
 }

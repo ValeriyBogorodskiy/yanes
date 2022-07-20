@@ -16,7 +16,6 @@ namespace NesEmulatorCPU.AddressingModes
             return valueAddress;
         }
 
-        // TODO : I'm not sure if this is implemented correctly. I need some kind of test suite
         bool IBoundaryCrossingMode.CheckIfBoundaryWillBeCrossed(RAM ram, RegistersProvider registers)
         {
             var memoryAddress = registers.ProgramCounter.State;
