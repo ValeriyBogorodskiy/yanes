@@ -1,5 +1,4 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Instructions;
+﻿using NesEmulatorCPU.Instructions;
 using NesEmulatorCPU.Instructions.Logic;
 using NesEmulatorCPU.Registers;
 
