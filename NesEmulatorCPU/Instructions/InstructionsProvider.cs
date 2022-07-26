@@ -18,7 +18,7 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<ADC, AbsoluteX>().Opcode(0x7D).Cycles(4).WithPageCrossing().Build());
             RegisterInstruction(new InstructionBuilder().Logic<ADC, AbsoluteY>().Opcode(0x79).Cycles(4).WithPageCrossing().Build());
             RegisterInstruction(new InstructionBuilder().Logic<ADC, IndirectX>().Opcode(0x61).Cycles(6).Build());
-            RegisterInstruction(new InstructionBuilder().Logic<ADC, IndirectX>().Opcode(0x71).Cycles(5).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ADC, IndirectY>().Opcode(0x71).Cycles(5).WithPageCrossing().Build());
 
             RegisterInstruction(new InstructionBuilder().Logic<AND, Immediate>().Opcode(0x29).Cycles(2).Build());
             RegisterInstruction(new InstructionBuilder().Logic<AND, ZeroPage>().Opcode(0x25).Cycles(3).Build());
@@ -27,7 +27,7 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<AND, AbsoluteX>().Opcode(0x3D).Cycles(4).WithPageCrossing().Build());
             RegisterInstruction(new InstructionBuilder().Logic<AND, AbsoluteY>().Opcode(0x39).Cycles(4).WithPageCrossing().Build());
             RegisterInstruction(new InstructionBuilder().Logic<AND, IndirectX>().Opcode(0x21).Cycles(6).Build());
-            RegisterInstruction(new InstructionBuilder().Logic<AND, IndirectX>().Opcode(0x31).Cycles(5).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<AND, IndirectY>().Opcode(0x31).Cycles(5).WithPageCrossing().Build());
 
             RegisterInstruction(new InstructionBuilder().Logic<ASLAccumulator>().Opcode(0x0A).Cycles(2).Build());
             RegisterInstruction(new InstructionBuilder().Logic<ASLWithAddressing, ZeroPage>().Opcode(0x06).Cycles(5).Build());
@@ -39,6 +39,13 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<BIT, Absolute>().Opcode(0x2C).Cycles(4).Build());
 
             RegisterInstruction(new BPL(0X10));
+            RegisterInstruction(new BMI(0X30));
+            RegisterInstruction(new BVC(0X50));
+            RegisterInstruction(new BVS(0X70));
+            RegisterInstruction(new BCC(0X90));
+            RegisterInstruction(new BCS(0XB0));
+            RegisterInstruction(new BNE(0XD0));
+            RegisterInstruction(new BEQ(0XF0));
         }
 
         private void RegisterInstruction(IInstruction instruction)
