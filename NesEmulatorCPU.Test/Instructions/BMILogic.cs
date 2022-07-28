@@ -1,11 +1,6 @@
 ﻿using NesEmulatorCPU.Instructions;
 using NesEmulatorCPU.Instructions.Logic;
 using NesEmulatorCPU.Registers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NesEmulatorCPU.Test.Instructions
 {

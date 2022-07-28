@@ -6,10 +6,10 @@
 
         public static bool IsZero(this byte value) => value == 0;
 
-        // TODO : tests https://codebase64.org/doku.php?id=base:two_s_complement_system
+        public static bool IsPositive(this byte value) => value > 0 && value < 128;
+
         public static byte ToComplimentaryNegative(this byte value) => (byte)(~value + 1);
 
-        // TODO : tests https://codebase64.org/doku.php?id=base:two_s_complement_system
         public static byte ToComplimentaryPositive(this byte value) => (byte)(~value + 1);
     }
 }

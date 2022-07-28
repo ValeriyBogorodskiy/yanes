@@ -46,6 +46,23 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new BCS(0XB0));
             RegisterInstruction(new BNE(0XD0));
             RegisterInstruction(new BEQ(0XF0));
+
+            RegisterInstruction(new InstructionBuilder().Logic<CMP, Immediate>().Opcode(0XC9).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CMP, ZeroPage>().Opcode(0XC5).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CMP, ZeroPageX>().Opcode(0XD5).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CMP, Absolute>().Opcode(0XCD).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CMP, AbsoluteX>().Opcode(0XDD).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CMP, AbsoluteY>().Opcode(0XD9).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CMP, IndirectX>().Opcode(0XC1).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CMP, IndirectY>().Opcode(0XD1).Cycles(5).WithPageCrossing().Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<CPX, Immediate>().Opcode(0XE0).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CPX, ZeroPage>().Opcode(0XE4).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CPX, Absolute>().Opcode(0XEC).Cycles(4).Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<CPY, Immediate>().Opcode(0XC0).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CPY, ZeroPage>().Opcode(0XC4).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<CPY, Absolute>().Opcode(0XCC).Cycles(4).Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)
