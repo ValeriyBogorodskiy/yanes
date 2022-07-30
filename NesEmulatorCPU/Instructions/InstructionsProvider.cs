@@ -85,6 +85,11 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new CLV(0XB8));
             RegisterInstruction(new CLD(0XD8));
             RegisterInstruction(new SED(0XF8));
+
+            RegisterInstruction(new InstructionBuilder().Logic<INC, ZeroPage>().Opcode(0XE6).Cycles(5).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<INC, ZeroPageX>().Opcode(0XF6).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<INC, Absolute>().Opcode(0XEE).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<INC, AbsoluteX>().Opcode(0XFE).Cycles(7).Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)

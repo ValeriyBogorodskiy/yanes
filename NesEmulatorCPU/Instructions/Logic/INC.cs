@@ -4,13 +4,13 @@ using NesEmulatorCPU.Utils;
 
 namespace NesEmulatorCPU.Instructions.Logic
 {
-    internal class DEC : IInstructionLogicWithAddressingMode
+    internal class INC : IInstructionLogicWithAddressingMode
     {
         void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
         {
             var valueAddress = addressingMode.GetRamAddress(ram, registers);
             var value = ram.Read8bit(valueAddress);
-            var newValue = (byte)(value - 1);
+            var newValue = (byte)(value + 1);
 
             ram.Write8Bit(valueAddress, newValue);
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, newValue.IsNegative());
