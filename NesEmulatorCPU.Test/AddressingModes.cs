@@ -19,7 +19,7 @@ namespace NesEmulatorCPU.Test
             registers.ProgramCounter.State = 0x8000;
 
             var immediate = new Immediate();
-            var address = immediate.GetAddress(ram, registers);
+            var address = immediate.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x8000));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x8001));
@@ -35,7 +35,7 @@ namespace NesEmulatorCPU.Test
             ram.Write8Bit(0x9000, 0xAA);
 
             var zeroPage = new ZeroPage();
-            var adress = zeroPage.GetAddress(ram, registers);
+            var adress = zeroPage.GetRamAddress(ram, registers);
 
             Assert.That(adress, Is.EqualTo(0xAA));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9001));
@@ -52,7 +52,7 @@ namespace NesEmulatorCPU.Test
             registers.IndexRegisterX.State = 0X60;
 
             var zeroPageX = new ZeroPageX();
-            var address = zeroPageX.GetAddress(ram, registers);
+            var address = zeroPageX.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x0020));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9001));
@@ -69,7 +69,7 @@ namespace NesEmulatorCPU.Test
             registers.IndexRegisterY.State = 0XFF;
 
             var zeroPageY = new ZeroPageY();
-            var address = zeroPageY.GetAddress(ram, registers);
+            var address = zeroPageY.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x00F9));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9501));
@@ -85,7 +85,7 @@ namespace NesEmulatorCPU.Test
             ram.Write16Bit(0x9F00, 0x1234);
 
             var absolute = new Absolute();
-            var address = absolute.GetAddress(ram, registers);
+            var address = absolute.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x1234));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9F02));
@@ -102,7 +102,7 @@ namespace NesEmulatorCPU.Test
             registers.IndexRegisterX.State = 0x01;
 
             var absoluteX = new AbsoluteX();
-            var address = absoluteX.GetAddress(ram, registers);
+            var address = absoluteX.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x4033));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9FF2));
@@ -122,7 +122,7 @@ namespace NesEmulatorCPU.Test
 
             Assert.That(absoluteXBoundaryCrossing.CheckIfBoundaryWillBeCrossed(ram, registers), Is.True);
 
-            var address = absoluteX.GetAddress(ram, registers);
+            var address = absoluteX.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x0100));
         }
@@ -138,7 +138,7 @@ namespace NesEmulatorCPU.Test
             registers.IndexRegisterY.State = 0xFF;
 
             var absoluteY = new AbsoluteY();
-            var address = absoluteY.GetAddress(ram, registers);
+            var address = absoluteY.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x010E));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9FF2));
@@ -158,7 +158,7 @@ namespace NesEmulatorCPU.Test
 
             Assert.That(absoluteYBoundaryCrossing.CheckIfBoundaryWillBeCrossed(ram, registers), Is.True);
 
-            var address = absoluteY.GetAddress(ram, registers);
+            var address = absoluteY.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x0100));
         }
@@ -174,7 +174,7 @@ namespace NesEmulatorCPU.Test
             ram.Write8Bit(0x1001, 0x3A);
 
             var indirect = new Indirect();
-            var address = indirect.GetAddress(ram, registers);
+            var address = indirect.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x3A52));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x1002));
@@ -193,7 +193,7 @@ namespace NesEmulatorCPU.Test
             ram.Write16Bit(0x0024, 0x2074);
 
             var indexedInderect = new IndirectX();
-            var address = indexedInderect.GetAddress(ram, registers);
+            var address = indexedInderect.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x2074));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0001));
@@ -212,7 +212,7 @@ namespace NesEmulatorCPU.Test
             registers.IndexRegisterY.State = 0x10;
 
             var indirectIndexed = new IndirectY();
-            var address = indirectIndexed.GetAddress(ram, registers);
+            var address = indirectIndexed.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x4038));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0001));
@@ -236,7 +236,7 @@ namespace NesEmulatorCPU.Test
             ram.Write8Bit(0x02, 0x07);
 
             var indirectIndexed = new IndirectY();
-            var address = indirectIndexed.GetAddress(ram, registers);
+            var address = indirectIndexed.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x0704));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0001));
@@ -261,7 +261,7 @@ namespace NesEmulatorCPU.Test
 
             Assert.That(indirectIndexedBoundaryCrossing.CheckIfBoundaryWillBeCrossed(ram, registers), Is.True);
 
-            var address = indirectIndexed.GetAddress(ram, registers);
+            var address = indirectIndexed.GetRamAddress(ram, registers);
 
             Assert.That(address, Is.EqualTo(0x0201));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0001));

@@ -4,7 +4,6 @@ using NesEmulatorCPU.Utils;
 
 namespace NesEmulatorCPU.Instructions.Logic
 {
-    // TODO : maybe change AddressingMode interface to return a value insted of address. But then I'll have to rewrite all addressing tests...
     internal abstract class ASL
     {
         protected static void Execute(byte value, RegistersProvider registers)
@@ -31,9 +30,7 @@ namespace NesEmulatorCPU.Instructions.Logic
     {
         void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
         {
-            var valueAddress = addressingMode.GetAddress(ram, registers);
-            var value = ram.Read8bit(valueAddress);
-
+            var value = addressingMode.GetRamValue(ram, registers);
             Execute(value, registers);
         }
     }

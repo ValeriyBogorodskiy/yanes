@@ -8,8 +8,7 @@ namespace NesEmulatorCPU.Instructions.Logic
     {
         void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
         {
-            var valueAddress = addressingMode.GetAddress(ram, registers);
-            var value = ram.Read8bit(valueAddress);
+            var value = addressingMode.GetRamValue(ram, registers);
 
             registers.Accumulator.State = value;
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, value.IsNegative());

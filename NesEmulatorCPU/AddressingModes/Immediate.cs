@@ -4,7 +4,7 @@ namespace NesEmulatorCPU.AddressingModes
 {
     internal class Immediate : AddressingMode
     {
-        internal override ushort GetAddress(RAM ram, RegistersProvider registers)
+        internal override ushort GetRamAddress(RAM ram, RegistersProvider registers)
         {
             var valueAddress = registers.ProgramCounter.State;
 

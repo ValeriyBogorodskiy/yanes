@@ -4,7 +4,7 @@ namespace NesEmulatorCPU.AddressingModes
 {
     internal class IndirectY : AddressingMode, IBoundaryCrossingMode
     {
-        internal override ushort GetAddress(RAM ram, RegistersProvider registers)
+        internal override ushort GetRamAddress(RAM ram, RegistersProvider registers)
         {
             var memoryAddress = registers.ProgramCounter.State;
             var leastSignificantByteAddress = ram.Read8bit(memoryAddress);
