@@ -9,7 +9,11 @@
         internal ushort Read16bit(ushort address)
         {
             var leastSignificantByte = cells[address];
-            var mostSignificantByte = cells[address + 1] << 8;
+
+            // TODO : Does it really work like this?
+            var addressMostSignificantByte = (ushort)(address & 0XFF00);
+            var addressLeastSignificantByte = (byte)((byte)address + 1);
+            var mostSignificantByte = cells[addressMostSignificantByte + addressLeastSignificantByte] << 8;
 
             return (ushort)(mostSignificantByte + leastSignificantByte);
         }

@@ -90,6 +90,9 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<INC, ZeroPageX>().Opcode(0XF6).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<INC, Absolute>().Opcode(0XEE).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<INC, AbsoluteX>().Opcode(0XFE).Cycles(7).Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<JMP, Absolute>().Opcode(0X4C).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<JMP, Indirect>().Opcode(0X6C).Cycles(5).Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)

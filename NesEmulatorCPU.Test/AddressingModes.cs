@@ -169,15 +169,15 @@ namespace NesEmulatorCPU.Test
             var ram = new RAM();
             var registers = new RegistersProvider();
 
-            registers.ProgramCounter.State = 0x1000;
-            ram.Write8Bit(0x1000, 0x52);
-            ram.Write8Bit(0x1001, 0x3A);
+            ram.Write16Bit(0X00, 0X1000);
+            ram.Write8Bit(0X1000, 0X52);
+            ram.Write8Bit(0X1001, 0X3A);
 
             var indirect = new Indirect();
             var address = indirect.GetRamAddress(ram, registers);
 
-            Assert.That(address, Is.EqualTo(0x3A52));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x1002));
+            Assert.That(address, Is.EqualTo(0X3A52));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0X0002));
         }
 
         [Test]
