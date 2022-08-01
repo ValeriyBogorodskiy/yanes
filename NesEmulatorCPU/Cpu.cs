@@ -22,6 +22,7 @@ namespace NesEmulatorCPU
             ResetRegisters();
             LoadProgramToRam(program);
             SetupProgramCounter();
+            SetupStackPointer();
 
             while (true)
             {
@@ -55,6 +56,11 @@ namespace NesEmulatorCPU
         private void SetupProgramCounter()
         {
             registers.ProgramCounter.State = ram.Read16bit(ReservedAddresses.ProgramStartPointerAddress);
+        }
+
+        private void SetupStackPointer()
+        {
+            registers.StackPointer.State = ReservedAddresses.StartingStackPointerAddress;
         }
     }
 }
