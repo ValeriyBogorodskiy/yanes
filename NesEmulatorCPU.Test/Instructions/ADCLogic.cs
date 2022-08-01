@@ -18,13 +18,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0X50);
-            registers.Accumulator.State = 0X10;
+            ram.Write8Bit(0x00, 0x50);
+            registers.Accumulator.State = 0x10;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
             adc.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0X60));
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0x60));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(false));
@@ -39,13 +39,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0X50);
-            registers.Accumulator.State = 0X50;
+            ram.Write8Bit(0x00, 0x50);
+            registers.Accumulator.State = 0x50;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
             adc.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0XA0));
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0xA0));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(true));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(true));
@@ -60,13 +60,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0X50);
-            registers.Accumulator.State = 0X90;
+            ram.Write8Bit(0x00, 0x50);
+            registers.Accumulator.State = 0x90;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
             adc.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0XE0));
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0xE0));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(true));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(false));
@@ -81,13 +81,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0X50);
-            registers.Accumulator.State = 0XD0;
+            ram.Write8Bit(0x00, 0x50);
+            registers.Accumulator.State = 0xD0;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
             adc.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0X20));
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0x20));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(false));
@@ -102,13 +102,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0XD0);
-            registers.Accumulator.State = 0X10;
+            ram.Write8Bit(0x00, 0xD0);
+            registers.Accumulator.State = 0x10;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
             adc.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0XE0));
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0xE0));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(true));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(false));
@@ -123,13 +123,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0XD0);
-            registers.Accumulator.State = 0X50;
+            ram.Write8Bit(0x00, 0xD0);
+            registers.Accumulator.State = 0x50;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
             adc.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0X20));
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0x20));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(false));
@@ -144,13 +144,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0XD0);
-            registers.Accumulator.State = 0X90;
+            ram.Write8Bit(0x00, 0xD0);
+            registers.Accumulator.State = 0x90;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
             adc.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0X60));
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0x60));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(true));
@@ -165,13 +165,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0XD0);
-            registers.Accumulator.State = 0XD0;
+            ram.Write8Bit(0x00, 0xD0);
+            registers.Accumulator.State = 0xD0;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
             adc.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0XA0));
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0xA0));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(true));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(false));
@@ -186,13 +186,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0X81);
-            registers.Accumulator.State = 0X81;
+            ram.Write8Bit(0x00, 0x81);
+            registers.Accumulator.State = 0x81;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
             adc.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0X02));
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0x02));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(true));

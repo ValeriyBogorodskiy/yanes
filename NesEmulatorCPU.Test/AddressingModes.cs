@@ -49,7 +49,7 @@ namespace NesEmulatorCPU.Test
 
             registers.ProgramCounter.State = 0x9000;
             ram.Write8Bit(0x9000, 0xC0);
-            registers.IndexRegisterX.State = 0X60;
+            registers.IndexRegisterX.State = 0x60;
 
             var zeroPageX = new ZeroPageX();
             var address = zeroPageX.GetRamAddress(ram, registers);
@@ -66,7 +66,7 @@ namespace NesEmulatorCPU.Test
 
             registers.ProgramCounter.State = 0x9500;
             ram.Write8Bit(0x9500, 0xFA);
-            registers.IndexRegisterY.State = 0XFF;
+            registers.IndexRegisterY.State = 0xFF;
 
             var zeroPageY = new ZeroPageY();
             var address = zeroPageY.GetRamAddress(ram, registers);
@@ -114,7 +114,7 @@ namespace NesEmulatorCPU.Test
             var ram = new RAM();
             var registers = new RegistersProvider();
 
-            ram.Write16Bit(0x0000, 0X00FF);
+            ram.Write16Bit(0x0000, 0x00FF);
             registers.IndexRegisterX.State = 0x01;
 
             var absoluteX = new AbsoluteX();
@@ -150,7 +150,7 @@ namespace NesEmulatorCPU.Test
             var ram = new RAM();
             var registers = new RegistersProvider();
 
-            ram.Write16Bit(0x0000, 0X00FF);
+            ram.Write16Bit(0x0000, 0x00FF);
             registers.IndexRegisterY.State = 0x01;
 
             var absoluteY = new AbsoluteY();
@@ -169,15 +169,15 @@ namespace NesEmulatorCPU.Test
             var ram = new RAM();
             var registers = new RegistersProvider();
 
-            ram.Write16Bit(0X00, 0X1000);
-            ram.Write8Bit(0X1000, 0X52);
-            ram.Write8Bit(0X1001, 0X3A);
+            ram.Write16Bit(0x00, 0x1000);
+            ram.Write8Bit(0x1000, 0x52);
+            ram.Write8Bit(0x1001, 0x3A);
 
             var indirect = new Indirect();
             var address = indirect.GetRamAddress(ram, registers);
 
-            Assert.That(address, Is.EqualTo(0X3A52));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0X0002));
+            Assert.That(address, Is.EqualTo(0x3A52));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0002));
         }
 
         [Test]

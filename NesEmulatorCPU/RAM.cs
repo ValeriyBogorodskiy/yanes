@@ -11,7 +11,7 @@
             var leastSignificantByte = cells[address];
 
             // TODO : Does it really work like this?
-            var addressMostSignificantByte = (ushort)(address & 0XFF00);
+            var addressMostSignificantByte = (ushort)(address & 0xFF00);
             var addressLeastSignificantByte = (byte)((byte)address + 1);
             var mostSignificantByte = cells[addressMostSignificantByte + addressLeastSignificantByte] << 8;
 
@@ -22,7 +22,7 @@
 
         internal void Write16Bit(ushort address, ushort value)
         {
-            var leastSignificantByte = (byte)(value & 0X00FF);
+            var leastSignificantByte = (byte)(value & 0x00FF);
             var mostSignificantByte = (byte)(value >> 8);
 
             cells[address] = leastSignificantByte;

@@ -15,7 +15,7 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0b10000000);
+            ram.Write8Bit(0x00, 0b10000000);
             registers.Accumulator.State = 0b11111111;
 
             var bit = (IInstructionLogicWithAddressingMode)new BIT();
@@ -35,7 +35,7 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0b01000000);
+            ram.Write8Bit(0x00, 0b01000000);
             registers.Accumulator.State = 0b11111111;
 
             var bit = (IInstructionLogicWithAddressingMode)new BIT();
@@ -55,7 +55,7 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0X00, 0b00000000);
+            ram.Write8Bit(0x00, 0b00000000);
             registers.Accumulator.State = 0b11111111;
 
             var bit = (IInstructionLogicWithAddressingMode)new BIT();
