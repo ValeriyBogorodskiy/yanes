@@ -25,7 +25,7 @@ namespace NesEmulatorCPU.Instructions
             if (withPageCrossing)
                 logic = WrapLogicWithPageCrossingCheck(logic);
 
-            return new Instruction(opcode.Value, logic);
+            return new InstructionWithDynamicLogic(opcode.Value, logic);
         }
 
         private void TryPerformConfigurationChecks()

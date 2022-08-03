@@ -3,18 +3,13 @@ using NesEmulatorCPU.Utils;
 
 namespace NesEmulatorCPU.Instructions
 {
-    internal abstract class BranchingInstruction : IInstruction
+    internal abstract class BranchingInstruction : Instruction
     {
-        byte IInstruction.Opcode => opcode;
-
-        private readonly byte opcode;
-
-        internal BranchingInstruction(byte opcode)
+        internal BranchingInstruction(byte opcode) : base(opcode)
         {
-            this.opcode = opcode;
         }
 
-        int IInstruction.Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(RAM ram, RegistersProvider registers)
         {
             var displacementAddress = registers.ProgramCounter.State;
             var displacement = ram.Read8bit(displacementAddress);

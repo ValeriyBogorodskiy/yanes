@@ -3,18 +3,13 @@ using static NesEmulatorCPU.Registers.ProcessorStatus;
 
 namespace NesEmulatorCPU.Instructions
 {
-    internal abstract class ProcessorStatusInstruction : IInstruction
+    internal abstract class ProcessorStatusInstruction : Instruction
     {
-        byte IInstruction.Opcode => opcode;
-
-        private readonly byte opcode;
-
-        internal ProcessorStatusInstruction(byte opcode)
+        internal ProcessorStatusInstruction(byte opcode) : base(opcode)
         {
-            this.opcode = opcode;
         }
 
-        int IInstruction.Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(RAM ram, RegistersProvider registers)
         {
             registers.ProcessorStatus.Set(Flag, Value);
             return 2;

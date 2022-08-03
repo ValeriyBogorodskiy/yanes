@@ -2,18 +2,13 @@
 
 namespace NesEmulatorCPU.Instructions.Logic
 {
-    internal class NOP : IInstruction
+    internal class NOP : Instruction
     {
-        private readonly byte opcode;
-
-        internal NOP(byte opcode)
+        public NOP(byte opcode) : base(opcode)
         {
-            this.opcode = opcode;
         }
 
-        byte IInstruction.Opcode => opcode;
-
-        int IInstruction.Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(RAM ram, RegistersProvider registers)
         {
             return 2;
         }
