@@ -32,10 +32,10 @@ namespace NesEmulatorCPU.Test.Instructions
 
             ram.Write8Bit(0x00, 0x7F);
 
-            var lda = (IInstructionLogicWithAddressingMode)new LDA();
-            lda.Execute(immediateAddressingMode, ram, registers);
+            var ldx = (IInstructionLogicWithAddressingMode)new LDX();
+            ldx.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0x7F));
+            Assert.That(registers.IndexRegisterX.State, Is.EqualTo(0x7F));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));
         }
@@ -49,10 +49,10 @@ namespace NesEmulatorCPU.Test.Instructions
 
             ram.Write8Bit(0x00, 0xAA);
 
-            var lda = (IInstructionLogicWithAddressingMode)new LDA();
-            lda.Execute(immediateAddressingMode, ram, registers);
+            var ldy = (IInstructionLogicWithAddressingMode)new LDY();
+            ldy.Execute(immediateAddressingMode, ram, registers);
 
-            Assert.That(registers.Accumulator.State, Is.EqualTo(0xAA));
+            Assert.That(registers.IndexRegisterY.State, Is.EqualTo(0xAA));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(true));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));
         }

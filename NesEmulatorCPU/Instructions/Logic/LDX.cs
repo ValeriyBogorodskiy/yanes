@@ -1,18 +1,9 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Registers;
-using NesEmulatorCPU.Utils;
+﻿using NesEmulatorCPU.Registers;
 
 namespace NesEmulatorCPU.Instructions.Logic
 {
-    internal class LDX : IInstructionLogicWithAddressingMode
+    internal class LDX : LoadByteInstruction
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
-        {
-            var value = addressingMode.GetRamValue(ram, registers);
-
-            registers.IndexRegisterX.State = value;
-            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, value.IsNegative());
-            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, value.IsZero());
-        }
+        protected override CpuRegister8Bit TargetRegister(RegistersProvider registers) => registers.IndexRegisterX;
     }
 }
