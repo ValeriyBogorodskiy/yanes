@@ -124,6 +124,16 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<LSRWithAddressing, AbsoluteX>().Opcode(0x5E).Cycles(7).Build());
 
             RegisterInstruction(new NOP(0xEA));
+
+            RegisterInstruction(new InstructionBuilder().Logic<ORA, Immediate>().Opcode(0x09).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ORA, ZeroPage>().Opcode(0x05).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ORA, ZeroPageX>().Opcode(0x15).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ORA, Absolute>().Opcode(0x0D).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ORA, AbsoluteX>().Opcode(0x1D).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ORA, AbsoluteY>().Opcode(0x19).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ORA, IndirectX>().Opcode(0x01).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ORA, IndirectY>().Opcode(0x11).Cycles(5).WithPageCrossing().Build());
+
         }
 
         private void RegisterInstruction(IInstruction instruction)
