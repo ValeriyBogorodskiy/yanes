@@ -1,5 +1,5 @@
 ﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Instructions.Logic;
+using NesEmulatorCPU.Instructions.Opcodes;
 
 namespace NesEmulatorCPU.Instructions
 {

@@ -1,4 +1,4 @@
-﻿using NesEmulatorCPU.Instructions.Logic;
+﻿using NesEmulatorCPU.Instructions.Opcodes;
 using NesEmulatorCPU.Registers;
 
 namespace NesEmulatorCPU.Test.Instructions
