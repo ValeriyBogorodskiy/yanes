@@ -4,21 +4,21 @@ using NesEmulatorCPU.Utils;
 
 namespace NesEmulatorCPU.Instructions.Opcodes
 {
-    internal abstract class ASL
+    internal abstract class ROL
     {
         protected static void Execute(byte value, RegistersProvider registers)
         {
-            var result = (byte)(value << 1);
+            var carryMask = registers.ProcessorStatus.Get(ProcessorStatus.Flags.Carry) ? (byte)1 : (byte)0;
+            var result = (byte)((value << 1) | carryMask);
 
             registers.Accumulator.State = result;
-
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, result.IsNegative());
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, result.IsZero());
-            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, (value & 0b1000_0000) > 0);
+            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, (value & 0b10000000) > 0);
         }
     }
 
-    internal class ASLAccumulator : ASL, IInstructionLogic
+    internal class ROLAccumulator : ROL, IInstructionLogic
     {
         void IInstructionLogic.Execute(RAM ram, RegistersProvider registers)
         {
@@ -26,7 +26,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
         }
     }
 
-    internal class ASLWithAddressing : ASL, IInstructionLogicWithAddressingMode
+    internal class ROLWithAddressing : ROL, IInstructionLogicWithAddressingMode
     {
         void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
         {

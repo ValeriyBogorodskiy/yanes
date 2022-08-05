@@ -142,6 +142,12 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new TYA(0x98));
             RegisterInstruction(new InstructionBuilder().Logic<DEY>().Opcode(0x88).Cycles(2).Build());
             RegisterInstruction(new InstructionBuilder().Logic<INY>().Opcode(0xC8).Cycles(2).Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<ROLAccumulator>().Opcode(0x2A).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ROLWithAddressing, ZeroPage>().Opcode(0x26).Cycles(5).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ROLWithAddressing, ZeroPageX>().Opcode(0x36).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ROLWithAddressing, Absolute>().Opcode(0x2E).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<ROLWithAddressing, AbsoluteX>().Opcode(0x3E).Cycles(7).Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)
