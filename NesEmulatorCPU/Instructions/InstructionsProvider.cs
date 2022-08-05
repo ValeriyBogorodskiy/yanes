@@ -148,6 +148,12 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<ROLWithAddressing, ZeroPageX>().Opcode(0x36).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<ROLWithAddressing, Absolute>().Opcode(0x2E).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<ROLWithAddressing, AbsoluteX>().Opcode(0x3E).Cycles(7).Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<RORAccumulator>().Opcode(0x6A).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<RORWithAddressing, ZeroPage>().Opcode(0x66).Cycles(5).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<RORWithAddressing, ZeroPageX>().Opcode(0x76).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<RORWithAddressing, Absolute>().Opcode(0x6E).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<RORWithAddressing, AbsoluteX>().Opcode(0x7E).Cycles(7).Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)
