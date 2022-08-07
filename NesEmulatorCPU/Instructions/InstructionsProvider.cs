@@ -154,6 +154,8 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<RORWithAddressing, ZeroPageX>().Opcode(0x76).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<RORWithAddressing, Absolute>().Opcode(0x6E).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<RORWithAddressing, AbsoluteX>().Opcode(0x7E).Cycles(7).Build());
+
+            RegisterInstruction(new RTS(0x60));
         }
 
         private void RegisterInstruction(IInstruction instruction)
