@@ -166,12 +166,28 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<SBC, IndirectX>().Opcode(0xE1).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<SBC, IndirectY>().Opcode(0xF1).Cycles(5).WithPageCrossing().Build());
 
+            RegisterInstruction(new InstructionBuilder().Logic<STA, ZeroPage>().Opcode(0x85).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STA, ZeroPageX>().Opcode(0x95).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STA, Absolute>().Opcode(0x8D).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STA, AbsoluteX>().Opcode(0x9D).Cycles(5).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STA, AbsoluteY>().Opcode(0x99).Cycles(5).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STA, IndirectX>().Opcode(0x81).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STA, IndirectY>().Opcode(0x91).Cycles(6).Build());
+
             RegisterInstruction(new TXS(0x9A));
             RegisterInstruction(new TSX(0xBA));
             RegisterInstruction(new PHA(0x48));
             RegisterInstruction(new PLA(0x68));
             RegisterInstruction(new PHP(0x08));
             RegisterInstruction(new PLP(0x28));
+
+            RegisterInstruction(new InstructionBuilder().Logic<STX, ZeroPage>().Opcode(0x86).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STX, ZeroPageY>().Opcode(0x96).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STX, Absolute>().Opcode(0x8E).Cycles(4).Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<STY, ZeroPage>().Opcode(0x84).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STY, ZeroPageX>().Opcode(0x94).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<STY, Absolute>().Opcode(0x8C).Cycles(4).Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)
