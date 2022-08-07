@@ -199,5 +199,26 @@ namespace NesEmulatorCPU.Test.Instructions
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Carry), Is.EqualTo(true));
         }
+
+        [Test]
+        public void SBCConcern()
+        {
+            var ram = new RAM();
+            var registers = new RegistersProvider();
+            var immediateAddressingMode = new Immediate();
+
+            ram.Write8Bit(0x00, 0x3C);
+            registers.Accumulator.State = 0xC0;
+
+            var adc = (IInstructionLogicWithAddressingMode)new ADC();
+            adc.Execute(immediateAddressingMode, ram, registers);
+
+            Assert.That(registers.Accumulator.State, Is.EqualTo(0xFC));
+
+            Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(true));
+            Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow), Is.EqualTo(false));
+            Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));
+            Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Carry), Is.EqualTo(false));
+        }
     }
 }
