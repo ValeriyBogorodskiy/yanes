@@ -19,8 +19,9 @@ namespace NesEmulatorCPU
 
         public void Run(byte[] program)
         {
-            ResetRegisters();
             LoadProgramToRam(program);
+
+            SetupRegisters();
             SetupProgramCounter();
             SetupStackPointer();
 
@@ -38,20 +39,20 @@ namespace NesEmulatorCPU
             }
         }
 
-        private void ResetRegisters() => registers.Reset();
-
         private void LoadProgramToRam(byte[] program)
         {
             for (ushort i = 0; i < program.Length; i++)
             {
                 var programByte = program[i];
-                var programAddress = (ushort)(ReservedAddresses.StartingProgramAddress + i);
+                var programByteAddress = (ushort)(ReservedAddresses.StartingProgramAddress + i);
 
-                ram.Write8Bit(programAddress, programByte);
+                ram.Write8Bit(programByteAddress, programByte);
             }
 
             ram.Write16Bit(ReservedAddresses.ProgramStartPointerAddress, ReservedAddresses.StartingProgramAddress);
         }
+
+        private void SetupRegisters() => registers.Reset();
 
         private void SetupProgramCounter()
         {
