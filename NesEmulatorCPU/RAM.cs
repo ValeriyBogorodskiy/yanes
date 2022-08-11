@@ -1,12 +1,12 @@
 ﻿namespace NesEmulatorCPU
 {
-    internal class RAM
+    internal class RAM : IRAM
     {
         private readonly byte[] cells = new byte[ushort.MaxValue];
 
-        internal byte Read8bit(ushort address) => cells[address];
+        public byte Read8bit(ushort address) => cells[address];
 
-        internal ushort Read16bit(ushort address)
+        public ushort Read16bit(ushort address)
         {
             var leastSignificantByte = cells[address];
 
@@ -20,9 +20,9 @@
             return (ushort)(mostSignificantByte + leastSignificantByte);
         }
 
-        internal void Write8Bit(ushort address, byte value) => cells[address] = value;
+        public void Write8Bit(ushort address, byte value) => cells[address] = value;
 
-        internal void Write16Bit(ushort address, ushort value)
+        public void Write16Bit(ushort address, ushort value)
         {
             var leastSignificantByte = (byte)(value & 0x00FF);
 

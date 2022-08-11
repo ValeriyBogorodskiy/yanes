@@ -2,6 +2,6 @@
 {
     internal class ProgramCounter
     {
-        public ushort State { get; internal set; }
+        internal ushort State { get; set; }
     }
 }

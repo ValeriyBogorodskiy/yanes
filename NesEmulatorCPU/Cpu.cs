@@ -6,18 +6,15 @@ namespace NesEmulatorCPU
 {
     internal class Cpu : ICpu
     {
-        public ushort ProgramCounter => registers.ProgramCounter.State;
-        public byte StackPointer => registers.StackPointer.State;
-        public byte Accumulator => registers.Accumulator.State;
-        public byte IndexRegisterX => registers.IndexRegisterX.State;
-        public byte IndexRegisterY => registers.IndexRegisterY.State;
-        public byte ProcessorStatus => registers.ProcessorStatus.State;
+        public IRAM RAM => ram;
+        public IRegisters Registers => registers;
 
         private readonly RAM ram = new();
         private readonly RegistersProvider registers = new();
         private readonly InstructionsProvider instructions = new();
 
-        public void Run(byte[] program)
+        // TODO : IEnumerable is the easiest way to achieve desired behaviour. I'll think about this later
+        public IEnumerable<bool> Run(byte[] program)
         {
             LoadProgramToRam(program);
 
@@ -36,7 +33,11 @@ namespace NesEmulatorCPU
                     break;
 
                 instructions.GetInstructionForOpcode(opcode).Execute(ram, registers);
+
+                yield return true;
             }
+
+            yield return false;
         }
 
         private void LoadProgramToRam(byte[] program)

@@ -2,6 +2,6 @@
 {
     internal abstract class CpuRegister8Bit
     {
-        public byte State { get; internal set; }
+        internal byte State { get; set; }
     }
 }
