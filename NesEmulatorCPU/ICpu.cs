@@ -4,6 +4,6 @@
     {
         IRAM RAM { get; }
         IRegisters Registers { get; }
-        IEnumerable<bool> Run(byte[] program);
+        IEnumerable<InstructionExecutionResult> Run(byte[] program);
     }
 }
