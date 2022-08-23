@@ -13,8 +13,8 @@ namespace NesEmulatorCPU
         private readonly RegistersProvider registers = new();
         private readonly InstructionsProvider instructions = new();
 
-        // TODO : IEnumerable is the easiest way to achieve desired behaviour. I'll think about this later
-        public IEnumerable<InstructionExecutionResult> Run(byte[] program)
+        // TODO : IEnumerator is the easiest way to achieve desired behaviour. I'll think about this later
+        public IEnumerator<InstructionExecutionResult> Run(byte[] program)
         {
             LoadProgramToRam(program);
 
@@ -32,7 +32,8 @@ namespace NesEmulatorCPU
                 if (opcode == 0)
                     break;
 
-                instructions.GetInstructionForOpcode(opcode).Execute(ram, registers);
+                var instruction = instructions.GetInstructionForOpcode(opcode);
+                instruction.Execute(ram, registers);
 
                 yield return InstructionExecutionResult.Success;
             }

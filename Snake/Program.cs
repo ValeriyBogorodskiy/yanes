@@ -27,56 +27,70 @@ var gameCode = new byte[] {
 var cpu = CpuFactory.CreateCpu();
 var cpuProcess = cpu.Run(gameCode);
 
-var frameRate = 30;
-var windowWidth = 320;
-var windowHeight = 320;
+var frameRate = 5;
+var originalWidth = 32;
+var originalHeight = 32;
+var pixelScale = 20;
+var scaledWidth = originalWidth * pixelScale;
+var scaledHeight = originalHeight * pixelScale;
 
-using (SnakeWindow game = new(frameRate, windowWidth, windowHeight))
+using (SnakeWindow game = new(frameRate, scaledWidth, scaledHeight))
 {
-    var image = new byte[4 * windowWidth * windowHeight]; // 4 float (RGBA) * X * Y
-
-    for (int i = 0; i < image.Length; i++)
-    {
-        switch (i % 4)
-        {
-            case 0: // R
-            case 1: // G
-            case 2: // B
-                image[i] = (byte)((float)i / image.Length * 255);
-                break;
-            case 3: // A
-                image[i] = 255;
-                break;
-            default:
-                break;
-        }
-    }
-
-    game.SetImage(image);
-    // game.UpdateFrame += args => OnUpdateFrame(game, cpu, cpuProcess.GetEnumerator(), args);
-    // game.KeyDown += args => OnKeyDown(cpu, args);
+    game.UpdateFrame += args => OnUpdateFrame(game, cpu, cpuProcess, args);
+    game.KeyDown += args => OnKeyDown(cpu, args);
     game.Run();
 }
 
 void OnUpdateFrame(SnakeWindow game, ICpu cpu, IEnumerator<InstructionExecutionResult> cpuProcess, FrameEventArgs args)
 {
-    // cpuProcess.MoveNext();
-    // copy pixels to game window
+    cpuProcess.MoveNext();
+
+    var scaledImage = new byte[4 * scaledWidth * scaledHeight]; // 4 float (RGBA) * X * Y
+    var startingPixelAddress = 0x0200;
+
+    for (int i = 0; i < originalWidth * originalHeight; i++)
+    {
+        ushort pixelAddress = (ushort)(startingPixelAddress + i);
+        byte colorByte = cpu.RAM.Read8bit(pixelAddress) == 0 ? (byte)0 : (byte)255;
+
+        var x = (i % originalWidth) * pixelScale;
+        var y = (i / originalHeight) * pixelScale;
+
+        for (int pixelX = 0; pixelX < pixelScale; pixelX++)
+        {
+            for (int pixelY = 0; pixelY < pixelScale; pixelY++)
+            {
+                var pixelI = (x + pixelX) * 4 + (y + pixelY) * 4 * scaledWidth;
+
+                var r = pixelI;
+                var g = r + 1;
+                var b = g + 1;
+                var a = b + 1;
+
+                scaledImage[r] = colorByte;
+                scaledImage[g] = colorByte;
+                scaledImage[b] = colorByte;
+                scaledImage[a] = colorByte;
+            }
+        }
+    }
+
+    game.SetImage(scaledImage);
 }
 
 void OnKeyDown(ICpu cpu, KeyboardKeyEventArgs args)
 {
-    //byte keyCode = args.Key switch
-    //{
-    //    OpenTK.Windowing.GraphicsLibraryFramework.Keys.W => 0x77,
-    //    OpenTK.Windowing.GraphicsLibraryFramework.Keys.A => 0x73,
-    //    OpenTK.Windowing.GraphicsLibraryFramework.Keys.S => 0x61,
-    //    OpenTK.Windowing.GraphicsLibraryFramework.Keys.D => 0x64,
-    //    _ => 0
-    //};
+    byte keyCode = args.Key switch
+    {
+        OpenTK.Windowing.GraphicsLibraryFramework.Keys.W => 0x77,
+        OpenTK.Windowing.GraphicsLibraryFramework.Keys.A => 0x73,
+        OpenTK.Windowing.GraphicsLibraryFramework.Keys.S => 0x61,
+        OpenTK.Windowing.GraphicsLibraryFramework.Keys.D => 0x64,
+        _ => 0
+    };
 
-    //if (keyCode != 0)
-    //{
-    //    cpu.RAM.Write8Bit(0xFF, keyCode);
-    //}
+    if (keyCode != 0)
+    {
+        cpu.RAM.Write8Bit(0xFF, keyCode);
+    }
 }
