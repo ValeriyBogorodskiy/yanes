@@ -5,7 +5,7 @@ using OpenTK.Windowing.Desktop;
 
 namespace Snake
 {
-    // TODO : create 2DGameWindow class based on this
+    // TODO : Create 2DGameWindow class based on this
     internal class SnakeWindow : GameWindow
     {
         private readonly float[] vertices =
@@ -147,7 +147,9 @@ namespace Snake
         {
             base.OnRenderFrame(args);
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Size.X, Size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image);
+            Title = "Snake (Vsync: " + VSync.ToString() + ") FPS: " + (1f / args.Time).ToString("0.");
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, Size.X, Size.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, image);
 
             // https://gdbooks.gitbooks.io/legacyopengl/content/Chapter7/MinMag.html
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);

@@ -4,14 +4,20 @@ using NesEmulatorCPU.Instructions;
 
 namespace NesEmulatorCPU
 {
-    internal class Cpu : ICpu
+    public class Cpu
     {
         public IRAM RAM => ram;
         public IRegisters Registers => registers;
 
+        private CPUSettings settings;
         private readonly RAM ram = new();
         private readonly RegistersProvider registers = new();
         private readonly InstructionsProvider instructions = new();
+
+        public Cpu(CPUSettings settings)
+        {
+            this.settings = settings;
+        }
 
         // TODO : IEnumerator is the easiest way to achieve desired behaviour. I'll think about this later
         public IEnumerator<InstructionExecutionResult> Run(byte[] program)
@@ -46,12 +52,12 @@ namespace NesEmulatorCPU
             for (ushort i = 0; i < program.Length; i++)
             {
                 var programByte = program[i];
-                var programByteAddress = (ushort)(ReservedAddresses.StartingProgramAddress + i);
+                var programByteAddress = (ushort)(settings.StartingProgramAddress + i);
 
                 ram.Write8Bit(programByteAddress, programByte);
             }
 
-            ram.Write16Bit(ReservedAddresses.ProgramStartPointerAddress, ReservedAddresses.StartingProgramAddress);
+            ram.Write16Bit(ReservedAddresses.ProgramStartPointerAddress, settings.StartingProgramAddress);
         }
 
         private void SetupRegisters() => registers.Reset();

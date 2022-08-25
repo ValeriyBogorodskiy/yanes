@@ -2,6 +2,7 @@
 using NesEmulatorCPU;
 using OpenTK.Windowing.Common;
 
+// Source: https://gist.github.com/wkjagt/9043907
 var gameCode = new byte[] {
     0x20, 0x06, 0x06, 0x20, 0x38, 0x06, 0x20, 0x0d, 0x06, 0x20, 0x2a, 0x06, 0x60, 0xa9, 0x02, 0x85,
     0x02, 0xa9, 0x04, 0x85, 0x03, 0xa9, 0x11, 0x85, 0x10, 0xa9, 0x10, 0x85, 0x12, 0xa9, 0x0f, 0x85,
@@ -24,53 +25,58 @@ var gameCode = new byte[] {
     0xa6, 0x03, 0xa9, 0x00, 0x81, 0x10, 0xa2, 0x00, 0xa9, 0x01, 0x81, 0x10, 0x60, 0xa2, 0x00, 0xea,
     0xea, 0xca, 0xd0, 0xfb, 0x60};
 
-var cpu = CpuFactory.CreateCpu();
+var cpu = new Cpu(new CPUSettings() { StartingProgramAddress = 0x0600 });
 var cpuProcess = cpu.Run(gameCode);
 
-var frameRate = 5;
-var originalWidth = 32;
-var originalHeight = 32;
-var pixelScale = 20;
-var scaledWidth = originalWidth * pixelScale;
-var scaledHeight = originalHeight * pixelScale;
+var frameRate = 120;
+var instructionsPerSecond = 3000;
+var screenSize = 32;
+var screenScaleFactor = 15;
+var scaledScreenSize = screenSize * screenScaleFactor;
+var bytesPerPixel = 3;
+var scaledImage = new byte[bytesPerPixel * scaledScreenSize * scaledScreenSize];
+var random = new Random();
 
-using (SnakeWindow game = new(frameRate, scaledWidth, scaledHeight))
+using (SnakeWindow game = new(frameRate, scaledScreenSize, scaledScreenSize))
 {
     game.UpdateFrame += args => OnUpdateFrame(game, cpu, cpuProcess, args);
     game.KeyDown += args => OnKeyDown(cpu, args);
     game.Run();
 }
 
-void OnUpdateFrame(SnakeWindow game, ICpu cpu, IEnumerator<InstructionExecutionResult> cpuProcess, FrameEventArgs args)
+// TODO : Extract scaling logic
+void OnUpdateFrame(SnakeWindow game, Cpu cpu, IEnumerator<InstructionExecutionResult> cpuProcess, FrameEventArgs args)
 {
-    cpuProcess.MoveNext();
+    var intructionToExecute = (int)(instructionsPerSecond * args.Time);
+    var randomValue = (byte)random.Next(1, 16);
 
-    var scaledImage = new byte[4 * scaledWidth * scaledHeight]; // 4 float (RGBA) * X * Y
-    var startingPixelAddress = 0x0200;
-
-    for (int i = 0; i < originalWidth * originalHeight; i++)
+    for (int i = 0; i < intructionToExecute; i++)
     {
-        ushort pixelAddress = (ushort)(startingPixelAddress + i);
+        cpu.RAM.Write8Bit(0xFE, randomValue);
+        cpuProcess.MoveNext();
+    }
+
+    var topLeftPixelAddress = 0x0200;
+
+    for (int i = 0; i < screenSize * screenSize; i++)
+    {
+        ushort pixelAddress = (ushort)(topLeftPixelAddress + i);
         byte colorByte = cpu.RAM.Read8bit(pixelAddress) == 0 ? (byte)0 : (byte)255;
 
-        var x = (i % originalWidth) * pixelScale;
-        var y = (i / originalHeight) * pixelScale;
+        var x = (i % screenSize) * screenScaleFactor;
+        var y = (i / screenSize) * screenScaleFactor;
 
-        for (int pixelX = 0; pixelX < pixelScale; pixelX++)
+        for (int pixelX = 0; pixelX < screenScaleFactor; pixelX++)
         {
-            for (int pixelY = 0; pixelY < pixelScale; pixelY++)
+            for (int pixelY = 0; pixelY < screenScaleFactor; pixelY++)
             {
-                var pixelI = (x + pixelX) * 4 + (y + pixelY) * 4 * scaledWidth;
-
-                var r = pixelI;
+                var r = (x + pixelX) * bytesPerPixel + (y + pixelY) * bytesPerPixel * scaledScreenSize;
                 var g = r + 1;
                 var b = g + 1;
-                var a = b + 1;
 
                 scaledImage[r] = colorByte;
                 scaledImage[g] = colorByte;
                 scaledImage[b] = colorByte;
-                scaledImage[a] = colorByte;
             }
         }
     }
@@ -78,13 +84,14 @@ void OnUpdateFrame(SnakeWindow game, ICpu cpu, IEnumerator<InstructionExecutionR
     game.SetImage(scaledImage);
 }
 
-void OnKeyDown(ICpu cpu, KeyboardKeyEventArgs args)
+void OnKeyDown(Cpu cpu, KeyboardKeyEventArgs args)
 {
+    // TODO : controls are inverted because screen matrix is inverted in CPUs memory
     byte keyCode = args.Key switch
     {
-        OpenTK.Windowing.GraphicsLibraryFramework.Keys.W => 0x77,
-        OpenTK.Windowing.GraphicsLibraryFramework.Keys.A => 0x73,
-        OpenTK.Windowing.GraphicsLibraryFramework.Keys.S => 0x61,
+        OpenTK.Windowing.GraphicsLibraryFramework.Keys.S => 0x77,
+        OpenTK.Windowing.GraphicsLibraryFramework.Keys.A => 0x61,
+        OpenTK.Windowing.GraphicsLibraryFramework.Keys.W => 0x73,
         OpenTK.Windowing.GraphicsLibraryFramework.Keys.D => 0x64,
         _ => 0
     };
