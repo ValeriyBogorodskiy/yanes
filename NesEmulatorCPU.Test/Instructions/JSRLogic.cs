@@ -19,14 +19,14 @@ namespace NesEmulatorCPU.Test.Instructions
             var absoluteAddressingMode = new Absolute();
 
             registers.StackPointer.State = 0xFD;
-            registers.ProgramCounter.State = 0x4403;
-            bus.Write16Bit(0x4403, 0xFFD2);
+            registers.ProgramCounter.State = 0x1403;
+            bus.Write16Bit(0x1403, 0xFFD2);
 
             var jsr = (IInstructionLogicWithAddressingMode)new JSR();
             jsr.Execute(absoluteAddressingMode, bus, registers);
 
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0xFFD2));
-            Assert.That(bus.Read8bit(0x01FD), Is.EqualTo(0x44));
+            Assert.That(bus.Read8bit(0x01FD), Is.EqualTo(0x14));
             Assert.That(bus.Read8bit(0x01FC), Is.EqualTo(0x05));
         }
     }

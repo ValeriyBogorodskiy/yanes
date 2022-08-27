@@ -2,7 +2,7 @@
 {
     internal class RAM
     {
-        private readonly byte[] cells = new byte[2000];
+        private readonly byte[] cells = new byte[2048];
 
         // TODO : check for index out of range exception
         public byte Read8bit(ushort address) => cells[address];

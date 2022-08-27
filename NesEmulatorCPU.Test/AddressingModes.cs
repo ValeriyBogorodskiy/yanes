@@ -31,14 +31,14 @@ namespace NesEmulatorCPU.Test
             var bus = new Bus();
             var registers = new RegistersProvider();
 
-            registers.ProgramCounter.State = 0x9000;
-            bus.Write8Bit(0x9000, 0xAA);
+            registers.ProgramCounter.State = 0x1000;
+            bus.Write8Bit(0x1000, 0xAA);
 
             var zeroPage = new ZeroPage();
             var adress = zeroPage.GetRamAddress(bus, registers);
 
             Assert.That(adress, Is.EqualTo(0xAA));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9001));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x1001));
         }
 
         [Test]
@@ -47,15 +47,15 @@ namespace NesEmulatorCPU.Test
             var bus = new Bus();
             var registers = new RegistersProvider();
 
-            registers.ProgramCounter.State = 0x9000;
-            bus.Write8Bit(0x9000, 0xC0);
+            registers.ProgramCounter.State = 0x1000;
+            bus.Write8Bit(0x1000, 0xC0);
             registers.IndexRegisterX.State = 0x60;
 
             var zeroPageX = new ZeroPageX();
             var address = zeroPageX.GetRamAddress(bus, registers);
 
             Assert.That(address, Is.EqualTo(0x0020));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9001));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x1001));
         }
 
         [Test]
@@ -64,15 +64,15 @@ namespace NesEmulatorCPU.Test
             var bus = new Bus();
             var registers = new RegistersProvider();
 
-            registers.ProgramCounter.State = 0x9500;
-            bus.Write8Bit(0x9500, 0xFA);
+            registers.ProgramCounter.State = 0x1500;
+            bus.Write8Bit(0x1500, 0xFA);
             registers.IndexRegisterY.State = 0xFF;
 
             var zeroPageY = new ZeroPageY();
             var address = zeroPageY.GetRamAddress(bus, registers);
 
             Assert.That(address, Is.EqualTo(0x00F9));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9501));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x1501));
         }
 
         [Test]
@@ -81,14 +81,14 @@ namespace NesEmulatorCPU.Test
             var bus = new Bus();
             var registers = new RegistersProvider();
 
-            registers.ProgramCounter.State = 0x9F00;
-            bus.Write16Bit(0x9F00, 0x1234);
+            registers.ProgramCounter.State = 0x1F00;
+            bus.Write16Bit(0x1F00, 0x1234);
 
             var absolute = new Absolute();
             var address = absolute.GetRamAddress(bus, registers);
 
             Assert.That(address, Is.EqualTo(0x1234));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9F02));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x1F02));
         }
 
         [Test]
@@ -97,15 +97,15 @@ namespace NesEmulatorCPU.Test
             var bus = new Bus();
             var registers = new RegistersProvider();
 
-            registers.ProgramCounter.State = 0x9FF0;
-            bus.Write16Bit(0x9FF0, 0x4032);
+            registers.ProgramCounter.State = 0x1FF0;
+            bus.Write16Bit(0x1FF0, 0x1032);
             registers.IndexRegisterX.State = 0x01;
 
             var absoluteX = new AbsoluteX();
             var address = absoluteX.GetRamAddress(bus, registers);
 
-            Assert.That(address, Is.EqualTo(0x4033));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9FF2));
+            Assert.That(address, Is.EqualTo(0x1033));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x1FF2));
         }
 
         [Test]
@@ -133,15 +133,15 @@ namespace NesEmulatorCPU.Test
             var bus = new Bus();
             var registers = new RegistersProvider();
 
-            registers.ProgramCounter.State = 0x9FF0;
-            bus.Write16Bit(0x9FF0, 0x000F);
+            registers.ProgramCounter.State = 0xFF0;
+            bus.Write16Bit(0xFF0, 0x000F);
             registers.IndexRegisterY.State = 0xFF;
 
             var absoluteY = new AbsoluteY();
             var address = absoluteY.GetRamAddress(bus, registers);
 
             Assert.That(address, Is.EqualTo(0x010E));
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x9FF2));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0xFF2));
         }
 
         [Test]
@@ -169,14 +169,14 @@ namespace NesEmulatorCPU.Test
             var bus = new Bus();
             var registers = new RegistersProvider();
 
-            bus.Write16Bit(0x00, 0x1000);
-            bus.Write8Bit(0x1000, 0x52);
-            bus.Write8Bit(0x1001, 0x3A);
+            bus.Write16Bit(0x00, 0x500);
+            bus.Write8Bit(0x500, 0x52);
+            bus.Write8Bit(0x501, 0x1A);
 
             var indirect = new Indirect();
             var address = indirect.GetRamAddress(bus, registers);
 
-            Assert.That(address, Is.EqualTo(0x3A52));
+            Assert.That(address, Is.EqualTo(0x1A52));
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0002));
         }
 

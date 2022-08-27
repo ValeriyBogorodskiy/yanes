@@ -30,11 +30,11 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
             var indirectAddressingMode = new Indirect();
 
-            bus.Write8Bit(0x3000, 0x40);
-            bus.Write8Bit(0x30FF, 0x80);
-            bus.Write8Bit(0x3100, 0x50);
+            bus.Write8Bit(0x400, 0x40);
+            bus.Write8Bit(0x4FF, 0x80);
+            bus.Write8Bit(0x500, 0x50);
 
-            bus.Write16Bit(0x0000, 0x30FF);
+            bus.Write16Bit(0x0000, 0x4FF);
 
             var jmp = (IInstructionLogicWithAddressingMode)new JMP();
             jmp.Execute(indirectAddressingMode, bus, registers);

@@ -14,13 +14,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
 
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, false);
-            registers.ProgramCounter.State = 0x6001;
-            bus.Write8Bit(0x6001, 0x01);
+            registers.ProgramCounter.State = 0x601;
+            bus.Write8Bit(0x601, 0x01);
 
             var beq = (IInstruction)new BEQ(0x10);
             var cycles = beq.Execute(bus, registers);
 
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x6002));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x602));
             Assert.That(cycles, Is.EqualTo(2));
         }
 
@@ -31,13 +31,13 @@ namespace NesEmulatorCPU.Test.Instructions
             var registers = new RegistersProvider();
 
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, true);
-            registers.ProgramCounter.State = 0x6001;
-            bus.Write8Bit(0x6001, 0x01);
+            registers.ProgramCounter.State = 0x601;
+            bus.Write8Bit(0x601, 0x01);
 
             var beq = (IInstruction)new BEQ(0x10);
             var cycles = beq.Execute(bus, registers);
 
-            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x6003));
+            Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x603));
             Assert.That(cycles, Is.EqualTo(3));
         }
     }
