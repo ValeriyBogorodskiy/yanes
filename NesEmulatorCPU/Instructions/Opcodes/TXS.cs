@@ -8,7 +8,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
         {
         }
 
-        public override int Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(Bus bus, RegistersProvider registers)
         {
             registers.StackPointer.State = registers.IndexRegisterX.State;
             return 2;

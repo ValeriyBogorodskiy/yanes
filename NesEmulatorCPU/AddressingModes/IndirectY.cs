@@ -4,11 +4,11 @@ namespace NesEmulatorCPU.AddressingModes
 {
     internal class IndirectY : AddressingMode, IBoundaryCrossingMode
     {
-        internal override ushort GetRamAddress(RAM ram, RegistersProvider registers)
+        internal override ushort GetRamAddress(Bus bus, RegistersProvider registers)
         {
             var memoryAddress = registers.ProgramCounter.State;
-            var leastSignificantByteAddress = ram.Read8bit(memoryAddress);
-            var zeroPageAddress = ram.Read16bit(leastSignificantByteAddress);
+            var leastSignificantByteAddress = bus.Read8bit(memoryAddress);
+            var zeroPageAddress = bus.Read16bit(leastSignificantByteAddress);
             var valueAddress = (ushort)(zeroPageAddress + registers.IndexRegisterY.State);
 
             registers.ProgramCounter.State++;
@@ -16,11 +16,11 @@ namespace NesEmulatorCPU.AddressingModes
             return valueAddress;
         }
 
-        bool IBoundaryCrossingMode.CheckIfBoundaryWillBeCrossed(RAM ram, RegistersProvider registers)
+        bool IBoundaryCrossingMode.CheckIfBoundaryWillBeCrossed(Bus bus, RegistersProvider registers)
         {
             var memoryAddress = registers.ProgramCounter.State;
-            var leastSignificantByteAddress = ram.Read8bit(memoryAddress);
-            var leastSignificantByte = ram.Read8bit(leastSignificantByteAddress);
+            var leastSignificantByteAddress = bus.Read8bit(memoryAddress);
+            var leastSignificantByte = bus.Read8bit(leastSignificantByteAddress);
             var yRegister = registers.IndexRegisterY.State;
 
             return leastSignificantByte + yRegister > byte.MaxValue;

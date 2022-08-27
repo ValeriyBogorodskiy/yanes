@@ -11,14 +11,14 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void SimpleJump()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var absoluteAddressingMode = new Absolute();
 
-            ram.Write16Bit(0x0000, 0x0600);
+            bus.Write16Bit(0x0000, 0x0600);
 
             var jmp = (IInstructionLogicWithAddressingMode)new JMP();
-            jmp.Execute(absoluteAddressingMode, ram, registers);
+            jmp.Execute(absoluteAddressingMode, bus, registers);
 
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x0600));
         }
@@ -26,18 +26,18 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void JumpFromTheLastByteOfAPage()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var indirectAddressingMode = new Indirect();
 
-            ram.Write8Bit(0x3000, 0x40);
-            ram.Write8Bit(0x30FF, 0x80);
-            ram.Write8Bit(0x3100, 0x50);
+            bus.Write8Bit(0x3000, 0x40);
+            bus.Write8Bit(0x30FF, 0x80);
+            bus.Write8Bit(0x3100, 0x50);
 
-            ram.Write16Bit(0x0000, 0x30FF);
+            bus.Write16Bit(0x0000, 0x30FF);
 
             var jmp = (IInstructionLogicWithAddressingMode)new JMP();
-            jmp.Execute(indirectAddressingMode, ram, registers);
+            jmp.Execute(indirectAddressingMode, bus, registers);
 
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0x4080));
         }

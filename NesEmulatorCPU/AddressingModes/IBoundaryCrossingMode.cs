@@ -4,6 +4,6 @@ namespace NesEmulatorCPU.AddressingModes
 {
     internal interface IBoundaryCrossingMode
     {
-        internal bool CheckIfBoundaryWillBeCrossed(RAM ram, RegistersProvider registers);
+        internal bool CheckIfBoundaryWillBeCrossed(Bus bus, RegistersProvider registers);
     }
 }

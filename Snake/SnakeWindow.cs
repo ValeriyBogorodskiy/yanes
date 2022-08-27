@@ -5,7 +5,7 @@ using OpenTK.Windowing.Desktop;
 
 namespace Snake
 {
-    // TODO : Create 2DGameWindow class based on this
+    // TODO : create 2DGameWindow class based on this
     internal class SnakeWindow : GameWindow
     {
         private readonly float[] vertices =

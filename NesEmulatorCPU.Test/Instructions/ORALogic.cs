@@ -11,15 +11,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NegativeResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0b1000_1111);
+            bus.Write8Bit(0x00, 0b1000_1111);
             registers.Accumulator.State = 0b0011_0001;
 
             var ora = (IInstructionLogicWithAddressingMode)new ORA();
-            ora.Execute(immediateAddressingMode, ram, registers);
+            ora.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b1011_1111));
 

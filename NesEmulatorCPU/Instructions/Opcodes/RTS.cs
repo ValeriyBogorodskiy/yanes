@@ -9,15 +9,15 @@ namespace NesEmulatorCPU.Instructions.Opcodes
         {
         }
 
-        public override int Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(Bus bus, RegistersProvider registers)
         {
             registers.StackPointer.State += 1;
 
-            var leastSignificantByte = ram.Read8bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State));
+            var leastSignificantByte = bus.Read8bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State));
 
             registers.StackPointer.State += 1;
 
-            var mostSignificantByte = ram.Read8bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State));
+            var mostSignificantByte = bus.Read8bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State));
 
             registers.ProgramCounter.State = (ushort)((mostSignificantByte << 8) + leastSignificantByte);
 

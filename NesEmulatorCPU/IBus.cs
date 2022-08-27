@@ -1,6 +1,6 @@
 ﻿namespace NesEmulatorCPU
 {
-    public interface IRAM
+    public interface IBus
     {
         byte Read8bit(ushort address);
         ushort Read16bit(ushort address);

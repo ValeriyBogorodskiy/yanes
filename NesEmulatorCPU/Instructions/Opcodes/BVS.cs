@@ -9,7 +9,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
         {
         }
 
-        protected override bool ConditionMet(RAM ram, RegistersProvider registers)
+        protected override bool ConditionMet(Bus bus, RegistersProvider registers)
         {
             return registers.ProcessorStatus.Get(ProcessorStatus.Flags.Overflow);
         }

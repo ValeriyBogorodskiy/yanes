@@ -5,9 +5,9 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 {
     internal class JMP : IInstructionLogicWithAddressingMode
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            var memoryAddress = addressingMode.GetRamAddress(ram, registers);
+            var memoryAddress = addressingMode.GetRamAddress(bus, registers);
             registers.ProgramCounter.State = memoryAddress;
         }
     }

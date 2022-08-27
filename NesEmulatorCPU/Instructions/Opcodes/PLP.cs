@@ -9,9 +9,9 @@ namespace NesEmulatorCPU.Instructions.Opcodes
         {
         }
 
-        public override int Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(Bus bus, RegistersProvider registers)
         {
-            var value = ram.Read8bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State));
+            var value = bus.Read8bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State));
 
             registers.ProcessorStatus.State = value;
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, value.IsNegative());

@@ -14,15 +14,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NoUnsignedCarryOrSignedOverflowPositiveResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x50);
+            bus.Write8Bit(0x00, 0x50);
             registers.Accumulator.State = 0x10;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0x60));
 
@@ -35,15 +35,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NoUnsignedCarryButSignedOverflowNegativeResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x50);
+            bus.Write8Bit(0x00, 0x50);
             registers.Accumulator.State = 0x50;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0xA0));
 
@@ -56,15 +56,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NoUnsignedCarryOrSignedOverflowNegativeResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x50);
+            bus.Write8Bit(0x00, 0x50);
             registers.Accumulator.State = 0x90;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0xE0));
 
@@ -77,15 +77,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void UnsignedCarryButNoSignedOverflowPositiveResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x50);
+            bus.Write8Bit(0x00, 0x50);
             registers.Accumulator.State = 0xD0;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0x20));
 
@@ -98,15 +98,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NoUnsignedCarryOrSignedOverflowNegativeResult2()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0xD0);
+            bus.Write8Bit(0x00, 0xD0);
             registers.Accumulator.State = 0x10;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0xE0));
 
@@ -119,15 +119,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void UnsignedCarryButNoSignedOverflowPositiveResult2()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0xD0);
+            bus.Write8Bit(0x00, 0xD0);
             registers.Accumulator.State = 0x50;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0x20));
 
@@ -140,15 +140,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void UnsignedCarryAndSignedOverflowPositiveResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0xD0);
+            bus.Write8Bit(0x00, 0xD0);
             registers.Accumulator.State = 0x90;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0x60));
 
@@ -161,15 +161,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void UnsignedCarryButNoSignedOverflowNegativeResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0xD0);
+            bus.Write8Bit(0x00, 0xD0);
             registers.Accumulator.State = 0xD0;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0xA0));
 
@@ -182,15 +182,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void AddingTwoNegativeValues()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x81);
+            bus.Write8Bit(0x00, 0x81);
             registers.Accumulator.State = 0x81;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0x02));
 
@@ -203,15 +203,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void SBCConcern()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x3C);
+            bus.Write8Bit(0x00, 0x3C);
             registers.Accumulator.State = 0xC0;
 
             var adc = (IInstructionLogicWithAddressingMode)new ADC();
-            adc.Execute(immediateAddressingMode, ram, registers);
+            adc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0xFC));
 

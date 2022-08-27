@@ -9,13 +9,13 @@ namespace NesEmulatorCPU.Instructions.Base
         {
         }
 
-        public override int Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(Bus bus, RegistersProvider registers)
         {
             var displacementAddress = registers.ProgramCounter.State;
-            var displacement = ram.Read8bit(displacementAddress);
+            var displacement = bus.Read8bit(displacementAddress);
             registers.ProgramCounter.State += 1;
 
-            if (!ConditionMet(ram, registers))
+            if (!ConditionMet(bus, registers))
                 return 2;
 
             var forwardBranching = !displacement.IsNegative();
@@ -30,6 +30,6 @@ namespace NesEmulatorCPU.Instructions.Base
             return pageCrossed ? 4 : 3;
         }
 
-        protected abstract bool ConditionMet(RAM ram, RegistersProvider registers);
+        protected abstract bool ConditionMet(Bus bus, RegistersProvider registers);
     }
 }

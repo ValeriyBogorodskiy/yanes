@@ -6,18 +6,18 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 {
     internal class JSR : IInstructionLogicWithAddressingMode
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            var memoryAddress = addressingMode.GetRamAddress(ram, registers);
+            var memoryAddress = addressingMode.GetRamAddress(bus, registers);
 
             var mostSignificantByte = (byte)(registers.ProgramCounter.State >> 8);
             var leastSignificantByte = (byte)registers.ProgramCounter.State;
 
-            ram.Write8Bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State), mostSignificantByte);
+            bus.Write8Bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State), mostSignificantByte);
 
             registers.StackPointer.State -= 1;
 
-            ram.Write8Bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State), leastSignificantByte);
+            bus.Write8Bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State), leastSignificantByte);
 
             registers.StackPointer.State -= 1;
 

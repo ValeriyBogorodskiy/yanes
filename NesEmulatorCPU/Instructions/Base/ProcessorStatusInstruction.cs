@@ -9,7 +9,7 @@ namespace NesEmulatorCPU.Instructions.Base
         {
         }
 
-        public override int Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(Bus bus, RegistersProvider registers)
         {
             registers.ProcessorStatus.Set(Flag, Value);
             return 2;

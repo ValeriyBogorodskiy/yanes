@@ -4,10 +4,10 @@ namespace NesEmulatorCPU.AddressingModes
 {
     internal class ZeroPageX : AddressingMode
     {
-        internal override ushort GetRamAddress(RAM ram, RegistersProvider registers)
+        internal override ushort GetRamAddress(Bus bus, RegistersProvider registers)
         {
             var memoryAddress = registers.ProgramCounter.State;
-            var valueAddress = (byte)(ram.Read8bit(memoryAddress) + registers.IndexRegisterX.State);
+            var valueAddress = (byte)(bus.Read8bit(memoryAddress) + registers.IndexRegisterX.State);
 
             registers.ProgramCounter.State++;
 

@@ -6,15 +6,15 @@ namespace NesEmulatorCPU.Instructions.Base
 {
     internal abstract class ArithmeticInstructionLogic : IInstructionLogicWithAddressingMode
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            var value = GetValue(addressingMode, ram, registers);
-            Perform(value, ram, registers);
+            var value = GetValue(addressingMode, bus, registers);
+            Perform(value, bus, registers);
         }
 
-        protected abstract byte GetValue(AddressingMode addressingMode, RAM ram, RegistersProvider registers);
+        protected abstract byte GetValue(AddressingMode addressingMode, Bus bus, RegistersProvider registers);
 
-        private void Perform(byte value, RAM ram, RegistersProvider registers)
+        private void Perform(byte value, Bus bus, RegistersProvider registers)
         {
             var accumulatorState = registers.Accumulator.State;
             var carryIn = registers.ProcessorStatus.Get(ProcessorStatus.Flags.Carry) ? 1 : 0;

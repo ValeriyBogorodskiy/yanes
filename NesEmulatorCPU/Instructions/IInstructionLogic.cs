@@ -4,6 +4,6 @@ namespace NesEmulatorCPU.Instructions
 {
     internal interface IInstructionLogic
     {
-        internal void Execute(RAM ram, RegistersProvider registers);
+        internal void Execute(Bus bus, RegistersProvider registers);
     }
 }

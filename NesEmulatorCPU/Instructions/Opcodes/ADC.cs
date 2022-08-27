@@ -6,9 +6,9 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 {
     internal class ADC : ArithmeticInstructionLogic
     {
-        protected override byte GetValue(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        protected override byte GetValue(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            return addressingMode.GetRamValue(ram, registers);
+            return addressingMode.GetRamValue(bus, registers);
         }
     }
 }

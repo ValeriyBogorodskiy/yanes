@@ -44,7 +44,7 @@ using (SnakeWindow game = new(frameRate, scaledScreenSize, scaledScreenSize))
     game.Run();
 }
 
-// TODO : Extract scaling logic
+// TODO : extract scaling logic
 void OnUpdateFrame(SnakeWindow game, Cpu cpu, IEnumerator<InstructionExecutionResult> cpuProcess, FrameEventArgs args)
 {
     var intructionToExecute = (int)(instructionsPerSecond * args.Time);
@@ -52,7 +52,7 @@ void OnUpdateFrame(SnakeWindow game, Cpu cpu, IEnumerator<InstructionExecutionRe
 
     for (int i = 0; i < intructionToExecute; i++)
     {
-        cpu.RAM.Write8Bit(0xFE, randomValue);
+        cpu.bus.Write8Bit(0xFE, randomValue);
         cpuProcess.MoveNext();
     }
 
@@ -61,7 +61,7 @@ void OnUpdateFrame(SnakeWindow game, Cpu cpu, IEnumerator<InstructionExecutionRe
     for (int i = 0; i < screenSize * screenSize; i++)
     {
         ushort pixelAddress = (ushort)(topLeftPixelAddress + i);
-        byte colorByte = cpu.RAM.Read8bit(pixelAddress) == 0 ? (byte)0 : (byte)255;
+        byte colorByte = cpu.bus.Read8bit(pixelAddress) == 0 ? (byte)0 : (byte)255;
 
         var x = (i % screenSize) * screenScaleFactor;
         var y = (i / screenSize) * screenScaleFactor;
@@ -98,6 +98,6 @@ void OnKeyDown(Cpu cpu, KeyboardKeyEventArgs args)
 
     if (keyCode != 0)
     {
-        cpu.RAM.Write8Bit(0xFF, keyCode);
+        cpu.bus.Write8Bit(0xFF, keyCode);
     }
 }

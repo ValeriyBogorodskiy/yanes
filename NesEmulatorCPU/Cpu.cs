@@ -6,11 +6,11 @@ namespace NesEmulatorCPU
 {
     public class Cpu
     {
-        public IRAM RAM => ram;
+        public IBus Bus => bus;
         public IRegisters Registers => registers;
 
         private CPUSettings settings;
-        private readonly RAM ram = new();
+        private readonly Bus bus = new();
         private readonly RegistersProvider registers = new();
         private readonly InstructionsProvider instructions = new();
 
@@ -31,7 +31,7 @@ namespace NesEmulatorCPU
             while (true)
             {
                 var nextInstructionAddress = registers.ProgramCounter.State;
-                var opcode = ram.Read8bit(nextInstructionAddress);
+                var opcode = bus.Read8bit(nextInstructionAddress);
 
                 registers.ProgramCounter.State++;
 
@@ -39,7 +39,7 @@ namespace NesEmulatorCPU
                     break;
 
                 var instruction = instructions.GetInstructionForOpcode(opcode);
-                instruction.Execute(ram, registers);
+                instruction.Execute(bus, registers);
 
                 yield return InstructionExecutionResult.Success;
             }
@@ -54,17 +54,17 @@ namespace NesEmulatorCPU
                 var programByte = program[i];
                 var programByteAddress = (ushort)(settings.StartingProgramAddress + i);
 
-                ram.Write8Bit(programByteAddress, programByte);
+                bus.Write8Bit(programByteAddress, programByte);
             }
 
-            ram.Write16Bit(ReservedAddresses.ProgramStartPointerAddress, settings.StartingProgramAddress);
+            bus.Write16Bit(ReservedAddresses.ProgramStartPointerAddress, settings.StartingProgramAddress);
         }
 
         private void SetupRegisters() => registers.Reset();
 
         private void SetupProgramCounter()
         {
-            registers.ProgramCounter.State = ram.Read16bit(ReservedAddresses.ProgramStartPointerAddress);
+            registers.ProgramCounter.State = bus.Read16bit(ReservedAddresses.ProgramStartPointerAddress);
         }
 
         private void SetupStackPointer()

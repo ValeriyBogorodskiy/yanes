@@ -5,6 +5,6 @@ namespace NesEmulatorCPU.Instructions
 {
     internal interface IInstructionLogicWithAddressingMode
     {
-        internal void Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers);
+        internal void Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers);
     }
 }

@@ -11,5 +11,10 @@
         public static byte ToComplimentaryNegative(this byte value) => (byte)(~value + 1);
 
         public static byte ToComplimentaryPositive(this byte value) => (byte)(~value + 1);
+
+        public static bool InRange(this ushort value, ushort min, ushort max)
+        {
+            return value >= min && value <= max;
+        }
     }
 }

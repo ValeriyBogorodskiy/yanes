@@ -5,10 +5,10 @@ namespace NesEmulatorCPU.Instructions.Base
 {
     internal abstract class StoreInstructionLogic : IInstructionLogicWithAddressingMode
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            var memoryAddress = addressingMode.GetRamAddress(ram, registers);
-            ram.Write8Bit(memoryAddress, GetSourceRegister(registers).State);
+            var memoryAddress = addressingMode.GetRamAddress(bus, registers);
+            bus.Write8Bit(memoryAddress, GetSourceRegister(registers).State);
         }
 
         protected abstract CpuRegister8Bit GetSourceRegister(RegistersProvider registers);

@@ -46,32 +46,32 @@ namespace NesEmulatorCPU.Instructions
                 throw new InvalidOperationException("Specified addressing mode doesn't support page crossing check");
         }
 
-        private Func<RAM, RegistersProvider, int> CreateInstructionLogicWithAddressisngMode()
+        private Func<Bus, RegistersProvider, int> CreateInstructionLogicWithAddressisngMode()
         {
-            return (ram, registers) =>
+            return (bus, registers) =>
             {
-                instructionLogicWithAdressingMode.Execute(addressingMode, ram, registers);
+                instructionLogicWithAdressingMode.Execute(addressingMode, bus, registers);
                 return cycles.Value;
             };
         }
 
-        private Func<RAM, RegistersProvider, int> CreateSimpleInstructionLogic()
+        private Func<Bus, RegistersProvider, int> CreateSimpleInstructionLogic()
         {
-            return (ram, registers) =>
+            return (bus, registers) =>
             {
-                instructionLogic.Execute(ram, registers);
+                instructionLogic.Execute(bus, registers);
                 return cycles.Value;
             };
         }
 
-        private Func<RAM, RegistersProvider, int> WrapLogicWithPageCrossingCheck(Func<RAM, RegistersProvider, int> logic)
+        private Func<Bus, RegistersProvider, int> WrapLogicWithPageCrossingCheck(Func<Bus, RegistersProvider, int> logic)
         {
             var pageCrossingMode = addressingMode as IBoundaryCrossingMode;
 
-            return (ram, registers) =>
+            return (bus, registers) =>
             {
-                var additionalCycles = pageCrossingMode.CheckIfBoundaryWillBeCrossed(ram, registers) ? 1 : 0;
-                return logic(ram, registers) + additionalCycles;
+                var additionalCycles = pageCrossingMode.CheckIfBoundaryWillBeCrossed(bus, registers) ? 1 : 0;
+                return logic(bus, registers) + additionalCycles;
             };
         }
 

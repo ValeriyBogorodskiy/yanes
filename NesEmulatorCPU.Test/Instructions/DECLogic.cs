@@ -11,16 +11,16 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void PositiveBeforePositiveAfter()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x10);
+            bus.Write8Bit(0x00, 0x10);
 
             var dec = (IInstructionLogicWithAddressingMode)new DEC();
-            dec.Execute(immediateAddressingMode, ram, registers);
+            dec.Execute(immediateAddressingMode, bus, registers);
 
-            Assert.That(ram.Read8bit(0x00), Is.EqualTo(0x0F));
+            Assert.That(bus.Read8bit(0x00), Is.EqualTo(0x0F));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));
@@ -29,16 +29,16 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void PositiveBeforeZeroAfter()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x01);
+            bus.Write8Bit(0x00, 0x01);
 
             var dec = (IInstructionLogicWithAddressingMode)new DEC();
-            dec.Execute(immediateAddressingMode, ram, registers);
+            dec.Execute(immediateAddressingMode, bus, registers);
 
-            Assert.That(ram.Read8bit(0x00), Is.EqualTo(0x00));
+            Assert.That(bus.Read8bit(0x00), Is.EqualTo(0x00));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(true));
@@ -47,16 +47,16 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void ZeroBeforeNegativeAfter()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x00);
+            bus.Write8Bit(0x00, 0x00);
 
             var dec = (IInstructionLogicWithAddressingMode)new DEC();
-            dec.Execute(immediateAddressingMode, ram, registers);
+            dec.Execute(immediateAddressingMode, bus, registers);
 
-            Assert.That(ram.Read8bit(0x00), Is.EqualTo(0xFF));
+            Assert.That(bus.Read8bit(0x00), Is.EqualTo(0xFF));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(true));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));
@@ -65,16 +65,16 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NegativeBeforeNegativeAfter()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0xFF);
+            bus.Write8Bit(0x00, 0xFF);
 
             var dec = (IInstructionLogicWithAddressingMode)new DEC();
-            dec.Execute(immediateAddressingMode, ram, registers);
+            dec.Execute(immediateAddressingMode, bus, registers);
 
-            Assert.That(ram.Read8bit(0x00), Is.EqualTo(0xFE));
+            Assert.That(bus.Read8bit(0x00), Is.EqualTo(0xFE));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(true));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));
@@ -83,16 +83,16 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NegativeBeforePositiveAfter()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0x80);
+            bus.Write8Bit(0x00, 0x80);
 
             var dec = (IInstructionLogicWithAddressingMode)new DEC();
-            dec.Execute(immediateAddressingMode, ram, registers);
+            dec.Execute(immediateAddressingMode, bus, registers);
 
-            Assert.That(ram.Read8bit(0x00), Is.EqualTo(0x7F));
+            Assert.That(bus.Read8bit(0x00), Is.EqualTo(0x7F));
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));

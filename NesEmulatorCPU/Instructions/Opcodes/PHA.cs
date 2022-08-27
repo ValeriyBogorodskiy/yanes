@@ -9,11 +9,11 @@ namespace NesEmulatorCPU.Instructions.Opcodes
         {
         }
 
-        public override int Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(Bus bus, RegistersProvider registers)
         {
             var value = registers.Accumulator.State;
 
-            ram.Write8Bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State), value);
+            bus.Write8Bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State), value);
 
             registers.StackPointer.State -= 1;
 

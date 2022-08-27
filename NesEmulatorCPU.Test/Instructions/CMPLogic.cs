@@ -11,15 +11,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void RegisterIsLesserThanMemory()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
             registers.Accumulator.State = 5;
-            ram.Write8Bit(0x00, 10);
+            bus.Write8Bit(0x00, 10);
 
             var cmp = (IInstructionLogicWithAddressingMode)new CMP();
-            cmp.Execute(immediateAddressingMode, ram, registers);
+            cmp.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(true));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));
@@ -29,15 +29,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void RegisterIsEqualToMemory()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
             registers.IndexRegisterX.State = 20;
-            ram.Write8Bit(0x00, 20);
+            bus.Write8Bit(0x00, 20);
 
             var cpx = (IInstructionLogicWithAddressingMode)new CPX();
-            cpx.Execute(immediateAddressingMode, ram, registers);
+            cpx.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(true));
@@ -47,15 +47,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void RegisterIsGreaterThanMemory()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
             registers.IndexRegisterY.State = 100;
-            ram.Write8Bit(0x00, 20);
+            bus.Write8Bit(0x00, 20);
 
             var cpy = (IInstructionLogicWithAddressingMode)new CPY();
-            cpy.Execute(immediateAddressingMode, ram, registers);
+            cpy.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Negative), Is.EqualTo(false));
             Assert.That(registers.ProcessorStatus.Get(ProcessorStatus.Flags.Zero), Is.EqualTo(false));

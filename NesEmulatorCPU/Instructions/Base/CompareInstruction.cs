@@ -9,9 +9,9 @@ namespace NesEmulatorCPU.Instructions.Base
     /// </summary>
     internal abstract class CompareInstruction : IInstructionLogicWithAddressingMode
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            var value = addressingMode.GetRamValue(ram, registers);
+            var value = addressingMode.GetRamValue(bus, registers);
             var subtractionResult = (byte)(GetRegisterValue(registers) - value);
 
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, subtractionResult.IsNegative());

@@ -14,20 +14,20 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void JumpToSubroutine()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var absoluteAddressingMode = new Absolute();
 
             registers.StackPointer.State = 0xFD;
             registers.ProgramCounter.State = 0x4403;
-            ram.Write16Bit(0x4403, 0xFFD2);
+            bus.Write16Bit(0x4403, 0xFFD2);
 
             var jsr = (IInstructionLogicWithAddressingMode)new JSR();
-            jsr.Execute(absoluteAddressingMode, ram, registers);
+            jsr.Execute(absoluteAddressingMode, bus, registers);
 
             Assert.That(registers.ProgramCounter.State, Is.EqualTo(0xFFD2));
-            Assert.That(ram.Read8bit(0x01FD), Is.EqualTo(0x44));
-            Assert.That(ram.Read8bit(0x01FC), Is.EqualTo(0x05));
+            Assert.That(bus.Read8bit(0x01FD), Is.EqualTo(0x44));
+            Assert.That(bus.Read8bit(0x01FC), Is.EqualTo(0x05));
         }
     }
 }

@@ -13,6 +13,6 @@ namespace NesEmulatorCPU.Instructions
 
         byte IInstruction.Opcode => opcode;
 
-        public abstract int Execute(RAM ram, RegistersProvider registers);
+        public abstract int Execute(Bus bus, RegistersProvider registers);
     }
 }

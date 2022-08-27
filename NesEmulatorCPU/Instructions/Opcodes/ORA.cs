@@ -6,9 +6,9 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 {
     internal class ORA : IInstructionLogicWithAddressingMode
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            byte memoryValue = addressingMode.GetRamValue(ram, registers);
+            byte memoryValue = addressingMode.GetRamValue(bus, registers);
             byte accumulatorValue = registers.Accumulator.State;
 
             var result = (byte)(memoryValue | accumulatorValue);

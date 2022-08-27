@@ -11,15 +11,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void PositiveResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0b00001111);
+            bus.Write8Bit(0x00, 0b00001111);
             registers.Accumulator.State = 0b00001010;
 
             var and = (IInstructionLogicWithAddressingMode)new AND();
-            and.Execute(immediateAddressingMode, ram, registers);
+            and.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b00001010));
 
@@ -30,15 +30,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void ZeroResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0b01010101);
+            bus.Write8Bit(0x00, 0b01010101);
             registers.Accumulator.State = 0b10101010;
 
             var and = (IInstructionLogicWithAddressingMode)new AND();
-            and.Execute(immediateAddressingMode, ram, registers);
+            and.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b00000000));
 
@@ -49,15 +49,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NegativeResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0b11000000);
+            bus.Write8Bit(0x00, 0b11000000);
             registers.Accumulator.State = 0b11111111;
 
             var and = (IInstructionLogicWithAddressingMode)new AND();
-            and.Execute(immediateAddressingMode, ram, registers);
+            and.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b11000000));
 

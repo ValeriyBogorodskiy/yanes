@@ -6,9 +6,9 @@ namespace NesEmulatorCPU.Instructions.Base
 {
     internal abstract class LoadByteInstruction : IInstructionLogicWithAddressingMode
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            var value = addressingMode.GetRamValue(ram, registers);
+            var value = addressingMode.GetRamValue(bus, registers);
 
             TargetRegister(registers).State = value;
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, value.IsNegative());

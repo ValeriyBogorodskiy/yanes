@@ -10,14 +10,14 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void PositiveResultWithCarry()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
 
             registers.Accumulator.State = 0b1011_0000;
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, true);
 
             var rol = (IInstructionLogic)new ROLAccumulator();
-            rol.Execute(ram, registers);
+            rol.Execute(bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b0110_0001));
 
@@ -29,14 +29,14 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NegativeResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
 
             registers.Accumulator.State = 0b0111_0000;
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, false);
 
             var rol = (IInstructionLogic)new ROLAccumulator();
-            rol.Execute(ram, registers);
+            rol.Execute(bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b1110_0000));
 

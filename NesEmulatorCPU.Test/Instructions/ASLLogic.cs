@@ -10,13 +10,13 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void PositiveResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
 
             registers.Accumulator.State = 0b00001111;
 
             var asl = (IInstructionLogic)new ASLAccumulator();
-            asl.Execute(ram, registers);
+            asl.Execute(bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b00011110));
 
@@ -28,13 +28,13 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void PositiveResultWithCarry()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
 
             registers.Accumulator.State = 0b10001111;
 
             var asl = (IInstructionLogic)new ASLAccumulator();
-            asl.Execute(ram, registers);
+            asl.Execute(bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b00011110));
 
@@ -46,13 +46,13 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NegativeResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
 
             registers.Accumulator.State = 0b01001111;
 
             var asl = (IInstructionLogic)new ASLAccumulator();
-            asl.Execute(ram, registers);
+            asl.Execute(bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b10011110));
 
@@ -64,13 +64,13 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void NegativeResultWithCarry()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
 
             registers.Accumulator.State = 0b11001111;
 
             var asl = (IInstructionLogic)new ASLAccumulator();
-            asl.Execute(ram, registers);
+            asl.Execute(bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b10011110));
 
@@ -82,13 +82,13 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void ZeroResult()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
 
             registers.Accumulator.State = 0b00000000;
 
             var asl = (IInstructionLogic)new ASLAccumulator();
-            asl.Execute(ram, registers);
+            asl.Execute(bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b00000000));
 
@@ -100,13 +100,13 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void ZeroResultWithCarry()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
 
             registers.Accumulator.State = 0b10000000;
 
             var asl = (IInstructionLogic)new ASLAccumulator();
-            asl.Execute(ram, registers);
+            asl.Execute(bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0b00000000));
 

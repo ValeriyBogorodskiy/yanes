@@ -9,7 +9,7 @@ namespace NesEmulatorCPU.Instructions.Base
         {
         }
 
-        public override int Execute(RAM ram, RegistersProvider registers)
+        public override int Execute(Bus bus, RegistersProvider registers)
         {
             var value = SourceRegister(registers).State;
             TargetRegister(registers).State = value;

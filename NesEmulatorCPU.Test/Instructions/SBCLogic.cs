@@ -11,15 +11,15 @@ namespace NesEmulatorCPU.Test.Instructions
         [Test]
         public void SubtractNegativeFromNegative()
         {
-            var ram = new RAM();
+            var bus = new Bus();
             var registers = new RegistersProvider();
             var immediateAddressingMode = new Immediate();
 
-            ram.Write8Bit(0x00, 0xC4);
+            bus.Write8Bit(0x00, 0xC4);
             registers.Accumulator.State = 0xC0;
 
             var sbc = (IInstructionLogicWithAddressingMode)new SBC();
-            sbc.Execute(immediateAddressingMode, ram, registers);
+            sbc.Execute(immediateAddressingMode, bus, registers);
 
             Assert.That(registers.Accumulator.State, Is.EqualTo(0xFB));
 

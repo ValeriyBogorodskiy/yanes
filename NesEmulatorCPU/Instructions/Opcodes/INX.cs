@@ -5,7 +5,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 {
     internal class INX : IInstructionLogic
     {
-        void IInstructionLogic.Execute(RAM ram, RegistersProvider registers)
+        void IInstructionLogic.Execute(Bus bus, RegistersProvider registers)
         {
             byte value = (byte)(registers.IndexRegisterX.State + 1);
 

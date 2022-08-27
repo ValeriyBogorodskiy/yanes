@@ -20,7 +20,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 
     internal class ROLAccumulator : ROL, IInstructionLogic
     {
-        void IInstructionLogic.Execute(RAM ram, RegistersProvider registers)
+        void IInstructionLogic.Execute(Bus bus, RegistersProvider registers)
         {
             Execute(registers.Accumulator.State, registers);
         }
@@ -28,9 +28,9 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 
     internal class ROLWithAddressing : ROL, IInstructionLogicWithAddressingMode
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            var value = addressingMode.GetRamValue(ram, registers);
+            var value = addressingMode.GetRamValue(bus, registers);
             Execute(value, registers);
         }
     }

@@ -6,9 +6,9 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 {
     internal class AND : IInstructionLogicWithAddressingMode
     {
-        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, RAM ram, RegistersProvider registers)
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            var value = addressingMode.GetRamValue(ram, registers);
+            var value = addressingMode.GetRamValue(bus, registers);
             var result = (byte)(value & registers.Accumulator.State);
 
             registers.Accumulator.State = result;

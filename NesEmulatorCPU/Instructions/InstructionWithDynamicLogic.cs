@@ -4,13 +4,13 @@ namespace NesEmulatorCPU.Instructions
 {
     internal class InstructionWithDynamicLogic : Instruction
     {
-        private readonly Func<RAM, RegistersProvider, int> logic;
+        private readonly Func<Bus, RegistersProvider, int> logic;
 
-        internal InstructionWithDynamicLogic(byte opcode, Func<RAM, RegistersProvider, int> logic) : base(opcode)
+        internal InstructionWithDynamicLogic(byte opcode, Func<Bus, RegistersProvider, int> logic) : base(opcode)
         {
             this.logic = logic;
         }
 
-        public override int Execute(RAM ram, RegistersProvider registers) => logic(ram, registers);
+        public override int Execute(Bus bus, RegistersProvider registers) => logic(bus, registers);
     }
 }
