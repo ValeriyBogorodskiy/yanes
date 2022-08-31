@@ -9,7 +9,7 @@ namespace NesEmulatorCPU
         public IBus Bus => bus;
         public IRegisters Registers => registers;
 
-        private CPUSettings settings;
+        private readonly CPUSettings settings;
         private readonly Bus bus = new();
         private readonly RegistersProvider registers = new();
         private readonly InstructionsProvider instructions = new();

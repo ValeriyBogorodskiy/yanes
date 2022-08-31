@@ -16,5 +16,10 @@
         {
             return value >= min && value <= max;
         }
+
+        public static bool InRange(this ushort value, AddressSpace addressSpace)
+        {
+            return value >= addressSpace.Start && value <= addressSpace.End;
+        }
     }
 }

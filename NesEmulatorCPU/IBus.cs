@@ -1,4 +1,6 @@
-﻿namespace NesEmulatorCPU
+﻿using NesEmulatorCPU.Cartridge;
+
+namespace NesEmulatorCPU
 {
     public interface IBus
     {
@@ -6,5 +8,6 @@
         ushort Read16bit(ushort address);
         void Write8Bit(ushort address, byte value);
         void Write16Bit(ushort address, ushort value);
+        void InsertRom(ROM rom);
     }
 }

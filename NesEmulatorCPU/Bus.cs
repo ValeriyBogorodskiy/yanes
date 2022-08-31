@@ -1,43 +1,68 @@
-﻿using NesEmulatorCPU.Utils;
+﻿using NesEmulatorCPU.Cartridge;
+using NesEmulatorCPU.Utils;
 
 namespace NesEmulatorCPU
 {
     internal class Bus : IBus
     {
+        private ROM? rom;
         private readonly RAM wRam = new();
         private readonly RAM vRam = new();
-        private RAM ResolveDestination(ushort address)
+
+        public void InsertRom(ROM rom)
         {
-            if (IsInCPUAddressSpace(address))
-                return wRam;
-
-            if (IsInPPUAddressSpace(address))
-                throw new NotImplementedException("PPU is not implemented yet");
-
-            throw new IndexOutOfRangeException();
+            this.rom = rom;
         }
 
-        private static bool IsInCPUAddressSpace(ushort address) => address.InRange(ReservedAddresses.CpuRamStart, ReservedAddresses.CpuRamEnd);
-
-        private static bool IsInPPUAddressSpace(ushort address) => address.InRange(ReservedAddresses.PPURamStart, ReservedAddresses.PPURamEnd);
-
-        private static ushort MirrorAddress(ushort address)
+        private static ushort MapAddress(ushort address)
         {
-            if (IsInCPUAddressSpace(address))
+            if (address.InRange(ReservedAddresses.CPUAddressSpace))
                 return (ushort)(address & 0b0000_0111_1111_1111);
 
-            if (IsInPPUAddressSpace(address))
-                throw new NotImplementedException("PPU is not implemented yet");
+            if (address.InRange(ReservedAddresses.PRGAddressSpace))
+                return (ushort)(address - 0x8000);
 
             throw new IndexOutOfRangeException();
         }
 
-        public ushort Read16bit(ushort address) => ResolveDestination(address).Read16bit(MirrorAddress(address));
+        public byte Read8bit(ushort address)
+        {
+            if (address.InRange(ReservedAddresses.CPUAddressSpace))
+                return wRam.Read8bit(MapAddress(address));
 
-        public byte Read8bit(ushort address) => ResolveDestination(address).Read8bit(MirrorAddress(address));
+            if (address.InRange(ReservedAddresses.PRGAddressSpace))
+            {
+                if (rom == null)
+                    throw new NullReferenceException();
 
-        public void Write16Bit(ushort address, ushort value) => ResolveDestination(address).Write16Bit(MirrorAddress(address), value);
+                return rom.Read8bitPRG(MapAddress(address));
+            }
 
-        public void Write8Bit(ushort address, byte value) => ResolveDestination(address).Write8Bit(MirrorAddress(address), value);
+            throw new IndexOutOfRangeException();
+        }
+
+        public ushort Read16bit(ushort address)
+        {
+            if (address.InRange(ReservedAddresses.CPUAddressSpace))
+                return wRam.Read16bit(MapAddress(address));
+
+            throw new IndexOutOfRangeException();
+        }
+
+        public void Write8Bit(ushort address, byte value)
+        {
+            if (address.InRange(ReservedAddresses.CPUAddressSpace))
+                wRam.Write8Bit(MapAddress(address), value);
+
+            throw new IndexOutOfRangeException();
+        }
+
+        public void Write16Bit(ushort address, ushort value)
+        {
+            if (address.InRange(ReservedAddresses.CPUAddressSpace))
+                wRam.Write16Bit(MapAddress(address), value);
+
+            throw new IndexOutOfRangeException();
+        }
     }
 }
