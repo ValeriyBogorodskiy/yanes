@@ -1,6 +1,7 @@
 ﻿using NesEmulatorCPU.Utils;
 using NesEmulatorCPU.Registers;
 using NesEmulatorCPU.Instructions;
+using NesEmulatorCPU.Cartridge;
 
 namespace NesEmulatorCPU
 {
@@ -20,9 +21,9 @@ namespace NesEmulatorCPU
         }
 
         // TODO : IEnumerator is the easiest way to achieve desired behaviour. I'll think about this later
-        public IEnumerator<InstructionExecutionResult> Run(byte[] program)
+        public IEnumerator<InstructionExecutionResult> Run(ROM rom)
         {
-            LoadProgramToRam(program);
+            bus.InsertRom(rom);
 
             SetupRegisters();
             SetupProgramCounter();
@@ -47,24 +48,11 @@ namespace NesEmulatorCPU
             yield return InstructionExecutionResult.ReachedEndOfProgram;
         }
 
-        private void LoadProgramToRam(byte[] program)
-        {
-            for (ushort i = 0; i < program.Length; i++)
-            {
-                var programByte = program[i];
-                var programByteAddress = (ushort)(settings.StartingProgramAddress + i);
-
-                bus.Write8Bit(programByteAddress, programByte);
-            }
-
-            bus.Write16Bit(ReservedAddresses.ProgramStartPointerAddress, settings.StartingProgramAddress);
-        }
-
         private void SetupRegisters() => registers.Reset();
 
         private void SetupProgramCounter()
         {
-            registers.ProgramCounter.State = bus.Read16bit(ReservedAddresses.ProgramStartPointerAddress);
+            registers.ProgramCounter.State = settings.StartingProgramAddress;
         }
 
         private void SetupStackPointer()

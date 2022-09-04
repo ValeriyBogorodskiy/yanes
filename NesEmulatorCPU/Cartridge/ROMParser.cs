@@ -6,9 +6,10 @@ namespace NesEmulatorCPU.Cartridge
     {
         private const int PrgRomPageSize = 1024 * 16; // 16 kB
         private const int ChrRomPageSize = 1024 * 8; // 8 kB
-        public ROM FromFile(string fileName)
+
+        // TODO : check if this code is cross-platform
+        public static ROM FromFile(string fileName)
         {
-            // TODO : check if this code cross-platform
             if (!File.Exists(fileName))
                 throw new FileNotFoundException();
 
