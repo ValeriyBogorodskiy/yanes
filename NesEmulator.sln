@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NesEmulatorCPU", "NesEmulat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NesEmulatorCPU.Test", "NesEmulatorCPU.Test\NesEmulatorCPU.Test.csproj", "{96BE0095-D508-4A10-8636-048E922A7C83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snake", "Snake\Snake.csproj", "{533121D9-501B-45C9-80C9-BCFD2E80B22B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snake", "Snake\Snake.csproj", "{533121D9-501B-45C9-80C9-BCFD2E80B22B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestROM", "TestROM\TestROM.csproj", "{47FCD388-30DC-40C2-92B6-438017EB767B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{533121D9-501B-45C9-80C9-BCFD2E80B22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{533121D9-501B-45C9-80C9-BCFD2E80B22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{533121D9-501B-45C9-80C9-BCFD2E80B22B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47FCD388-30DC-40C2-92B6-438017EB767B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47FCD388-30DC-40C2-92B6-438017EB767B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47FCD388-30DC-40C2-92B6-438017EB767B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47FCD388-30DC-40C2-92B6-438017EB767B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

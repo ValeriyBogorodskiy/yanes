@@ -29,6 +29,9 @@ namespace NesEmulatorCPU
             SetupProgramCounter();
             SetupStackPointer();
 
+            // TODO : not cool
+            yield return new InstructionExecutionResult { Code = InstructionExecutionResult.ResultCode.BeforeFirstInstruction };
+
             while (true)
             {
                 var nextInstructionAddress = registers.ProgramCounter.State;
@@ -40,15 +43,19 @@ namespace NesEmulatorCPU
                     break;
 
                 var instruction = instructions.GetInstructionForOpcode(opcode);
-                instruction.Execute(bus, registers);
+                var cycles = instruction.Execute(bus, registers);
 
-                yield return InstructionExecutionResult.Success;
+                yield return new InstructionExecutionResult() { Code = InstructionExecutionResult.ResultCode.Success, Cycles = cycles };
             }
 
-            yield return InstructionExecutionResult.ReachedEndOfProgram;
+            yield return new InstructionExecutionResult() { Code = InstructionExecutionResult.ResultCode.ReachedEndOfProgram };
         }
 
-        private void SetupRegisters() => registers.Reset();
+        private void SetupRegisters()
+        {
+            registers.Reset();
+            registers.ProcessorStatus.State = settings.InitialProcessorStatus;
+        }
 
         private void SetupProgramCounter()
         {

@@ -1,10 +1,17 @@
 ﻿namespace NesEmulatorCPU
 {
-    // TODO : replace with class containing result and cycles taken?
-    public enum InstructionExecutionResult
+    // TODO : nested enum looks ugly and naming sucks
+    public struct InstructionExecutionResult
     {
-        Success,
-        Failure,
-        ReachedEndOfProgram
+        public enum ResultCode
+        {
+            BeforeFirstInstruction,
+            Success,
+            Failure,
+            ReachedEndOfProgram
+        }
+
+        public ResultCode Code;
+        public int Cycles;
     }
 }
