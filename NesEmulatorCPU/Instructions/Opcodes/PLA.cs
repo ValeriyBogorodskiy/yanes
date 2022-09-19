@@ -11,13 +11,13 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 
         public override int Execute(Bus bus, RegistersProvider registers)
         {
+            registers.StackPointer.State += 1;
+
             var value = bus.Read8bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State));
 
             registers.Accumulator.State = value;
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, value.IsNegative());
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, value.IsZero());
-
-            registers.StackPointer.State += 1;
 
             return 4;
         }

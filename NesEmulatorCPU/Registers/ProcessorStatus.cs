@@ -2,10 +2,11 @@
 {
     internal class ProcessorStatus : CpuRegister8Bit
     {
-        internal enum Flags
+        internal enum Flags : byte
         {
             Negative = 1 << 7,
             Overflow = 1 << 6,
+            BFlag = 1 << 5,
             BreakCommand = 1 << 4,
             Decimal = 1 << 3,
             InterruptDisable = 1 << 2,

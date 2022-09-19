@@ -3,6 +3,10 @@ using NesEmulatorCPU.Utils;
 
 namespace NesEmulatorCPU.Instructions.Opcodes
 {
+    /// <summary>
+    /// https://www.masswerk.at/6502/6502_instruction_set.html#PLP
+    /// The status register will be pulled with the break flag and bit 5 ignored.
+    /// </summary>
     internal class PLP : Instruction
     {
         public PLP(byte opcode) : base(opcode)
@@ -11,13 +15,14 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 
         public override int Execute(Bus bus, RegistersProvider registers)
         {
+            registers.StackPointer.State += 1;
+
             var value = bus.Read8bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State));
 
-            registers.ProcessorStatus.State = value;
-            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, value.IsNegative());
-            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, value.IsZero());
+            value &= (byte)~ProcessorStatus.Flags.BreakCommand;
+            value |= (byte)ProcessorStatus.Flags.BFlag;
 
-            registers.StackPointer.State += 1;
+            registers.ProcessorStatus.State = value;
 
             return 4;
         }
