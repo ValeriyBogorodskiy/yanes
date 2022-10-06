@@ -19,7 +19,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 
             var mostSignificantByte = bus.Read8bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State));
 
-            registers.ProgramCounter.State = (ushort)((mostSignificantByte << 8) + leastSignificantByte);
+            registers.ProgramCounter.State = (ushort)((mostSignificantByte << 8) + leastSignificantByte + 1);
 
             return 6;
         }

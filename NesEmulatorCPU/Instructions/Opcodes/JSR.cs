@@ -10,8 +10,10 @@ namespace NesEmulatorCPU.Instructions.Opcodes
         {
             var memoryAddress = addressingMode.GetRamAddress(bus, registers);
 
-            var mostSignificantByte = (byte)(registers.ProgramCounter.State >> 8);
-            var leastSignificantByte = (byte)registers.ProgramCounter.State;
+            var currentAddress = registers.ProgramCounter.State - 1;
+
+            var mostSignificantByte = (byte)(currentAddress >> 8);
+            var leastSignificantByte = (byte)currentAddress;
 
             bus.Write8Bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State), mostSignificantByte);
 

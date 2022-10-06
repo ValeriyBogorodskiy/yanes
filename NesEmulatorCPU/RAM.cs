@@ -13,7 +13,7 @@
 
             // TODO : does it really work like this?
             var addressMostSignificantByte = (ushort)(address & 0xFF00);
-            var addressLeastSignificantByte = (byte)((address & 0x00FF) + 1);
+            var addressLeastSignificantByte = (address & 0x00FF) + 1;
             var mostSignificantByteAddress = addressMostSignificantByte + addressLeastSignificantByte;
 
             var mostSignificantByte = cells[mostSignificantByteAddress] << 8;
