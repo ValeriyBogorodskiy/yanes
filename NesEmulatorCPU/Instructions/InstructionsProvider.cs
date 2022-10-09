@@ -155,6 +155,7 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<RORWithAddressing, Absolute>().Opcode(0x6E).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<RORWithAddressing, AbsoluteX>().Opcode(0x7E).Cycles(7).Build());
 
+            RegisterInstruction(new RTI(0x40));
             RegisterInstruction(new RTS(0x60));
 
             RegisterInstruction(new InstructionBuilder().Logic<SBC, Immediate>().Opcode(0xE9).Cycles(2).Build());
@@ -200,6 +201,14 @@ namespace NesEmulatorCPU.Instructions
             instructions[opcode] = instruction;
         }
 
-        internal IInstruction GetInstructionForOpcode(byte opcode) => instructions[opcode];
+        internal IInstruction GetInstructionForOpcode(byte opcode)
+        {
+            var instruction = instructions[opcode];
+
+            if (instruction == null)
+                throw new NullReferenceException("Unknown opcode");
+
+            return instruction;
+        }
     }
 }
