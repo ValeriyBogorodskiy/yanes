@@ -14,7 +14,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
             registers.Accumulator.State = result;
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, result.IsNegative());
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, result.IsZero());
-            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, (value & 0b10000000) > 0);
+            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, (value & 0b0000_0001) > 0);
         }
     }
 
