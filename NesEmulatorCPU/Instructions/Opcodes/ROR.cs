@@ -6,15 +6,16 @@ namespace NesEmulatorCPU.Instructions.Opcodes
 {
     internal abstract class ROR
     {
-        protected static void Execute(byte value, RegistersProvider registers)
+        protected static byte Rotate(byte value, RegistersProvider registers)
         {
             var carryMask = registers.ProcessorStatus.Get(ProcessorStatus.Flags.Carry) ? (byte)1 : (byte)0;
             var result = (byte)((value >> 1) | (carryMask << 7));
 
-            registers.Accumulator.State = result;
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, result.IsNegative());
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, result.IsZero());
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, (value & 0b0000_0001) > 0);
+
+            return result;
         }
     }
 
@@ -22,7 +23,9 @@ namespace NesEmulatorCPU.Instructions.Opcodes
     {
         void IInstructionLogic.Execute(Bus bus, RegistersProvider registers)
         {
-            Execute(registers.Accumulator.State, registers);
+            var accumulatorValue = registers.Accumulator.State;
+            var shiftedAccumulatorValue = Rotate(accumulatorValue, registers);
+            registers.Accumulator.State = shiftedAccumulatorValue;
         }
     }
 
@@ -30,8 +33,10 @@ namespace NesEmulatorCPU.Instructions.Opcodes
     {
         void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            var value = addressingMode.GetRamValue(bus, registers);
-            Execute(value, registers);
+            var ramValueAddress = addressingMode.GetRamAddress(bus, registers);
+            var ramValue = bus.Read8bit(ramValueAddress);
+            var shiftedRamValue = Rotate(ramValue, registers);
+            bus.Write8Bit(ramValueAddress, shiftedRamValue);
         }
     }
 }
