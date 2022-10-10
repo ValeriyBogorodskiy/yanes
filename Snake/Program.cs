@@ -27,10 +27,10 @@ using (SnakeWindow game = new(frameRate, scaledScreenSize, scaledScreenSize))
 // TODO : extract scaling logic
 void OnUpdateFrame(SnakeWindow game, Cpu cpu, IEnumerator<InstructionExecutionResult> cpuProcess, FrameEventArgs args)
 {
-    var intructionToExecute = (int)(instructionsPerSecond * args.Time);
+    var intructionsToExecute = (int)(instructionsPerSecond * args.Time);
     var randomValue = (byte)random.Next(1, 16);
 
-    for (int i = 0; i < intructionToExecute; i++)
+    for (int i = 0; i < intructionsToExecute; i++)
     {
         cpu.Bus.Write8Bit(0xFE, randomValue);
         cpuProcess.MoveNext();
@@ -66,7 +66,7 @@ void OnUpdateFrame(SnakeWindow game, Cpu cpu, IEnumerator<InstructionExecutionRe
 
 void OnKeyDown(Cpu cpu, KeyboardKeyEventArgs args)
 {
-    // TODO : controls are inverted because screen matrix is inverted in CPUs memory
+    // controls are inverted because screen matrix is inverted in CPUs memory
     byte keyCode = args.Key switch
     {
         OpenTK.Windowing.GraphicsLibraryFramework.Keys.S => 0x77,

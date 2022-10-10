@@ -4,14 +4,12 @@
     {
         private readonly byte[] cells = new byte[2048];
 
-        // TODO : check for index out of range exception
         public byte Read8bit(ushort address) => cells[address];
 
         public ushort Read16bit(ushort address)
         {
             var leastSignificantByte = cells[address];
 
-            // TODO : does it really work like this?
             var addressMostSignificantByte = (ushort)(address & 0xFF00);
             var addressLeastSignificantByte = (byte)((address & 0x00FF) + 1);
             var mostSignificantByteAddress = addressMostSignificantByte + addressLeastSignificantByte;
@@ -29,7 +27,6 @@
 
             cells[address] = leastSignificantByte;
 
-            // TODO : does it really work like this?
             var addressMostSignificantByte = (ushort)(address & 0xFF00);
             var addressLeastSignificantByte = (byte)((address & 0x00FF) + 1);
             var mostSignificantByteAddress = addressMostSignificantByte + addressLeastSignificantByte;

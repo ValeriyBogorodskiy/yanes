@@ -24,7 +24,7 @@ namespace NesEmulatorCPU.Cartridge
             {
                 if (reader.ReadByte() != magicHeader[i])
                 {
-                    throw new Exception("File is not in iNES file format");
+                    throw new Exception($"File {fileName} is not in iNES file format");
                 }
             }
 

@@ -11,6 +11,12 @@ namespace NesEmulatorCPU.Instructions
         /// </summary>
         internal InstructionsProvider()
         {
+            RegisterOfficialInstructions();
+            RegisterUnofficialInstructions();
+        }
+
+        private void RegisterOfficialInstructions()
+        {
             RegisterInstruction(new InstructionBuilder().Logic<ADC, Immediate>().Opcode(0x69).Cycles(2).Build());
             RegisterInstruction(new InstructionBuilder().Logic<ADC, ZeroPage>().Opcode(0x65).Cycles(3).Build());
             RegisterInstruction(new InstructionBuilder().Logic<ADC, ZeroPageX>().Opcode(0x75).Cycles(4).Build());
@@ -191,12 +197,30 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<STY, Absolute>().Opcode(0x8C).Cycles(4).Build());
         }
 
+        private void RegisterUnofficialInstructions()
+        {
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPage>().Opcode(0x04).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0x14).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0x34).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPage>().Opcode(0x44).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0x54).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPage>().Opcode(0x64).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0x74).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, Immediate>().Opcode(0x80).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, Immediate>().Opcode(0x82).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, Immediate>().Opcode(0x89).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, Immediate>().Opcode(0xC2).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0xD4).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, Immediate>().Opcode(0xE2).Cycles(2).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0xF2).Cycles(4).Build());
+        }
+
         private void RegisterInstruction(IInstruction instruction)
         {
             var opcode = instruction.Opcode;
 
             if (instructions[opcode] != null)
-                throw new InvalidOperationException($"Instruction with opcode {opcode:X4} is already registered");
+                throw new InvalidOperationException($"Instruction with opcode {opcode:X2} is already registered");
 
             instructions[opcode] = instruction;
         }
@@ -206,7 +230,7 @@ namespace NesEmulatorCPU.Instructions
             var instruction = instructions[opcode];
 
             if (instruction == null)
-                throw new NullReferenceException("Unknown opcode");
+                throw new NullReferenceException($"Unknown opcode {opcode:X2}");
 
             return instruction;
         }
