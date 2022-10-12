@@ -228,6 +228,13 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<TOP, AbsoluteX>().Opcode(0x7C).Cycles(4).WithPageCrossing().Build());
             RegisterInstruction(new InstructionBuilder().Logic<TOP, AbsoluteX>().Opcode(0xDC).Cycles(4).WithPageCrossing().Build());
             RegisterInstruction(new InstructionBuilder().Logic<TOP, AbsoluteX>().Opcode(0xFC).Cycles(4).WithPageCrossing().Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<LAX, ZeroPage>().Opcode(0xA7).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<LAX, ZeroPageY>().Opcode(0xB7).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<LAX, Absolute>().Opcode(0xAF).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<LAX, AbsoluteY>().Opcode(0xBF).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<LAX, IndirectX>().Opcode(0xA3).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<LAX, IndirectY>().Opcode(0xB3).Cycles(5).WithPageCrossing().Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)
