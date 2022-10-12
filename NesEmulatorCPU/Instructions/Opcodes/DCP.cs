@@ -1,0 +1,44 @@
+﻿using NesEmulatorCPU.AddressingModes;
+using NesEmulatorCPU.Registers;
+using NesEmulatorCPU.Utils;
+
+namespace NesEmulatorCPU.Instructions.Opcodes
+{
+    internal class DCP : IInstructionLogicWithAddressingMode
+    {
+        void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
+        {
+            // DEC copy-paste
+            var valueAddress = addressingMode.GetRamAddress(bus, registers);
+            var value = bus.Read8bit(valueAddress);
+            var newValue = (byte)(value - 1);
+
+            bus.Write8Bit(valueAddress, newValue);
+            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, newValue.IsNegative());
+            registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, newValue.IsZero());
+
+            // CMP copy-paste
+            var accumulatorValue = registers.Accumulator.State;
+            var subtractionResult = (byte)(accumulatorValue - newValue);
+
+            if (accumulatorValue < newValue)
+            {
+                registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, subtractionResult.IsNegative());
+                registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, false);
+                registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, false);
+            }
+            else if (accumulatorValue == newValue)
+            {
+                registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, false);
+                registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, true);
+                registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, true);
+            }
+            else if (accumulatorValue > newValue)
+            {
+                registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, subtractionResult.IsNegative());
+                registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, false);
+                registers.ProcessorStatus.Set(ProcessorStatus.Flags.Carry, true);
+            }
+        }
+    }
+}
