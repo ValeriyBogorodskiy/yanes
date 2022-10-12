@@ -199,6 +199,13 @@ namespace NesEmulatorCPU.Instructions
 
         private void RegisterUnofficialInstructions()
         {
+            RegisterInstruction(new NOP(0x1A));
+            RegisterInstruction(new NOP(0x3A));
+            RegisterInstruction(new NOP(0x5A));
+            RegisterInstruction(new NOP(0x7A));
+            RegisterInstruction(new NOP(0xDA));
+            RegisterInstruction(new NOP(0xFA));
+
             RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPage>().Opcode(0x04).Cycles(3).Build());
             RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0x14).Cycles(4).Build());
             RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0x34).Cycles(4).Build());
@@ -212,7 +219,15 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<DOP, Immediate>().Opcode(0xC2).Cycles(2).Build());
             RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0xD4).Cycles(4).Build());
             RegisterInstruction(new InstructionBuilder().Logic<DOP, Immediate>().Opcode(0xE2).Cycles(2).Build());
-            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0xF2).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<DOP, ZeroPageX>().Opcode(0xF4).Cycles(4).Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<TOP, Absolute>().Opcode(0x0C).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<TOP, AbsoluteX>().Opcode(0x1C).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<TOP, AbsoluteX>().Opcode(0x3C).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<TOP, AbsoluteX>().Opcode(0x5C).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<TOP, AbsoluteX>().Opcode(0x7C).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<TOP, AbsoluteX>().Opcode(0xDC).Cycles(4).WithPageCrossing().Build());
+            RegisterInstruction(new InstructionBuilder().Logic<TOP, AbsoluteX>().Opcode(0xFC).Cycles(4).WithPageCrossing().Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)
