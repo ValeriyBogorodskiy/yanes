@@ -5,7 +5,7 @@ namespace NesEmulatorCPU.Instructions
 {
     internal class InstructionsProvider
     {
-        private readonly IInstruction[] instructions = new IInstruction[byte.MaxValue];
+        private readonly IInstruction[] instructions = new IInstruction[byte.MaxValue + 1];
         /// <summary>
         /// http://www.6502.org/tutorials/6502opcodes.html
         /// </summary>
@@ -250,6 +250,14 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<DCP, AbsoluteY>().Opcode(0xDB).Cycles(7).Build());
             RegisterInstruction(new InstructionBuilder().Logic<DCP, IndirectX>().Opcode(0xC3).Cycles(8).Build());
             RegisterInstruction(new InstructionBuilder().Logic<DCP, IndirectY>().Opcode(0xD3).Cycles(8).Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<INS, ZeroPage>().Opcode(0xE7).Cycles(5).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<INS, ZeroPageX>().Opcode(0xF7).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<INS, Absolute>().Opcode(0xEF).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<INS, AbsoluteX>().Opcode(0xFF).Cycles(7).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<INS, AbsoluteY>().Opcode(0xFB).Cycles(7).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<INS, IndirectX>().Opcode(0xE3).Cycles(8).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<INS, IndirectY>().Opcode(0xF3).Cycles(8).Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)
