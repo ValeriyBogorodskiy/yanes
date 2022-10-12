@@ -12,7 +12,7 @@ namespace NesEmulatorCPU.Instructions
         internal InstructionsProvider()
         {
             RegisterOfficialInstructions();
-            RegisterUnofficialInstructions();
+            RegisterUndocumentedInstructions();
         }
 
         private void RegisterOfficialInstructions()
@@ -197,7 +197,7 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<STY, Absolute>().Opcode(0x8C).Cycles(4).Build());
         }
 
-        private void RegisterUnofficialInstructions()
+        private void RegisterUndocumentedInstructions()
         {
             RegisterInstruction(new NOP(0x1A));
             RegisterInstruction(new NOP(0x3A));
@@ -235,6 +235,11 @@ namespace NesEmulatorCPU.Instructions
             RegisterInstruction(new InstructionBuilder().Logic<LAX, AbsoluteY>().Opcode(0xBF).Cycles(4).WithPageCrossing().Build());
             RegisterInstruction(new InstructionBuilder().Logic<LAX, IndirectX>().Opcode(0xA3).Cycles(6).Build());
             RegisterInstruction(new InstructionBuilder().Logic<LAX, IndirectY>().Opcode(0xB3).Cycles(5).WithPageCrossing().Build());
+
+            RegisterInstruction(new InstructionBuilder().Logic<AAX, ZeroPage>().Opcode(0x87).Cycles(3).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<AAX, ZeroPageY>().Opcode(0x97).Cycles(4).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<AAX, IndirectX>().Opcode(0x83).Cycles(6).Build());
+            RegisterInstruction(new InstructionBuilder().Logic<AAX, Absolute>().Opcode(0x8F).Cycles(4).Build());
         }
 
         private void RegisterInstruction(IInstruction instruction)
