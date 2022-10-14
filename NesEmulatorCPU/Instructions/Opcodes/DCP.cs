@@ -8,7 +8,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
     {
         void IInstructionLogicWithAddressingMode.Execute(AddressingMode addressingMode, Bus bus, RegistersProvider registers)
         {
-            // DEC copy-paste
+            // DEC
             var valueAddress = addressingMode.GetRamAddress(bus, registers);
             var value = bus.Read8bit(valueAddress);
             var newValue = (byte)(value - 1);
@@ -17,7 +17,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, newValue.IsNegative());
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, newValue.IsZero());
 
-            // CMP copy-paste
+            // CMP
             var accumulatorValue = registers.Accumulator.State;
             var subtractionResult = (byte)(accumulatorValue - newValue);
 
