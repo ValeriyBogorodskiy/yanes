@@ -7,11 +7,10 @@ var cpu = new Cpu(cpuSettings);
 var registers = cpu.Registers;
 var cpuProcess = cpu.Run(rom);
 var cycles = 7; // idk why first test.log entry has CYC:7 value
-var instructionsExecuted = 0;
 
 using var streamWriter = new StreamWriter("yanes.log");
 
-while (instructionsExecuted++ < 8991)
+while (true)
 {
     cpuProcess.MoveNext();
 
