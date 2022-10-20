@@ -1,8 +1,8 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Registers;
-using NesEmulatorCPU.Utils;
+﻿using YaNES.CPU.AddressingModes;
+using YaNES.CPU.Registers;
+using YaNES.CPU.Utils;
 
-namespace NesEmulatorCPU.Instructions.Base
+namespace YaNES.CPU.Instructions.Base
 {
     /// <summary>
     /// http://www.6502.org/tutorials/compare_instructions.html

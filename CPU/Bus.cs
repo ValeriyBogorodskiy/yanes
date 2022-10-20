@@ -1,7 +1,7 @@
-﻿using NesEmulatorCPU.Cartridge;
-using NesEmulatorCPU.Utils;
+﻿using YaNES.CPU.Cartridge;
+using YaNES.CPU.Utils;
 
-namespace NesEmulatorCPU
+namespace YaNES.CPU
 {
     internal class Bus : IBus
     {

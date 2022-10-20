@@ -1,6 +1,6 @@
-﻿using NesEmulatorCPU.Registers;
+﻿using YaNES.CPU.Registers;
 
-namespace NesEmulatorCPU.Instructions.Opcodes
+namespace YaNES.CPU.Instructions.Opcodes
 {
     internal class TXS : Instruction
     {

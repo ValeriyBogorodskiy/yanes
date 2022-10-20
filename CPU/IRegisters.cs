@@ -1,4 +1,4 @@
-﻿namespace NesEmulatorCPU
+﻿namespace YaNES.CPU
 {
     public interface IRegisters
     {

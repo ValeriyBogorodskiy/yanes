@@ -1,6 +1,6 @@
-﻿using NesEmulatorCPU.Cartridge;
+﻿using YaNES.CPU.Cartridge;
 
-namespace NesEmulatorCPU
+namespace YaNES.CPU
 {
     public interface IBus
     {

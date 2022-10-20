@@ -1,6 +1,6 @@
-﻿using NesEmulatorCPU.Registers;
+﻿using YaNES.CPU.Registers;
 
-namespace NesEmulatorCPU.AddressingModes
+namespace YaNES.CPU.AddressingModes
 {
     internal class ZeroPage : AddressingMode
     {

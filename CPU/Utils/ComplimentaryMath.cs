@@ -1,4 +1,4 @@
-﻿namespace NesEmulatorCPU.Utils
+﻿namespace YaNES.CPU.Utils
 {
     internal static class ComplimentaryMath
     {

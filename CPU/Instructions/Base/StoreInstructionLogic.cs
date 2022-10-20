@@ -1,7 +1,7 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Registers;
+﻿using YaNES.CPU.AddressingModes;
+using YaNES.CPU.Registers;
 
-namespace NesEmulatorCPU.Instructions.Base
+namespace YaNES.CPU.Instructions.Base
 {
     internal abstract class StoreInstructionLogic : IInstructionLogicWithAddressingMode
     {

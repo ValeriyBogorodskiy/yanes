@@ -1,7 +1,7 @@
-﻿using Snake;
-using NesEmulatorCPU;
-using OpenTK.Windowing.Common;
-using NesEmulatorCPU.Cartridge;
+﻿using OpenTK.Windowing.Common;
+using YaNES.CPU.Cartridge;
+using YaNES.CPU;
+using YaNES.Snake;
 
 var rom = ROMParser.FromFile("../../../snake.nes");
 var cpuSettings = new CPUSettings() { StartingProgramAddress = 0x8600 };

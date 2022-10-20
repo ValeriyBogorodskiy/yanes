@@ -1,7 +1,7 @@
-﻿using NesEmulatorCPU.Registers;
-using NesEmulatorCPU.Utils;
+﻿using YaNES.CPU.Registers;
+using YaNES.CPU.Utils;
 
-namespace NesEmulatorCPU.Instructions.Base
+namespace YaNES.CPU.Instructions.Base
 {
     internal abstract class BranchingInstruction : Instruction
     {

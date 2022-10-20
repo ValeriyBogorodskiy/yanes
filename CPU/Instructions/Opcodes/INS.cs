@@ -1,9 +1,9 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Instructions.Base;
-using NesEmulatorCPU.Registers;
-using NesEmulatorCPU.Utils;
+﻿using YaNES.CPU.AddressingModes;
+using YaNES.CPU.Instructions.Base;
+using YaNES.CPU.Registers;
+using YaNES.CPU.Utils;
 
-namespace NesEmulatorCPU.Instructions.Opcodes
+namespace YaNES.CPU.Instructions.Opcodes
 {
     internal class INS : ArithmeticInstructionLogic
     {

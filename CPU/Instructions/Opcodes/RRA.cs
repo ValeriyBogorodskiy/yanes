@@ -1,9 +1,9 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Instructions.Base;
-using NesEmulatorCPU.Registers;
-using NesEmulatorCPU.Utils;
+﻿using YaNES.CPU.AddressingModes;
+using YaNES.CPU.Instructions.Base;
+using YaNES.CPU.Registers;
+using YaNES.CPU.Utils;
 
-namespace NesEmulatorCPU.Instructions.Opcodes
+namespace YaNES.CPU.Instructions.Opcodes
 {
     internal class RRA : ArithmeticInstructionLogic
     {
@@ -12,7 +12,7 @@ namespace NesEmulatorCPU.Instructions.Opcodes
             var valueAddress = addressingMode.GetRamAddress(bus, registers);
             var value = bus.Read8bit(valueAddress);
             var carryMask = registers.ProcessorStatus.Get(ProcessorStatus.Flags.Carry) ? (byte)1 : (byte)0;
-            var rotatedValue = (byte)((value >> 1) | (carryMask << 7));
+            var rotatedValue = (byte)(value >> 1 | carryMask << 7);
 
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, rotatedValue.IsNegative());
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, rotatedValue.IsZero());

@@ -1,8 +1,8 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Instructions.Base;
-using NesEmulatorCPU.Registers;
+﻿using YaNES.CPU.AddressingModes;
+using YaNES.CPU.Instructions.Base;
+using YaNES.CPU.Registers;
 
-namespace NesEmulatorCPU.Instructions.Opcodes
+namespace YaNES.CPU.Instructions.Opcodes
 {
     internal class SBC : ArithmeticInstructionLogic
     {

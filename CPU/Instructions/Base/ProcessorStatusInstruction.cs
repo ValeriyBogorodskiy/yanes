@@ -1,7 +1,7 @@
-﻿using NesEmulatorCPU.Registers;
-using static NesEmulatorCPU.Registers.ProcessorStatus;
+﻿using YaNES.CPU.Registers;
+using static YaNES.CPU.Registers.ProcessorStatus;
 
-namespace NesEmulatorCPU.Instructions.Base
+namespace YaNES.CPU.Instructions.Base
 {
     internal abstract class ProcessorStatusInstruction : Instruction
     {

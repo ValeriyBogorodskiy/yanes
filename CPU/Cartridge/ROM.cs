@@ -1,4 +1,4 @@
-﻿namespace NesEmulatorCPU.Cartridge
+﻿namespace YaNES.CPU.Cartridge
 {
     public class ROM
     {

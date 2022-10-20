@@ -1,7 +1,7 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Registers;
+﻿using YaNES.CPU.AddressingModes;
+using YaNES.CPU.Registers;
 
-namespace NesEmulatorCPU.Instructions.Opcodes
+namespace YaNES.CPU.Instructions.Opcodes
 {
     internal class JMP : IInstructionLogicWithAddressingMode
     {

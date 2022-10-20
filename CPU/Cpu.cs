@@ -1,9 +1,9 @@
-﻿using NesEmulatorCPU.Utils;
-using NesEmulatorCPU.Registers;
-using NesEmulatorCPU.Instructions;
-using NesEmulatorCPU.Cartridge;
+﻿using YaNES.CPU.Cartridge;
+using YaNES.CPU.Instructions;
+using YaNES.CPU.Registers;
+using YaNES.CPU.Utils;
 
-namespace NesEmulatorCPU
+namespace YaNES.CPU
 {
     public class Cpu
     {

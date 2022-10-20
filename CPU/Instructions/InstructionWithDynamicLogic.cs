@@ -1,6 +1,6 @@
-﻿using NesEmulatorCPU.Registers;
+﻿using YaNES.CPU.Registers;
 
-namespace NesEmulatorCPU.Instructions
+namespace YaNES.CPU.Instructions
 {
     internal class InstructionWithDynamicLogic : Instruction
     {

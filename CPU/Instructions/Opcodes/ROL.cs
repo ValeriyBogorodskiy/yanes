@@ -1,15 +1,15 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Registers;
-using NesEmulatorCPU.Utils;
+﻿using YaNES.CPU.AddressingModes;
+using YaNES.CPU.Registers;
+using YaNES.CPU.Utils;
 
-namespace NesEmulatorCPU.Instructions.Opcodes
+namespace YaNES.CPU.Instructions.Opcodes
 {
     internal abstract class ROL
     {
         protected static byte Rotate(byte value, RegistersProvider registers)
         {
             var carryMask = registers.ProcessorStatus.Get(ProcessorStatus.Flags.Carry) ? (byte)1 : (byte)0;
-            var result = (byte)((value << 1) | carryMask);
+            var result = (byte)(value << 1 | carryMask);
 
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Negative, result.IsNegative());
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, result.IsZero());

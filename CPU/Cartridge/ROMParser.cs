@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace NesEmulatorCPU.Cartridge
+namespace YaNES.CPU.Cartridge
 {
     public class ROMParser
     {

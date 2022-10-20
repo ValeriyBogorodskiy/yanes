@@ -3,7 +3,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
-namespace Snake
+namespace YaNES.Snake
 {
     // TODO : create 2DGameWindow class based on this
     internal class SnakeWindow : GameWindow

@@ -1,7 +1,7 @@
-﻿using NesEmulatorCPU.AddressingModes;
-using NesEmulatorCPU.Instructions.Opcodes;
+﻿using YaNES.CPU.AddressingModes;
+using YaNES.CPU.Instructions.Opcodes;
 
-namespace NesEmulatorCPU.Instructions
+namespace YaNES.CPU.Instructions
 {
     internal class InstructionsProvider
     {
