@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NesEmulatorCPU\NesEmulatorCPU.csproj" />
+    <ProjectReference Include="..\CPU\CPU.csproj" />
   </ItemGroup>
 
 </Project>
