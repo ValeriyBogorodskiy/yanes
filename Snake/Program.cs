@@ -1,5 +1,4 @@
 ﻿using OpenTK.Windowing.Common;
-using YaNES.CPU.Cartridge;
 using YaNES.CPU;
 using YaNES.Snake;
 

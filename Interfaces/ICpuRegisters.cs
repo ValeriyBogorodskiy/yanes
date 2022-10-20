@@ -1,4 +1,4 @@
-﻿namespace YaNES.CPU
+﻿namespace YaNES.Interfaces
 {
     public interface ICpuRegisters
     {

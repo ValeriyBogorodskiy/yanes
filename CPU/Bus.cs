@@ -1,14 +1,14 @@
-﻿using YaNES.CPU.Cartridge;
-using YaNES.CPU.Utils;
+﻿using YaNES.CPU.Utils;
+using YaNES.Interfaces;
 
 namespace YaNES.CPU
 {
     internal class Bus : ICpuBus
     {
         private readonly RAM wRam = new();
-        private ROM? rom;
+        private IRom? rom;
 
-        public void InsertRom(ROM rom)
+        public void InsertRom(IRom rom)
         {
             this.rom = rom;
         }

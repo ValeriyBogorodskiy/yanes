@@ -1,7 +1,7 @@
-﻿using YaNES.CPU.Cartridge;
-using YaNES.CPU.Instructions;
+﻿using YaNES.CPU.Instructions;
 using YaNES.CPU.Registers;
 using YaNES.CPU.Utils;
+using YaNES.Interfaces;
 
 namespace YaNES.CPU
 {
@@ -21,7 +21,7 @@ namespace YaNES.CPU
         }
 
         // TODO : IEnumerator is the easiest way to achieve desired behaviour. I'll think about this later
-        public IEnumerator<InstructionExecutionResult> Run(ROM rom)
+        public IEnumerator<InstructionExecutionResult> Run(IRom rom)
         {
             bus.InsertRom(rom);
 

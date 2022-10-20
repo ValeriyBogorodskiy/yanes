@@ -1,6 +1,8 @@
-﻿namespace YaNES.CPU.Cartridge
+﻿using YaNES.Interfaces;
+
+namespace YaNES.ROM
 {
-    public class ROM
+    public class ROM : IRom
     {
         private byte[] PrgRom { get; }
         private byte[] ChrRom { get; }
@@ -11,14 +13,14 @@
             this.ChrRom = ChrRom;
         }
 
-        internal byte Read8bitPrg(ushort address) => PrgRom[address];
-        internal byte Read8bitChr(ushort address) => ChrRom[address];
+        public int PrgRomLength => PrgRom.Length;
+        public int ChrRomLength => ChrRom.Length;
 
-        internal int PrgRomLength => PrgRom.Length;
-        internal int ChrRomLength => ChrRom.Length;
+        public byte Read8bitPrg(ushort address) => PrgRom[address];
+        public byte Read8bitChr(ushort address) => ChrRom[address];
 
         // TODO : copy paste from RAM
-        internal ushort Read16bitPrg(ushort address)
+        public ushort Read16bitPrg(ushort address)
         {
             var leastSignificantByte = PrgRom[address];
 

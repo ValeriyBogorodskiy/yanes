@@ -1,5 +1,5 @@
 ﻿using YaNES.CPU;
-using YaNES.CPU.Cartridge;
+using YaNES.ROM;
 
 var rom = RomParser.FromFile("../../../nestest.nes");
 var cpuSettings = new CpuSettings { StartingProgramAddress = 0xC000, InitialProcessorStatus = 0x24 };

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace YaNES.CPU.Cartridge
+namespace YaNES.ROM
 {
     public class RomParser
     {

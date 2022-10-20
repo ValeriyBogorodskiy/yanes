@@ -1,4 +1,6 @@
-﻿namespace YaNES.CPU.Registers
+﻿using YaNES.Interfaces;
+
+namespace YaNES.CPU.Registers
 {
     internal class RegistersProvider : ICpuRegisters
     {
