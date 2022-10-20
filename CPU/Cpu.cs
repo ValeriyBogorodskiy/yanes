@@ -5,17 +5,17 @@ using YaNES.CPU.Utils;
 
 namespace YaNES.CPU
 {
-    public class Cpu
+    public class CPU
     {
-        public IBus Bus => bus;
-        public IRegisters Registers => registers;
+        public ICpuBus Bus => bus;
+        public ICpuRegisters Registers => registers;
 
-        private readonly CPUSettings settings;
+        private readonly CpuSettings settings;
         private readonly Bus bus = new();
         private readonly RegistersProvider registers = new();
         private readonly InstructionsProvider instructions = new();
 
-        public Cpu(CPUSettings settings)
+        public CPU(CpuSettings settings)
         {
             this.settings = settings;
         }

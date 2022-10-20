@@ -1,6 +1,6 @@
 ﻿namespace YaNES.CPU
 {
-    public interface IRegisters
+    public interface ICpuRegisters
     {
         ushort ProgramCounter { get; set; }
         byte StackPointer { get; set; }

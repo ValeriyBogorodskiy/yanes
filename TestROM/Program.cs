@@ -1,8 +1,9 @@
-﻿using YaNES.CPU.Cartridge;
+﻿using YaNES.CPU;
+using YaNES.CPU.Cartridge;
 
-var rom = ROMParser.FromFile("../../../nestest.nes");
-var cpuSettings = new CPUSettings { StartingProgramAddress = 0xC000, InitialProcessorStatus = 0x24 };
-var cpu = new Cpu(cpuSettings);
+var rom = RomParser.FromFile("../../../nestest.nes");
+var cpuSettings = new CpuSettings { StartingProgramAddress = 0xC000, InitialProcessorStatus = 0x24 };
+var cpu = new CPU(cpuSettings);
 var registers = cpu.Registers;
 var cpuProcess = cpu.Run(rom);
 var cycles = 7; // idk why first test.log entry has CYC:7 value

@@ -1,11 +1,11 @@
 ﻿namespace YaNES.CPU
 {
-    public class CPUSettings
+    public class CpuSettings
     {
         public ushort StartingProgramAddress { get; set; }
         public byte InitialProcessorStatus { get; set; }
 
-        public static CPUSettings Default => new()
+        public static CpuSettings Default => new()
         {
             StartingProgramAddress = 0x8000,
             InitialProcessorStatus = 0

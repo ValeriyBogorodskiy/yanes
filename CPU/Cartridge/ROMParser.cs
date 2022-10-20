@@ -2,7 +2,7 @@
 
 namespace YaNES.CPU.Cartridge
 {
-    public class ROMParser
+    public class RomParser
     {
         private const int PrgRomPageSize = 1024 * 16; // 16 kB
         private const int ChrRomPageSize = 1024 * 8; // 8 kB

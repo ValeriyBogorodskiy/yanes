@@ -1,13 +1,13 @@
 ﻿namespace YaNES.CPU.Registers
 {
-    internal class RegistersProvider : IRegisters
+    internal class RegistersProvider : ICpuRegisters
     {
-        ushort IRegisters.ProgramCounter { get => ProgramCounter.State; set => ProgramCounter.State = value; }
-        byte IRegisters.StackPointer { get => StackPointer.State; set => StackPointer.State = value; }
-        byte IRegisters.Accumulator { get => Accumulator.State; set => Accumulator.State = value; }
-        byte IRegisters.IndexRegisterX { get => IndexRegisterX.State; set => IndexRegisterX.State = value; }
-        byte IRegisters.IndexRegisterY { get => IndexRegisterY.State; set => IndexRegisterY.State = value; }
-        byte IRegisters.ProcessorStatus { get => ProcessorStatus.State; set => ProcessorStatus.State = value; }
+        ushort ICpuRegisters.ProgramCounter { get => ProgramCounter.State; set => ProgramCounter.State = value; }
+        byte ICpuRegisters.StackPointer { get => StackPointer.State; set => StackPointer.State = value; }
+        byte ICpuRegisters.Accumulator { get => Accumulator.State; set => Accumulator.State = value; }
+        byte ICpuRegisters.IndexRegisterX { get => IndexRegisterX.State; set => IndexRegisterX.State = value; }
+        byte ICpuRegisters.IndexRegisterY { get => IndexRegisterY.State; set => IndexRegisterY.State = value; }
+        byte ICpuRegisters.ProcessorStatus { get => ProcessorStatus.State; set => ProcessorStatus.State = value; }
 
         internal ProgramCounter ProgramCounter { get; private set; } = new();
         internal StackPointer StackPointer { get; private set; } = new();

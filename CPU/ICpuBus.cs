@@ -2,7 +2,7 @@
 
 namespace YaNES.CPU
 {
-    public interface IBus
+    public interface ICpuBus
     {
         byte Read8bit(ushort address);
         ushort Read16bit(ushort address);
