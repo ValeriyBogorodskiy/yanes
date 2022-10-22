@@ -1,6 +1,8 @@
-﻿namespace YaNES.CPU.Registers
+﻿using YaNES.Core;
+
+namespace YaNES.CPU.Registers
 {
-    internal class IndexRegisterY : CpuRegister8Bit
+    internal class IndexRegisterY : Register8Bit
     {
     }
 }

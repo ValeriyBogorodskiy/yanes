@@ -1,4 +1,5 @@
-﻿using YaNES.CPU;
+﻿using YaNES.Core;
+using YaNES.CPU;
 using YaNES.ROM;
 
 var rom = RomParser.FromFile("../../../nestest.nes");
@@ -6,7 +7,7 @@ var cpuSettings = new CpuSettings { StartingProgramAddress = 0xC000, InitialProc
 var cpu = new CPU(cpuSettings);
 var registers = cpu.Registers;
 var cpuProcess = cpu.Run(rom);
-var cycles = 7; // idk why first test.log entry has CYC:7 value
+var cycles = 0;
 
 using var streamWriter = new StreamWriter("yanes.log");
 
@@ -14,7 +15,7 @@ while (cpuProcess.MoveNext())
 {
     var executionReport = cpuProcess.Current;
 
-    if (executionReport.Result == YaNES.Interfaces.CpuInstructionExecutionResult.Failure)
+    if (executionReport.Result == CpuInstructionExecutionResult.Failure)
         return;
 
     cycles += executionReport.Cycles;

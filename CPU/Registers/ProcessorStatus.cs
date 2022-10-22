@@ -1,6 +1,8 @@
-﻿namespace YaNES.CPU.Registers
+﻿using YaNES.Core;
+
+namespace YaNES.CPU.Registers
 {
-    internal class ProcessorStatus : CpuRegister8Bit
+    internal class ProcessorStatus : Register8Bit
     {
         internal enum Flags : byte
         {

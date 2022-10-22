@@ -1,6 +1,6 @@
 ﻿using OpenTK.Windowing.Common;
+using YaNES.Core;
 using YaNES.CPU;
-using YaNES.Interfaces;
 using YaNES.ROM;
 using YaNES.Snake;
 

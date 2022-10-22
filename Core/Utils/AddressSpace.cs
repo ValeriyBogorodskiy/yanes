@@ -1,4 +1,4 @@
-﻿namespace YaNES.Utils
+﻿namespace YaNES.Core.Utils
 {
     public struct AddressSpace
     {

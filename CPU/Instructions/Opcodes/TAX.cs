@@ -1,4 +1,5 @@
-﻿using YaNES.CPU.Instructions.Base;
+﻿using YaNES.Core;
+using YaNES.CPU.Instructions.Base;
 using YaNES.CPU.Registers;
 
 namespace YaNES.CPU.Instructions.Opcodes
@@ -9,8 +10,8 @@ namespace YaNES.CPU.Instructions.Opcodes
         {
         }
 
-        protected override CpuRegister8Bit SourceRegister(RegistersProvider registers) => registers.Accumulator;
+        protected override Register8Bit SourceRegister(RegistersProvider registers) => registers.Accumulator;
 
-        protected override CpuRegister8Bit TargetRegister(RegistersProvider registers) => registers.IndexRegisterX;
+        protected override Register8Bit TargetRegister(RegistersProvider registers) => registers.IndexRegisterX;
     }
 }

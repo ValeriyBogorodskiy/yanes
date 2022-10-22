@@ -1,6 +1,7 @@
-﻿using YaNES.CPU.AddressingModes;
+﻿using YaNES.Core;
+using YaNES.Core.Utils;
+using YaNES.CPU.AddressingModes;
 using YaNES.CPU.Registers;
-using YaNES.Utils;
 
 namespace YaNES.CPU.Instructions.Base
 {
@@ -15,6 +16,6 @@ namespace YaNES.CPU.Instructions.Base
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.Zero, value.IsZero());
         }
 
-        protected abstract CpuRegister8Bit TargetRegister(RegistersProvider registers);
+        protected abstract Register8Bit TargetRegister(RegistersProvider registers);
     }
 }

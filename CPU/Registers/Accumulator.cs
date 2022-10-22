@@ -1,6 +1,8 @@
-﻿namespace YaNES.CPU.Registers
+﻿using YaNES.Core;
+
+namespace YaNES.CPU.Registers
 {
-    internal class Accumulator : CpuRegister8Bit
+    internal class Accumulator : Register8Bit
     {
     }
 }

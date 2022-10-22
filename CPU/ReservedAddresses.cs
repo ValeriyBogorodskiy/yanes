@@ -1,4 +1,4 @@
-﻿using YaNES.Utils;
+﻿using YaNES.Core.Utils;
 
 namespace YaNES.CPU
 {

@@ -1,4 +1,5 @@
-﻿using YaNES.CPU.AddressingModes;
+﻿using YaNES.Core;
+using YaNES.CPU.AddressingModes;
 using YaNES.CPU.Registers;
 
 namespace YaNES.CPU.Instructions.Base
@@ -11,6 +12,6 @@ namespace YaNES.CPU.Instructions.Base
             bus.Write8Bit(memoryAddress, GetSourceRegister(registers).State);
         }
 
-        protected abstract CpuRegister8Bit GetSourceRegister(RegistersProvider registers);
+        protected abstract Register8Bit GetSourceRegister(RegistersProvider registers);
     }
 }

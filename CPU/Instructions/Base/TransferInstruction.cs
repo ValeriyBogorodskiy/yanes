@@ -1,5 +1,6 @@
-﻿using YaNES.CPU.Registers;
-using YaNES.Utils;
+﻿using YaNES.Core;
+using YaNES.Core.Utils;
+using YaNES.CPU.Registers;
 
 namespace YaNES.CPU.Instructions.Base
 {
@@ -21,7 +22,7 @@ namespace YaNES.CPU.Instructions.Base
         }
 
 
-        protected abstract CpuRegister8Bit SourceRegister(RegistersProvider registers);
-        protected abstract CpuRegister8Bit TargetRegister(RegistersProvider registers);
+        protected abstract Register8Bit SourceRegister(RegistersProvider registers);
+        protected abstract Register8Bit TargetRegister(RegistersProvider registers);
     }
 }

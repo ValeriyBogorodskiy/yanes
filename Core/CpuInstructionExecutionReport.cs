@@ -1,4 +1,4 @@
-﻿namespace YaNES.Interfaces
+﻿namespace YaNES.Core
 {
     public class CpuInstructionExecutionReport
     {

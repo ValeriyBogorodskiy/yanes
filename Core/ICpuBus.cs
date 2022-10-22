@@ -1,4 +1,4 @@
-﻿namespace YaNES.Interfaces
+﻿namespace YaNES.Core
 {
     public interface ICpuBus
     {
@@ -6,6 +6,8 @@
         ushort Read16bit(ushort address);
         void Write8Bit(ushort address, byte value);
         void Write16Bit(ushort address, ushort value);
-        void InsertRom(IRom rom);
+
+        void AttachRom(IRom rom);
+        void AttachPpu(IPpu ppu);
     }
 }

@@ -1,4 +1,4 @@
-﻿using YaNES.Interfaces;
+﻿using YaNES.Core;
 
 namespace YaNES.ROM
 {

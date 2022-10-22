@@ -1,6 +1,8 @@
-﻿namespace YaNES.CPU.Registers
+﻿using YaNES.Core;
+
+namespace YaNES.CPU.Registers
 {
-    internal class StackPointer : CpuRegister8Bit
+    internal class StackPointer : Register8Bit
     {
     }
 }

@@ -1,7 +1,7 @@
-﻿using YaNES.CPU.AddressingModes;
+﻿using YaNES.Core.Utils;
+using YaNES.CPU.AddressingModes;
 using YaNES.CPU.Instructions.Base;
 using YaNES.CPU.Registers;
-using YaNES.Utils;
 
 namespace YaNES.CPU.Instructions.Opcodes
 {
