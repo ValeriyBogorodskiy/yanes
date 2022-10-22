@@ -1,11 +1,14 @@
-﻿using YaNES.CPU.Instructions;
+﻿using YaNES.Core;
+using YaNES.CPU.Instructions;
 using YaNES.CPU.Registers;
-using YaNES.Interfaces;
 
 namespace YaNES.CPU
 {
     public class CPU : ICpu
     {
+        // values are chosen to match first line of nestest.log
+        private static readonly CpuInstructionExecutionReport ProcessInitialized = new(CpuInstructionExecutionResult.Success, 0, 7);
+
         public ICpuBus Bus => bus;
         public ICpuRegisters Registers => registers;
 
@@ -21,13 +24,13 @@ namespace YaNES.CPU
 
         public IEnumerator<CpuInstructionExecutionReport> Run(IRom rom)
         {
-            bus.InsertRom(rom);
+            bus.AttachRom(rom);
 
             SetupRegisters();
             SetupProgramCounter();
             SetupStackPointer();
 
-            yield return new CpuInstructionExecutionReport(CpuInstructionExecutionResult.Success, 0, 0);
+            yield return ProcessInitialized;
 
             while (true)
             {

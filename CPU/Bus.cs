@@ -1,17 +1,14 @@
-﻿using YaNES.Utils;
-using YaNES.Interfaces;
+﻿using YaNES.Core;
+using YaNES.Core.Utils;
 
 namespace YaNES.CPU
 {
     internal class Bus : ICpuBus
     {
-        private readonly RAM wRam = new();
-        private IRom? rom;
+        private readonly RAM ram = new();
 
-        public void InsertRom(IRom rom)
-        {
-            this.rom = rom;
-        }
+        private IRom? rom;
+        private IPpu? ppu;
 
         private ushort MapAddress(ushort address)
         {
@@ -39,7 +36,7 @@ namespace YaNES.CPU
         public byte Read8bit(ushort address)
         {
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
-                return wRam.Read8bit(MapAddress(address));
+                return ram.Read8bit(MapAddress(address));
 
             if (address.InRange(ReservedAddresses.PrgAddressSpace))
             {
@@ -55,7 +52,7 @@ namespace YaNES.CPU
         public ushort Read16bit(ushort address)
         {
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
-                return wRam.Read16bit(MapAddress(address));
+                return ram.Read16bit(MapAddress(address));
 
             if (address.InRange(ReservedAddresses.PrgAddressSpace))
             {
@@ -71,7 +68,7 @@ namespace YaNES.CPU
         public void Write8Bit(ushort address, byte value)
         {
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
-                wRam.Write8Bit(MapAddress(address), value);
+                ram.Write8Bit(MapAddress(address), value);
             else if (address.InRange(ReservedAddresses.PrgAddressSpace) || address.InRange(ReservedAddresses.PpuAddressSpace))
                 throw new InvalidOperationException();
             else
@@ -81,11 +78,21 @@ namespace YaNES.CPU
         public void Write16Bit(ushort address, ushort value)
         {
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
-                wRam.Write16Bit(MapAddress(address), value);
+                ram.Write16Bit(MapAddress(address), value);
             else if (address.InRange(ReservedAddresses.PrgAddressSpace) || address.InRange(ReservedAddresses.PpuAddressSpace))
                 throw new InvalidOperationException();
             else
                 throw new IndexOutOfRangeException();
+        }
+
+        public void AttachRom(IRom rom)
+        {
+            this.rom = rom;
+        }
+
+        public void AttachPpu(IPpu ppu)
+        {
+            this.ppu = ppu;
         }
     }
 }
