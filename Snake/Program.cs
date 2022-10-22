@@ -1,5 +1,7 @@
 ﻿using OpenTK.Windowing.Common;
 using YaNES.CPU;
+using YaNES.Interfaces;
+using YaNES.ROM;
 using YaNES.Snake;
 
 var rom = RomParser.FromFile("../../../snake.nes");
@@ -24,7 +26,7 @@ using (SnakeWindow game = new(frameRate, scaledScreenSize, scaledScreenSize))
 }
 
 // TODO : extract scaling logic
-void OnUpdateFrame(SnakeWindow game, CPU cpu, IEnumerator<InstructionExecutionResult> cpuProcess, FrameEventArgs args)
+void OnUpdateFrame(SnakeWindow game, CPU cpu, IEnumerator<CpuInstructionExecutionReport> cpuProcess, FrameEventArgs args)
 {
     var intructionsToExecute = (int)(instructionsPerSecond * args.Time);
     var randomValue = (byte)random.Next(1, 16);

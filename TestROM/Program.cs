@@ -10,11 +10,14 @@ var cycles = 7; // idk why first test.log entry has CYC:7 value
 
 using var streamWriter = new StreamWriter("yanes.log");
 
-while (true)
+while (cpuProcess.MoveNext())
 {
-    cpuProcess.MoveNext();
+    var executionReport = cpuProcess.Current;
 
-    cycles += cpuProcess.Current.Cycles;
+    if (executionReport.Result == YaNES.Interfaces.CpuInstructionExecutionResult.Failure)
+        return;
+
+    cycles += executionReport.Cycles;
 
     streamWriter.WriteLine(
         $"{registers.ProgramCounter:X4}" +

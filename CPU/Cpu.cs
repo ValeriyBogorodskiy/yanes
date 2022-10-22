@@ -1,11 +1,10 @@
 ﻿using YaNES.CPU.Instructions;
 using YaNES.CPU.Registers;
-using YaNES.CPU.Utils;
 using YaNES.Interfaces;
 
 namespace YaNES.CPU
 {
-    public class CPU
+    public class CPU : ICpu
     {
         public ICpuBus Bus => bus;
         public ICpuRegisters Registers => registers;
@@ -20,8 +19,7 @@ namespace YaNES.CPU
             this.settings = settings;
         }
 
-        // TODO : IEnumerator is the easiest way to achieve desired behaviour. I'll think about this later
-        public IEnumerator<InstructionExecutionResult> Run(IRom rom)
+        public IEnumerator<CpuInstructionExecutionReport> Run(IRom rom)
         {
             bus.InsertRom(rom);
 
@@ -29,11 +27,11 @@ namespace YaNES.CPU
             SetupProgramCounter();
             SetupStackPointer();
 
-            // TODO : not cool
-            yield return new InstructionExecutionResult { Code = InstructionExecutionResult.ResultCode.BeforeFirstInstruction };
+            yield return new CpuInstructionExecutionReport(CpuInstructionExecutionResult.Success, 0, 0);
 
             while (true)
             {
+
                 var nextInstructionAddress = registers.ProgramCounter.State;
                 var opcode = bus.Read8bit(nextInstructionAddress);
 
@@ -44,11 +42,8 @@ namespace YaNES.CPU
 
                 var instruction = instructions.GetInstructionForOpcode(opcode);
                 var cycles = instruction.Execute(bus, registers);
-
-                yield return new InstructionExecutionResult() { Code = InstructionExecutionResult.ResultCode.Success, Cycles = cycles };
+                yield return new CpuInstructionExecutionReport(CpuInstructionExecutionResult.Success, opcode, cycles);
             }
-
-            yield return new InstructionExecutionResult() { Code = InstructionExecutionResult.ResultCode.ReachedEndOfProgram };
         }
 
         private void SetupRegisters()
