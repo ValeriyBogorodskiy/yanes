@@ -1,4 +1,6 @@
-﻿namespace YaNES.CPU.Utils
+﻿using YaNES.Utils;
+
+namespace YaNES.CPU
 {
     internal class ReservedAddresses
     {

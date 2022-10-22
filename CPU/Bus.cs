@@ -1,4 +1,4 @@
-﻿using YaNES.CPU.Utils;
+﻿using YaNES.Utils;
 using YaNES.Interfaces;
 
 namespace YaNES.CPU

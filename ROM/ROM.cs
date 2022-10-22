@@ -19,12 +19,10 @@ namespace YaNES.ROM
         public byte Read8bitPrg(ushort address) => PrgRom[address];
         public byte Read8bitChr(ushort address) => ChrRom[address];
 
-        // TODO : copy paste from RAM
         public ushort Read16bitPrg(ushort address)
         {
             var leastSignificantByte = PrgRom[address];
 
-            // TODO : does it really work like this?
             var addressMostSignificantByte = (ushort)(address & 0xFF00);
             var addressLeastSignificantByte = (address & 0x00FF) + 1;
             var mostSignificantByteAddress = addressMostSignificantByte + addressLeastSignificantByte;

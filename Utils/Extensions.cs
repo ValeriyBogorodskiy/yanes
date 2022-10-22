@@ -1,6 +1,6 @@
-﻿namespace YaNES.CPU.Utils
+﻿namespace YaNES.Utils
 {
-    internal static class Extensions
+    public static class Extensions
     {
         public static bool IsNegative(this byte value) => value >= 0b1000_0000;
 

@@ -1,5 +1,5 @@
 ﻿using YaNES.CPU.Registers;
-using YaNES.CPU.Utils;
+using YaNES.Utils;
 
 namespace YaNES.CPU.Instructions.Base
 {

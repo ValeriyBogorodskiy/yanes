@@ -1,6 +1,5 @@
 ﻿using YaNES.CPU.AddressingModes;
 using YaNES.CPU.Registers;
-using YaNES.CPU.Utils;
 
 namespace YaNES.CPU.Instructions.Opcodes
 {

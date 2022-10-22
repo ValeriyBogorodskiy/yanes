@@ -1,6 +1,6 @@
-﻿namespace YaNES.CPU.Utils
+﻿namespace YaNES.Utils
 {
-    internal static class ComplimentaryMath
+    public static class ComplimentaryMath
     {
         /// <summary>
         /// https://www.quora.com/How-do-I-subtract-using-2%E2%80%B2s-compliment
@@ -8,7 +8,7 @@
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
-        internal static byte Subtract2sCompliments(byte lhs, byte rhs)
+        public static byte Subtract2sCompliments(byte lhs, byte rhs)
         {
             var rhsComplimentary = rhs.ToComplimentaryPositive();
             var resultWithCarry = lhs + rhsComplimentary;

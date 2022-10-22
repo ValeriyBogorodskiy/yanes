@@ -1,6 +1,6 @@
-﻿namespace YaNES.CPU.Utils
+﻿namespace YaNES.Utils
 {
-    internal class BitMasks
+    public class BitMasks
     {
         internal const byte Negative = 0b1000_0000;
         internal const ushort CarryBit = 0b1_0000_0000;

@@ -1,5 +1,4 @@
 ﻿using YaNES.CPU.Registers;
-using YaNES.CPU.Utils;
 
 namespace YaNES.CPU.Instructions.Opcodes
 {

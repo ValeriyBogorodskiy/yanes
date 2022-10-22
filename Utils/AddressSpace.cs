@@ -1,6 +1,6 @@
-﻿namespace YaNES.CPU.Utils
+﻿namespace YaNES.Utils
 {
-    internal struct AddressSpace
+    public struct AddressSpace
     {
         public ushort Start;
         public ushort End;

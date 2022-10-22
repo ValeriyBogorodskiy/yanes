@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ROM", "ROM\ROM.csproj", "{CEB844B8-F08F-4EB8-B806-9845953B8A7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{DFAF2F8D-DE7E-4980-A487-3445BF88E51A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{CEB844B8-F08F-4EB8-B806-9845953B8A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEB844B8-F08F-4EB8-B806-9845953B8A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEB844B8-F08F-4EB8-B806-9845953B8A7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFAF2F8D-DE7E-4980-A487-3445BF88E51A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFAF2F8D-DE7E-4980-A487-3445BF88E51A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFAF2F8D-DE7E-4980-A487-3445BF88E51A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFAF2F8D-DE7E-4980-A487-3445BF88E51A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
