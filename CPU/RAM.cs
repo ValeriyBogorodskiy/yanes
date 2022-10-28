@@ -1,6 +1,6 @@
 ﻿namespace YaNES.CPU
 {
-    internal class RAM
+    internal class Ram
     {
         private readonly byte[] cells = new byte[2048];
 

@@ -11,14 +11,14 @@ namespace YaNES.CPU.Registers
         byte ICpuRegisters.IndexRegisterY { get => IndexRegisterY.State; set => IndexRegisterY.State = value; }
         byte ICpuRegisters.ProcessorStatus { get => ProcessorStatus.State; set => ProcessorStatus.State = value; }
 
-        internal ProgramCounter ProgramCounter { get; private set; } = new();
-        internal StackPointer StackPointer { get; private set; } = new();
-        internal Accumulator Accumulator { get; private set; } = new();
-        internal IndexRegisterX IndexRegisterX { get; private set; } = new();
-        internal IndexRegisterY IndexRegisterY { get; private set; } = new();
-        internal ProcessorStatus ProcessorStatus { get; private set; } = new();
+        public ProgramCounter ProgramCounter { get; private set; } = new();
+        public StackPointer StackPointer { get; private set; } = new();
+        public Accumulator Accumulator { get; private set; } = new();
+        public IndexRegisterX IndexRegisterX { get; private set; } = new();
+        public IndexRegisterY IndexRegisterY { get; private set; } = new();
+        public ProcessorStatus ProcessorStatus { get; private set; } = new();
 
-        internal void Reset()
+        public void Reset()
         {
             ProgramCounter.State = 0;
             StackPointer.State = 0;

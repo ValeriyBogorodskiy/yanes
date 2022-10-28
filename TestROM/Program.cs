@@ -4,7 +4,7 @@ using YaNES.ROM;
 
 var rom = RomParser.FromFile("../../../nestest.nes");
 var cpuSettings = new CpuSettings { StartingProgramAddress = 0xC000, InitialProcessorStatus = 0x24 };
-var cpu = new CPU(cpuSettings);
+var cpu = new Cpu(cpuSettings);
 var registers = cpu.Registers;
 var cpuProcess = cpu.Run(rom);
 var cycles = 0;

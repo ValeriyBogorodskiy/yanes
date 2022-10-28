@@ -6,7 +6,7 @@ using YaNES.Snake;
 
 var rom = RomParser.FromFile("../../../snake.nes");
 var cpuSettings = new CpuSettings() { StartingProgramAddress = 0x8600 };
-var cpu = new CPU(cpuSettings);
+var cpu = new Cpu(cpuSettings);
 var cpuProcess = cpu.Run(rom);
 
 var frameRate = 120;
@@ -26,7 +26,7 @@ using (SnakeWindow game = new(frameRate, scaledScreenSize, scaledScreenSize))
 }
 
 // TODO : extract scaling logic
-void OnUpdateFrame(SnakeWindow game, CPU cpu, IEnumerator<CpuInstructionExecutionReport> cpuProcess, FrameEventArgs args)
+void OnUpdateFrame(SnakeWindow game, Cpu cpu, IEnumerator<CpuInstructionExecutionReport> cpuProcess, FrameEventArgs args)
 {
     var intructionsToExecute = (int)(instructionsPerSecond * args.Time);
     var randomValue = (byte)random.Next(1, 16);
@@ -65,7 +65,7 @@ void OnUpdateFrame(SnakeWindow game, CPU cpu, IEnumerator<CpuInstructionExecutio
     game.SetImage(scaledImage);
 }
 
-void OnKeyDown(CPU cpu, KeyboardKeyEventArgs args)
+void OnKeyDown(Cpu cpu, KeyboardKeyEventArgs args)
 {
     // controls are inverted because screen matrix is inverted in CPUs memory
     byte keyCode = args.Key switch

@@ -4,7 +4,7 @@ using YaNES.CPU.Registers;
 
 namespace YaNES.CPU
 {
-    public class CPU : ICpu
+    public class Cpu : ICpu
     {
         // values are chosen to match first line of nestest.log
         private static readonly CpuInstructionExecutionReport ProcessInitialized = new(CpuInstructionExecutionResult.Success, 0, 7);
@@ -17,7 +17,7 @@ namespace YaNES.CPU
         private readonly RegistersProvider registers = new();
         private readonly InstructionsProvider instructions = new();
 
-        public CPU(CpuSettings settings)
+        public Cpu(CpuSettings settings)
         {
             this.settings = settings;
         }

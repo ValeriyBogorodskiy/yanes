@@ -5,7 +5,7 @@ namespace YaNES.CPU
 {
     internal class Bus : ICpuBus
     {
-        private readonly RAM ram = new();
+        private readonly Ram ram = new();
 
         private IRom? rom;
         private IPpu? ppu;
