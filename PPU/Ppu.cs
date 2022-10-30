@@ -1,4 +1,5 @@
-﻿using PPU.Registers;
+﻿using PPU.Mirroring;
+using PPU.Registers;
 using YaNES.Core;
 using YaNES.Core.Utils;
 
@@ -7,6 +8,7 @@ namespace PPU
     public class Ppu : IPpu
     {
         private readonly byte[] ram = new byte[2048];
+        private MirroringMode mirroringMode = new HorizontalMirroringMode(); // TODO : create correct mode somehow
         private IRom? rom;
 
         private readonly Controller controller = new();
@@ -34,7 +36,7 @@ namespace PPU
                 }
                 else if (dataAddress.InRange(ReservedAddresses.RamAddressSpace))
                 {
-                    dataBuffer = ram[dataAddress];
+                    dataBuffer = ram[mirroringMode.MirrorVramAddress(dataAddress)];
                 }
                 else if (dataAddress.InRange(ReservedAddresses.ForbiddenAddressSpace))
                 {
@@ -58,7 +60,7 @@ namespace PPU
 
                 if (dataAddress.InRange(ReservedAddresses.RamAddressSpace))
                 {
-                    ram[dataAddress] = value;
+                    ram[mirroringMode.MirrorVramAddress(dataAddress)] = value;
                 }
                 else
                 {

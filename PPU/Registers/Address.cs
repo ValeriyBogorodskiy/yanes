@@ -17,7 +17,7 @@
                 var low = highByte ? (byte)buffer : value;
 
                 buffer = (ushort)(high << 8 + low);
-                buffer = (ushort)(buffer & 0x3FFF);
+                buffer = (ushort)(buffer & ReservedAddresses.HighestPpuAddress);
 
                 highByte = !highByte;
             }
@@ -28,7 +28,7 @@
         public void Increment(int value)
         {
             buffer = (ushort)(buffer + value);
-            buffer = (ushort)(buffer & 0x3FFF);
+            buffer = (ushort)(buffer & ReservedAddresses.HighestPpuAddress);
         }
     }
 }
