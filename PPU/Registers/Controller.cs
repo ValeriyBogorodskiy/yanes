@@ -2,8 +2,7 @@
 
 namespace PPU.Registers
 {
-    // TODO : create RegisterWithFlags<T> class to reduce code duplication
-    internal class Controller : Register8Bit
+    internal class Controller : Register8BitWith<Controller.Flags>
     {
         public enum Flags : byte
         {
@@ -15,16 +14,6 @@ namespace PPU.Registers
             VramAddIncrement = 1 << 2,
             Nametable2 = 1 << 1,
             Nametable1 = 1 << 0
-        }
-
-        public bool Get(Flags flag) => (State & (byte)flag) > 0;
-
-        public void Set(Flags flag, bool value)
-        {
-            if (value)
-                State |= (byte)flag;
-            else
-                State &= (byte)~flag;
         }
 
         public int VramIncrement => Get(Flags.VramAddIncrement) ? 32 : 1;

@@ -22,6 +22,7 @@ namespace YaNES.CPU
             this.settings = settings;
         }
 
+        // TODO : replace Run with 2 methods: Insert(IRom rom) & ExecuteNextInstruction():CpuInstructionExecutionReport
         public IEnumerator<CpuInstructionExecutionReport> Run(IRom rom)
         {
             bus.AttachRom(rom);

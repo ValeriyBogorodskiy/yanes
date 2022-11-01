@@ -12,5 +12,8 @@
         byte Data { get; set; }
 
         void AttachRom(IRom rom);
+        void Update(int cycles);
+
+        event Action NmiInterrupt;
     }
 }

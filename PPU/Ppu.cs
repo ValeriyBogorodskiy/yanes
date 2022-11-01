@@ -8,16 +8,23 @@ namespace PPU
     public class Ppu : IPpu
     {
         private readonly byte[] ram = new byte[2048];
-        private MirroringMode mirroringMode = new HorizontalMirroringMode(); // TODO : create correct mode somehow
+        // TODO : create correct mode somehow
+        private readonly MirroringMode mirroringMode = new HorizontalMirroringMode();
         private IRom? rom;
 
         private readonly Controller controller = new();
+        private readonly Status status = new();
         private readonly Address address = new();
         private byte dataBuffer;
 
+        private int scanLineCycles = 0;
+        private int scanLine = 0;
+
+        public event Action? NmiInterrupt;
+
         public byte Controller { get => controller.State; set => controller.State = value; }
         public byte Mask { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public byte Status { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public byte Status { get => status.State; set => status.State = value; }
         public byte OamAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public byte OamData { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public byte Scroll { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -72,6 +79,29 @@ namespace PPU
         public void AttachRom(IRom rom)
         {
             this.rom = rom;
+        }
+
+        public void Update(int cycles)
+        {
+            scanLineCycles += cycles;
+
+            while (scanLineCycles >= 341)
+            {
+                scanLineCycles -= 341;
+                scanLine++;
+
+                if (scanLine == 241)
+                {
+                    status.Set(Registers.Status.Flags.VerticalBlank, true);
+
+                    if (controller.Get(Registers.Controller.Flags.GenerateNmi))
+                        NmiInterrupt?.Invoke();
+                }
+                else if (scanLine == 262)
+                {
+                    status.Set(Registers.Status.Flags.VerticalBlank, false);
+                }
+            }
         }
     }
 }

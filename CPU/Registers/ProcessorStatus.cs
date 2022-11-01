@@ -2,7 +2,7 @@
 
 namespace YaNES.CPU.Registers
 {
-    internal class ProcessorStatus : Register8Bit
+    internal class ProcessorStatus : Register8BitWith<ProcessorStatus.Flags>
     {
         internal enum Flags : byte
         {
@@ -14,16 +14,6 @@ namespace YaNES.CPU.Registers
             InterruptDisable = 1 << 2,
             Zero = 1 << 1,
             Carry = 1 << 0
-        }
-
-        internal bool Get(Flags flag) => (State & (byte)flag) > 0;
-
-        internal void Set(Flags flag, bool value)
-        {
-            if (value)
-                State |= (byte)flag;
-            else
-                State &= (byte)~flag;
         }
     }
 }
