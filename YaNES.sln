@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ROM", "ROM\ROM.csproj", "{CEB844B8-F08F-4EB8-B806-9845953B8A7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPU", "PPU\PPU.csproj", "{16BC1E62-4EB6-4BD0-AFA3-A4ADCDABBCA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPU", "PPU\PPU.csproj", "{16BC1E62-4EB6-4BD0-AFA3-A4ADCDABBCA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

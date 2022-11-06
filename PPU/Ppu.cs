@@ -8,9 +8,10 @@ namespace PPU
     public class Ppu : IPpu
     {
         private readonly byte[] ram = new byte[2048];
-        // TODO : create correct mode somehow
+        // TODO : create correct mode
         private readonly MirroringMode mirroringMode = new HorizontalMirroringMode();
         private IRom? rom;
+        private IInterruptsSource? interruptsSource;
 
         private readonly Controller controller = new();
         private readonly Status status = new();
@@ -19,8 +20,6 @@ namespace PPU
 
         private int scanLineCycles = 0;
         private int scanLine = 0;
-
-        public event Action? NmiInterrupt;
 
         public byte Controller { get => controller.State; set => controller.State = value; }
         public byte Mask { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -81,6 +80,11 @@ namespace PPU
             this.rom = rom;
         }
 
+        public void AttachInterruptsSource(IInterruptsSource interruptsSource)
+        {
+            this.interruptsSource = interruptsSource;
+        }
+
         public void Update(int cycles)
         {
             scanLineCycles += cycles;
@@ -95,7 +99,7 @@ namespace PPU
                     status.Set(Registers.Status.Flags.VerticalBlank, true);
 
                     if (controller.Get(Registers.Controller.Flags.GenerateNmi))
-                        NmiInterrupt?.Invoke();
+                        interruptsSource?.Trigger(Interrupt.NMI);
                 }
                 else if (scanLine == 262)
                 {

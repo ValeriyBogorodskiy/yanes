@@ -12,8 +12,7 @@
         byte Data { get; set; }
 
         void AttachRom(IRom rom);
+        void AttachInterruptsSource(IInterruptsSource interruptsSource);
         void Update(int cycles);
-
-        event Action NmiInterrupt;
     }
 }
