@@ -4,14 +4,14 @@ using YaNES.CPU.Registers;
 
 namespace YaNES.CPU
 {
-    public class Cpu : ICpu, IInterruptsSource
+    public class Cpu : ICpu, IInterruptsListener
     {
         // values are chosen to match first line of nestest.log
         private static readonly CpuInstructionExecutionReport ProcessInitialized = new(CpuInstructionExecutionResult.Success, 0, 7);
 
         public ICpuBus Bus => bus;
         public ICpuRegisters Registers => registers;
-        public IInterruptsSource InterruptsSource => this;
+        public IInterruptsListener InterruptsListener => this;
 
         private readonly CpuSettings settings;
         private readonly Bus bus = new();

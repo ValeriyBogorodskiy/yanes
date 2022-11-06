@@ -4,7 +4,7 @@
     {
         ICpuBus Bus { get; }
         ICpuRegisters Registers { get; }
-        IInterruptsSource InterruptsSource { get; }
+        IInterruptsListener InterruptsListener { get; }
         CpuInstructionExecutionReport InsertCartridge(IRom rom);
         CpuInstructionExecutionReport ExecuteNextInstruction();
     }

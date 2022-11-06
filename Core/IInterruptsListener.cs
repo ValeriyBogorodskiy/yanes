@@ -1,6 +1,6 @@
 ﻿namespace YaNES.Core
 {
-    public interface IInterruptsSource
+    public interface IInterruptsListener
     {
         void Trigger(Interrupt interrupt);
     }

@@ -11,7 +11,7 @@ namespace PPU
         // TODO : create correct mode
         private readonly MirroringMode mirroringMode = new HorizontalMirroringMode();
         private IRom? rom;
-        private IInterruptsSource? interruptsSource;
+        private IInterruptsListener? interruptsListener;
 
         private readonly Controller controller = new();
         private readonly Status status = new();
@@ -80,9 +80,9 @@ namespace PPU
             this.rom = rom;
         }
 
-        public void AttachInterruptsSource(IInterruptsSource interruptsSource)
+        public void AttachInterruptsListener(IInterruptsListener interruptsListener)
         {
-            this.interruptsSource = interruptsSource;
+            this.interruptsListener = interruptsListener;
         }
 
         public void Update(int cycles)
@@ -99,7 +99,7 @@ namespace PPU
                     status.Set(Registers.Status.Flags.VerticalBlank, true);
 
                     if (controller.Get(Registers.Controller.Flags.GenerateNmi))
-                        interruptsSource?.Trigger(Interrupt.NMI);
+                        interruptsListener?.Trigger(Interrupt.NMI);
                 }
                 else if (scanLine == 262)
                 {
