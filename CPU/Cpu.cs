@@ -17,8 +17,8 @@ namespace YaNES.CPU
         private readonly Bus bus = new();
         private readonly RegistersProvider registers = new();
         private readonly InstructionsProvider instructions = new();
-        private readonly bool[] interrupts = new bool[1];
-        private readonly ushort[] interruptsVectors = new ushort[1] { 0xFFFA };
+        private readonly bool[] interrupts = new bool[2];
+        private readonly ushort[] interruptsVectors = new ushort[2] { 0xFFFE, 0xFFFA };
 
         public Cpu(CpuSettings settings)
         {
@@ -60,8 +60,7 @@ namespace YaNES.CPU
             {
                 if (interrupts[interrupt])
                 {
-                    HandleInterrupt((Interrupt)interrupt);
-                    cycles += 2;
+                    cycles += HandleInterrupt((Interrupt)interrupt);
                     interrupts[interrupt] = false;
                 }
             }
@@ -72,7 +71,7 @@ namespace YaNES.CPU
             registers.ProgramCounter.State++;
 
             if (opcode == 0)
-                return new CpuInstructionExecutionReport(CpuInstructionExecutionResult.Success, opcode, cycles);
+                cycles += HandleInterrupt(Interrupt.BRK);
 
             var instruction = instructions.GetInstructionForOpcode(opcode);
             cycles += instruction.Execute(bus, registers);
@@ -80,7 +79,7 @@ namespace YaNES.CPU
             return new CpuInstructionExecutionReport(CpuInstructionExecutionResult.Success, opcode, cycles);
         }
 
-        private void HandleInterrupt(Interrupt interrupt)
+        private int HandleInterrupt(Interrupt interrupt)
         {
             var programCounter = registers.ProgramCounter.State;
             var counterMostSignificantByte = (byte)(programCounter >> 8);
@@ -99,6 +98,8 @@ namespace YaNES.CPU
 
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.InterruptDisable, true);
             registers.ProgramCounter.State = bus.Read16bit(interruptsVectors[(int)interrupt]);
+
+            return 2;
         }
 
         public void Trigger(Interrupt interrupt)

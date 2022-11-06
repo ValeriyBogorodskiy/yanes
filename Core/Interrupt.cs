@@ -2,6 +2,7 @@
 {
     public enum Interrupt
     {
-        NMI = 0
+        BRK = 0,
+        NMI = 1
     }
 }
