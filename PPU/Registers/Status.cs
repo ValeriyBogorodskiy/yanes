@@ -1,6 +1,6 @@
 ﻿using YaNES.Core;
 
-namespace PPU.Registers
+namespace YaNes.PPU.Registers
 {
     internal class Status : Register8BitWith<Status.Flags>
     {

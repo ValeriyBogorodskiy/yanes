@@ -1,4 +1,4 @@
-﻿namespace PPU.Registers
+﻿namespace YaNes.PPU.Registers
 {
     internal class Address
     {
@@ -9,7 +9,7 @@
         {
             get
             {
-                return highByte ? (byte)(buffer >> 8) : (byte)(buffer);
+                return highByte ? (byte)(buffer >> 8) : (byte)buffer;
             }
             set
             {

@@ -2,12 +2,12 @@
 
 namespace YaNES.ROM
 {
-    public class ROM : IRom
+    public class Rom : IRom
     {
         private byte[] PrgRom { get; }
         private byte[] ChrRom { get; }
 
-        public ROM(byte[] PrgRom, byte[] ChrRom)
+        public Rom(byte[] PrgRom, byte[] ChrRom)
         {
             this.PrgRom = PrgRom;
             this.ChrRom = ChrRom;

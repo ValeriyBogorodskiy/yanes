@@ -1,6 +1,6 @@
 ﻿using YaNES.Core;
 
-namespace PPU.Registers
+namespace YaNes.PPU.Registers
 {
     internal class Controller : Register8BitWith<Controller.Flags>
     {

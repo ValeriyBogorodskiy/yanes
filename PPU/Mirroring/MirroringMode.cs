@@ -1,4 +1,4 @@
-﻿namespace PPU.Mirroring
+﻿namespace YaNes.PPU.Mirroring
 {
     internal abstract class MirroringMode
     {

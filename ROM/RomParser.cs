@@ -8,7 +8,7 @@ namespace YaNES.ROM
         private const int ChrRomPageSize = 1024 * 8; // 8 kB
 
         // TODO : check if this code is cross-platform
-        public static ROM FromFile(string fileName)
+        public static Rom FromFile(string fileName)
         {
             if (!File.Exists(fileName))
                 throw new FileNotFoundException();
@@ -44,7 +44,7 @@ namespace YaNES.ROM
             var prgRom = reader.ReadBytes(romBanksCount * PrgRomPageSize);
             var chrRom = reader.ReadBytes(vromBanksCount * ChrRomPageSize);
 
-            return new ROM(prgRom, chrRom);
+            return new Rom(prgRom, chrRom);
         }
     }
 }

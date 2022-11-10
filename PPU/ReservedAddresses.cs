@@ -1,6 +1,6 @@
 ﻿using YaNES.Core.Utils;
 
-namespace PPU
+namespace YaNes.PPU
 {
     internal class ReservedAddresses
     {
