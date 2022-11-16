@@ -9,6 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="shader.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="shader.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="OpenTK" Version="4.7.5" />
   </ItemGroup>
 
