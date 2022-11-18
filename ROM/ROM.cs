@@ -4,8 +4,8 @@ namespace YaNES.ROM
 {
     public class Rom : IRom
     {
-        private byte[] PrgRom { get; }
-        private byte[] ChrRom { get; }
+        public byte[] PrgRom { get; }
+        public byte[] ChrRom { get; }
 
         public Rom(byte[] PrgRom, byte[] ChrRom)
         {

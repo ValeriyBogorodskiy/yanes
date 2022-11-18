@@ -23,7 +23,8 @@
 
         public void SetPixel(int x, int y, byte r, byte g, byte b)
         {
-            var rIndex = (x * BytesPerPixel) + y * originalImageWidth * BytesPerPixel;
+            var mirroredY = originalImageHeight - 1 - y; // TODO : make mirroring optional and apply it for both axes
+            var rIndex = (x * BytesPerPixel) + mirroredY * originalImageWidth * BytesPerPixel;
             var gIndex = rIndex + 1;
             var bIndex = gIndex + 1;
 
