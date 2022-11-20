@@ -7,15 +7,15 @@ using YaNES.Core.Utils;
 
 var context = new Context("../../../../SuperMarioBros.nes");
 var frameRate = 60;
-var nesScreenDimensions = new Vector2i(128, 128);
-var resolutionScalingFactor = 5;
-var scaledScreenDimensions = nesScreenDimensions * resolutionScalingFactor;
+var nesScreenDimensions = new Vector2i(256, 240);
+var renderingImage = new RenderingImage(nesScreenDimensions.X, nesScreenDimensions.Y);
+var screenScalingFactor = 4;
 var ppuScanlines = 262;
 var scanlineCyclesDuration = 341;
 var ppuCyclesPerFrame = ppuScanlines * scanlineCyclesDuration;
 var scalableImage = new ScalableImage(nesScreenDimensions.X, nesScreenDimensions.Y, resolutionScalingFactor);
 
-using (GameWindow2D yanesWindow = new(frameRate, scaledScreenDimensions.X, scaledScreenDimensions.Y))
+using (GameWindow2D yanesWindow = new(frameRate, nesScreenDimensions, screenScalingFactor))
 {
     yanesWindow.UpdateFrame += args => OnUpdateFrame(yanesWindow);
     yanesWindow.Run();

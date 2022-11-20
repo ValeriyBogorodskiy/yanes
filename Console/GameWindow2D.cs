@@ -33,8 +33,9 @@ namespace YaNES.Console
         private int texture;
 
         private byte[]? image;
+        private readonly Vector2i originalSize;
 
-        public GameWindow2D(int frameRate, int width, int height) : base(
+        public GameWindow2D(int frameRate, Vector2i originalSize, int scale) : base(
             new GameWindowSettings()
             {
                 RenderFrequency = frameRate,
@@ -42,9 +43,10 @@ namespace YaNES.Console
             },
             new NativeWindowSettings() // TODO : override native settings for macOS
             {
-                Size = new Vector2i(width, height)
+                Size = originalSize * scale
             })
         {
+            this.originalSize = originalSize;
         }
 
         // https://github.com/opentk/LearnOpenTK/blob/master/Chapter1/2-HelloTriangle/Window.cs
@@ -127,7 +129,7 @@ namespace YaNES.Console
 
             Title = "YaNES (Vsync: " + VSync.ToString() + ") FPS: " + (1f / args.Time).ToString("0.");
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, Size.X, Size.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, image);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, originalSize.X, originalSize.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, image);
 
             // https://gdbooks.gitbooks.io/legacyopengl/content/Chapter7/MinMag.html
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
