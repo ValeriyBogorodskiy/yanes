@@ -72,9 +72,11 @@ namespace YaNES.CPU
 
             if (opcode == 0)
                 cycles += HandleInterrupt(Interrupt.BRK);
-
-            var instruction = instructions.GetInstructionForOpcode(opcode);
-            cycles += instruction.Execute(bus, registers);
+            else
+            {
+                var instruction = instructions.GetInstructionForOpcode(opcode);
+                cycles += instruction.Execute(bus, registers);
+            }
 
             return new CpuInstructionExecutionReport(CpuInstructionExecutionResult.Success, opcode, cycles);
         }

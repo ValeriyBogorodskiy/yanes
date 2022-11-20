@@ -13,7 +13,12 @@ var screenScalingFactor = 4;
 var ppuScanlines = 262;
 var scanlineCyclesDuration = 341;
 var ppuCyclesPerFrame = ppuScanlines * scanlineCyclesDuration;
-var scalableImage = new ScalableImage(nesScreenDimensions.X, nesScreenDimensions.Y, resolutionScalingFactor);
+// TODO
+var colors = new byte[4][];
+colors[0] = new byte[3] { 0, 0, 0 };
+colors[1] = new byte[3] { 85, 85, 85 };
+colors[2] = new byte[3] { 170, 170, 170 };
+colors[3] = new byte[3] { 255, 255, 255 };
 
 using (GameWindow2D yanesWindow = new(frameRate, nesScreenDimensions, screenScalingFactor))
 {
@@ -23,60 +28,66 @@ using (GameWindow2D yanesWindow = new(frameRate, nesScreenDimensions, screenScal
 
 void OnUpdateFrame(GameWindow2D yanesWindow)
 {
-    void DrawTile(byte[] chrRom, byte bank, int tile, int pixelX, int pixelY) // TODO : pixelX, pixelY temp params
-    {
-        var bankStart = bank * 0x1000;
-        var tileSize = 16;
-        var tileStart = bankStart + tile * tileSize;
+    var ppuCyclesPerformed = 0;
 
-        for (var y = 0; y < 8; y++)
+    Console.WriteLine($"frame start");
+
+    while (ppuCyclesPerformed < ppuCyclesPerFrame)
+    {
+        var cpuReport = context.Cpu.ExecuteNextInstruction();
+        Console.WriteLine($"cpu opcode {cpuReport.Opcode:X4}");
+        var cpuCyclesTaken = cpuReport.Cycles;
+        var ppuCyclesBudget = cpuCyclesTaken * 3;
+
+        for (int i = 0; i < ppuCyclesBudget; i++)
         {
-            var upper = chrRom[tileStart + y];
-            var lower = chrRom[tileStart + y + 8];
+            var visibleScanline = context.Ppu.Scanline < 240;
+            var visiblePixel = context.Ppu.ScanlineCycle < 256;
 
-            for (var x = 0; x < 8; x++)
-            {
-                var colorCode = (upper & 0b1000_0000) > 0 ? 2 : 0 +
-                                (lower & 0b1000_0000) > 0 ? 1 : 0;
-                var color = colorCode switch
-                {
-                    0 => new byte[3] { 0, 0, 0 },
-                    1 => new byte[3] { 85, 85, 85 },
-                    2 => new byte[3] { 170, 170, 170 },
-                    3 => new byte[3] { 255, 255, 255 },
-                    _ => throw new ArgumentOutOfRangeException()
-                };
+            if (visibleScanline && visiblePixel)
+                DrawPixel(context.Ppu.ScanlineCycle, context.Ppu.Scanline);
 
-                scalableImage.SetPixel(pixelX + x, pixelY + y, color[0], color[1], color[2]);
-
-                upper = (byte)(upper << 1);
-                lower = (byte)(lower << 1);
-            }
+            context.Ppu.Update(1);
         }
+
+        ppuCyclesPerformed += ppuCyclesBudget;
     }
 
-    for (var i = 0; i < 256; i++)
-    {
-        DrawTile(context.Rom.ChrRom, 0, i, (i * 8) % 128, (i / 16) * 8);
-    }
-
-    scalableImage.Scale();
-    yanesWindow.SetImage(scalableImage.ScaledImage);
+    yanesWindow.SetImage(renderingImage.Pixels);
 }
 
-//void OnUpdateFrame(YanesWindow window)
-//{
-//    var ppyCyclesPerformed = 0;
-
-//    while (ppyCyclesPerformed < ppuCyclesPerFrame)
-//    {
-//        var cpuReport = context.Cpu.ExecuteNextInstruction();
-//        var cpuCyclesTaken = cpuReport.Cycles;
-//        var ppuCyclesBudget = cpuCyclesTaken * 3;
-
-//        context.Ppu.Update(ppuCyclesBudget);
-//    }
-//}
+void DrawPixel(int x, int y)
+{
+    var ppuControllerState = context.Ppu.Controller;
+    var nametableIndex = ppuControllerState & 0b0000_0011;
+    var baseNametableAddress = nametableIndex switch
+    {
+        0 => 0x0000,
+        1 => 0x0400,
+        2 => 0x0800,
+        3 => 0x0C00,
+        _ => throw new ArgumentOutOfRangeException()
+    };
+    var bgTilesBaseAddress = (ppuControllerState & 0b0001_0000) == 0 ? 0x0000 : 0x1000;
+    var tileSizePixels = 8;
+    var nametableX = x / tileSizePixels;
+    var nametableY = y / tileSizePixels;
+    var nametableWidthTiles = 32;
+    var nametableAddress = baseNametableAddress + nametableX + nametableY * nametableWidthTiles;
+    var tile = context.Ppu.ReadRam(nametableAddress);
+    var tileSize = 16;
+    var tileStart = bgTilesBaseAddress + tile * tileSize;
+    var tileX = x % tileSize;
+    var tileY = y & tileSize;
+    var upper = context.Rom.ChrRom[tileStart + tileY];
+    upper = (byte)(upper << tileX);
+    var lower = context.Rom.ChrRom[tileStart + tileY + 8];
+    lower = (byte)(lower << tileX);
+    var colorCode = (upper & 0b1000_0000) > 0 ? 2 : 0 +
+                    (lower & 0b1000_0000) > 0 ? 1 : 0;
+    var color = colors[colorCode];
+    renderingImage.SetPixel(x, y, color[0], color[1], color[2]);
+}
 
 class Context
 {

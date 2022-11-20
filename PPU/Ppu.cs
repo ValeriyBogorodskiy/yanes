@@ -18,8 +18,8 @@ namespace YaNes.PPU
         private readonly Address address = new();
         private byte dataBuffer;
 
-        private int scanLineCycles = 0;
-        private int scanLine = 0;
+        public int Scanline { get; private set; } = 0;
+        public int ScanlineCycle { get; private set; } = 0;
 
         public byte Controller { get => controller.State; set => controller.State = value; }
         public byte Mask { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -87,25 +87,31 @@ namespace YaNes.PPU
 
         public void Update(int cycles)
         {
-            scanLineCycles += cycles;
+            ScanlineCycle += cycles;
 
-            while (scanLineCycles >= 341)
+            while (ScanlineCycle >= 341)
             {
-                scanLineCycles -= 341;
-                scanLine++;
+                ScanlineCycle -= 341;
+                Scanline++;
 
-                if (scanLine == 241)
+                if (Scanline == 241)
                 {
                     status.Set(Registers.Status.Flags.VerticalBlank, true);
 
                     if (controller.Get(Registers.Controller.Flags.GenerateNmi))
                         interruptsListener?.Trigger(Interrupt.NMI);
                 }
-                else if (scanLine == 262)
+                else if (Scanline == 262)
                 {
+                    Scanline = 0;
                     status.Set(Registers.Status.Flags.VerticalBlank, false);
                 }
             }
+        }
+
+        public byte ReadRam(int address)
+        {
+            return ram[address];
         }
     }
 }
