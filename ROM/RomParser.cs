@@ -8,6 +8,7 @@ namespace YaNES.ROM
         private const int ChrRomPageSize = 1024 * 8; // 8 kB
 
         // TODO : check if this code is cross-platform
+        // https://www.nesdev.org/wiki/INES
         public static Rom FromFile(string fileName)
         {
             if (!File.Exists(fileName))
@@ -32,7 +33,9 @@ namespace YaNES.ROM
 
             var romBanksCount = reader.ReadByte();
             var vromBanksCount = reader.ReadByte();
-            var skipTrainer = (reader.ReadByte() & 0b100) != 0;
+            var flags6 = reader.ReadByte();
+            var mirroring = (byte)(flags6 & 0b0001);
+            var skipTrainer = (flags6 & 0b0100) != 0;
 
             // stream position - 7
 
@@ -44,7 +47,7 @@ namespace YaNES.ROM
             var prgRom = reader.ReadBytes(romBanksCount * PrgRomPageSize);
             var chrRom = reader.ReadBytes(vromBanksCount * ChrRomPageSize);
 
-            return new Rom(prgRom, chrRom);
+            return new Rom(prgRom, chrRom, mirroring);
         }
     }
 }

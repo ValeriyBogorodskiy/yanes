@@ -8,8 +8,8 @@ namespace YaNes.PPU
     public class Ppu : IPpu
     {
         private readonly byte[] ram = new byte[2048];
-        // TODO : create correct mode
-        private readonly MirroringMode mirroringMode = new HorizontalMirroringMode();
+        private readonly byte[] paletteTable = new byte[32];
+        private MirroringMode mirroringMode = new UnknownMirroringMode();
         private IRom? rom;
         private IInterruptsListener? interruptsListener;
 
@@ -78,6 +78,11 @@ namespace YaNes.PPU
         public void AttachRom(IRom rom)
         {
             this.rom = rom;
+
+            if (rom.Mirroring == 0)
+                mirroringMode = new HorizontalMirroringMode();
+            else
+                throw new NotImplementedException();
         }
 
         public void AttachInterruptsListener(IInterruptsListener interruptsListener)

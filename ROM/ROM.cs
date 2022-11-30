@@ -6,11 +6,13 @@ namespace YaNES.ROM
     {
         public byte[] PrgRom { get; }
         public byte[] ChrRom { get; }
+        public byte Mirroring { get; }
 
-        public Rom(byte[] PrgRom, byte[] ChrRom)
+        public Rom(byte[] prgRom, byte[] chrRom, byte mirroring)
         {
-            this.PrgRom = PrgRom;
-            this.ChrRom = ChrRom;
+            PrgRom = prgRom;
+            ChrRom = chrRom;
+            Mirroring = mirroring;
         }
 
         public int PrgRomLength => PrgRom.Length;
