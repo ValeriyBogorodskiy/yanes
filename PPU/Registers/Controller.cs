@@ -17,5 +17,10 @@ namespace YaNes.PPU.Registers
         }
 
         public int VramIncrement => Get(Flags.VramAddIncrement) ? 32 : 1;
+
+        public Controller(byte initialState)
+        {
+            State = initialState;
+        }
     }
 }

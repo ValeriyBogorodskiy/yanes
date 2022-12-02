@@ -71,7 +71,10 @@ namespace YaNES.CPU
             registers.ProgramCounter.State++;
 
             if (opcode == 0)
-                cycles += HandleInterrupt(Interrupt.BRK);
+            {
+                registers.ProgramCounter.State++;
+                cycles += HandleInterrupt(Interrupt.BRK) + 5; // TODO
+            }
             else
             {
                 var instruction = instructions.GetInstructionForOpcode(opcode);

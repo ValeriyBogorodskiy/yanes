@@ -7,6 +7,10 @@ namespace YaNES.CPU
     {
         private readonly Ram ram = new();
 
+        // TODO : it makes sense to move this field to PPU module
+        // http://nemulator.com/files/nes_emu.txt
+        private byte ppuOpenBus = 0;
+
         private IRom? rom;
         private IPpu? ppu;
 
@@ -15,7 +19,7 @@ namespace YaNES.CPU
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
                 return (ushort)(address & 0b0000_0111_1111_1111);
 
-            if (address.InRange(ReservedAddresses.PrgAddressSpace))
+            if (address.InRange(ReservedAddresses.PrgAddressSpace) || address == ReservedAddresses.PpuOamDma)
             {
                 if (rom == null)
                     throw new NullReferenceException();
@@ -44,8 +48,16 @@ namespace YaNES.CPU
             if (address.InRange(ReservedAddresses.PrgAddressSpace))
                 return rom!.Read8bitPrg(MapAddress(address));
 
-            if (address.InRange(ReservedAddresses.PpuAddressSpace)) // TODO : OAM DMA 0x4014
+            if (address.InRange(ReservedAddresses.PpuAddressSpace) || address == ReservedAddresses.PpuOamDma)
                 return Read8BitPpu(address);
+
+            // TODO : implement APU
+            if (address.InRange(ReservedAddresses.ApuAddressSpace) || address == ReservedAddresses.ApuExtraAddress)
+                return 0;
+
+            // TODO : implement joypads
+            if (address == ReservedAddresses.Joypad1Address || address == ReservedAddresses.Joypad2Address)
+                return 0;
 
             throw new ArgumentOutOfRangeException();
         }
@@ -55,12 +67,15 @@ namespace YaNES.CPU
             if (ppu == null)
                 throw new NullReferenceException();
 
-            return MapAddress(address) switch
+            var mappedAddress = MapAddress(address);
+
+            return mappedAddress switch
             {
                 0x2002 => ppu.Status,
-                0x2004 => ppu.OamData,
+                0x2004 => 0, // ppu.OamData, TODO : implement
                 0x2007 => ppu.Data,
-                _ => throw new ArgumentOutOfRangeException(),
+                0x4014 => 0, // TODO : implement PpuOamDma
+                _ => ppuOpenBus
             };
         }
 
@@ -78,11 +93,31 @@ namespace YaNES.CPU
         public void Write8Bit(ushort address, byte value)
         {
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
+            {
                 ram.Write8Bit(MapAddress(address), value);
+            }
             else if (address.InRange(ReservedAddresses.PpuAddressSpace))
+            {
                 Write8BitPpu(address, value);
+            }
+            else if (address == ReservedAddresses.PpuOamDma)
+            {
+                // TODO : OAM DMA 0x4014
+                // https://wiki.nesdev.com/w/index.php/PPU_programmer_reference#OAM_DMA_.28.244014.29_.3E_write
+                // https://github.com/bugzmanov/nes_ebook/blob/master/code/ch6.4/src/bus.rs
+            }
+            else if (address.InRange(ReservedAddresses.ApuAddressSpace) || address == ReservedAddresses.ApuExtraAddress)
+            {
+                // TODO : implement APU
+            }
+            else if (address == ReservedAddresses.Joypad1Address || address == ReservedAddresses.Joypad2Address)
+            {
+                // TODO : implement joypads
+            }
             else
+            {
                 throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void Write8BitPpu(ushort address, byte value)
@@ -90,10 +125,21 @@ namespace YaNES.CPU
             if (ppu == null)
                 throw new NullReferenceException();
 
-            switch (MapAddress(address))
+            var mappedAddress = MapAddress(address);
+
+            switch (mappedAddress)
             {
                 case 0x2000:
                     ppu.Controller = value;
+                    break;
+                case 0x2001:
+                    ppu.Mask = value;
+                    break;
+                case 0x2003:
+                    ppu.OamAddress = value;
+                    break;
+                case 0x2005:
+                    ppu.Scroll = value;
                     break;
                 case 0x2006:
                     ppu.Address = value;
@@ -103,14 +149,20 @@ namespace YaNES.CPU
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
+
+            ppuOpenBus = value;
         }
 
         public void Write16Bit(ushort address, ushort value)
         {
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
+            {
                 ram.Write16Bit(MapAddress(address), value);
+            }
             else
+            {
                 throw new ArgumentOutOfRangeException();
+            }
         }
 
         public void AttachRom(IRom rom)

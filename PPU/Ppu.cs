@@ -13,8 +13,11 @@ namespace YaNes.PPU
         private IRom? rom;
         private IInterruptsListener? interruptsListener;
 
-        private readonly Controller controller = new();
+        private readonly Controller controller = new(0b1000_0000);
+        private byte mask = 0;
         private readonly Status status = new();
+        private byte oamAddress = 0;
+        private byte scroll = 0;
         private readonly Address address = new();
         private byte dataBuffer;
 
@@ -22,18 +25,18 @@ namespace YaNes.PPU
         public int ScanlineCycle { get; private set; } = 0;
 
         public byte Controller { get => controller.State; set => controller.State = value; }
-        public byte Mask { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public byte Mask { get => throw new NotImplementedException(); set => mask = value; }
         public byte Status { get => status.State; set => status.State = value; }
-        public byte OamAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public byte OamAddress { get => throw new NotImplementedException(); set => oamAddress = value; }
         public byte OamData { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public byte Scroll { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public byte Scroll { get => throw new NotImplementedException(); set => scroll = value; }
         public byte Address { get => address.State; set => address.State = value; }
         public byte Data
         {
             get
             {
                 var result = dataBuffer;
-                var dataAddress = address.Buffer;
+                var dataAddress = MirrorDataAddress(address.Buffer);
                 address.Increment(controller.VramIncrement);
 
                 if (dataAddress.InRange(ReservedAddresses.ChrRomAddressSpace))
@@ -50,7 +53,7 @@ namespace YaNes.PPU
                 }
                 else if (dataAddress.InRange(ReservedAddresses.PaletteAddressSpace))
                 {
-                    throw new NotImplementedException();
+                    dataBuffer = paletteTable[MirrorPaletteTableAddress(dataAddress)];
                 }
                 else
                 {
@@ -61,18 +64,38 @@ namespace YaNes.PPU
             }
             set
             {
-                var dataAddress = address.Buffer;
+                var dataAddress = MirrorDataAddress(address.Buffer);
                 address.Increment(controller.VramIncrement);
 
                 if (dataAddress.InRange(ReservedAddresses.RamAddressSpace))
                 {
                     ram[mirroringMode.MirrorVramAddress(dataAddress)] = value;
                 }
+                else if (dataAddress.InRange(ReservedAddresses.PaletteAddressSpace))
+                {
+                    paletteTable[MirrorPaletteTableAddress(dataAddress)] = value;
+                }
                 else
                 {
                     throw new InvalidOperationException();
                 }
             }
+        }
+
+        private static ushort MirrorDataAddress(ushort address)
+        {
+            if (address == 0x3F10 ||
+                address == 0x3F14 ||
+                address == 0x3F18 ||
+                address == 0x3F1C)
+                address = (ushort)(address - 0x10);
+
+            return address;
+        }
+
+        private static ushort MirrorPaletteTableAddress(ushort address)
+        {
+            return (ushort)(address - 0x3F00);
         }
 
         public void AttachRom(IRom rom)

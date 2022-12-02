@@ -16,7 +16,8 @@
                 var high = highByte ? value : (byte)(buffer >> 8);
                 var low = highByte ? (byte)buffer : value;
 
-                buffer = (ushort)(high << 8 + low);
+                buffer = (ushort)(high << 8);
+                buffer = (ushort)(buffer + low);
                 buffer = (ushort)(buffer & ReservedAddresses.HighestPpuAddress);
 
                 highByte = !highByte;
