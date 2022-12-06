@@ -69,11 +69,13 @@ namespace YaNes.PPU
 
                 if (dataAddress.InRange(ReservedAddresses.RamAddressSpace))
                 {
-                    ram[mirroringMode.MirrorVramAddress(dataAddress)] = value;
+                    var ramAddress = mirroringMode.MirrorVramAddress(dataAddress);
+                    ram[ramAddress] = value;
                 }
                 else if (dataAddress.InRange(ReservedAddresses.PaletteAddressSpace))
                 {
-                    paletteTable[MirrorPaletteTableAddress(dataAddress)] = value;
+                    var paletteTableAddress = MirrorPaletteTableAddress(dataAddress);
+                    paletteTable[paletteTableAddress] = value;
                 }
                 else
                 {
@@ -140,6 +142,74 @@ namespace YaNes.PPU
         public byte ReadRam(int address)
         {
             return ram[address];
+        }
+
+        public byte[] GetBgPixelColor(int x, int y)
+        {
+            var nametableIndex = Controller & 0b0000_0011; // TODO : add method to Controller class
+            var baseNametableAddress = nametableIndex switch
+            {
+                0 => 0x0000,
+                1 => 0x0400,
+                2 => 0x0000,
+                3 => 0x0400,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            var tileSizePixels = 8;
+            var nametableX = x / tileSizePixels;
+            var nametableY = y / tileSizePixels;
+            var nametableWidthTiles = 32;
+            var nametableAddress = baseNametableAddress + nametableX + nametableY * nametableWidthTiles;
+            var tile = ReadRam(nametableAddress);
+            var tileSizeBytes = 16;
+            var bgTilesBaseAddress = (Controller & 0b0001_0000) == 0 ? 0x0000 : 0x1000; // TODO : add method to Controller class
+            var tileStart = bgTilesBaseAddress + tile * tileSizeBytes;
+            var tileX = x % tileSizePixels;
+            var tileY = y % tileSizePixels;
+            var firstByte = rom!.Read8bitChr((ushort)(tileStart + tileY));
+            firstByte = (byte)(firstByte << tileX);
+            var secondByte = rom!.Read8bitChr((ushort)(tileStart + tileY + 8));
+            secondByte = (byte)(secondByte << tileX);
+            var colorCode = (firstByte & 0b1000_0000) > 0 ? 1 : 0 +
+                            (secondByte & 0b1000_0000) > 0 ? 2 : 0;
+
+            if (colorCode == 0)
+                return Palette.GetColor(paletteTable[0]);
+
+            var attributeTableOffset = 0x3C0;
+            var metaTileX = nametableX / 4;
+            var metaTileY = nametableY / 4;
+            var attributeTableIndex = metaTileX + metaTileY * 8;
+            var metaTileAttributeAddress = baseNametableAddress + attributeTableOffset + attributeTableIndex;
+            var metaTileAttribute = ReadRam(metaTileAttributeAddress);
+            var metaTileInnerX = (nametableX % 4) / 2;
+            var metaTileInnerY = (nametableY % 4) / 2;
+            var paletteIndex = 0;
+
+            if (metaTileInnerX == 0 && metaTileInnerY == 0)
+            {
+                paletteIndex = metaTileAttribute & 0b11;
+            }
+            else if (metaTileInnerX == 1 && metaTileInnerY == 0)
+            {
+                paletteIndex = (metaTileAttribute >> 2) & 0b11;
+            }
+            else if (metaTileInnerX == 0 && metaTileInnerY == 1)
+            {
+                paletteIndex = (metaTileAttribute >> 4) & 0b11;
+            }
+            else if (metaTileInnerX == 1 && metaTileInnerY == 1)
+            {
+                paletteIndex = (metaTileAttribute >> 6) & 0b11;
+            }
+
+            return colorCode switch
+            {
+                1 => Palette.GetColor(paletteTable[1 + paletteIndex * 4]),
+                2 => Palette.GetColor(paletteTable[1 + paletteIndex * 4 + 1]),
+                3 => Palette.GetColor(paletteTable[1 + paletteIndex * 4 + 2]),
+                _ => throw new ArgumentOutOfRangeException(),
+            };
         }
     }
 }

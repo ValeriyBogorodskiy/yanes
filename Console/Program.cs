@@ -13,12 +13,6 @@ var screenScalingFactor = 4;
 var ppuScanlines = 262;
 var scanlineCyclesDuration = 341;
 var ppuCyclesPerFrame = ppuScanlines * scanlineCyclesDuration;
-// TODO
-var colors = new byte[4][];
-colors[0] = new byte[3] { 0, 0, 0 };
-colors[1] = new byte[3] { 255, 0, 0 };
-colors[2] = new byte[3] { 0, 255, 0 };
-colors[3] = new byte[3] { 0, 0, 255 };
 
 using (GameWindow2D yanesWindow = new(frameRate, nesScreenDimensions, screenScalingFactor))
 {
@@ -55,34 +49,7 @@ void OnUpdateFrame(GameWindow2D yanesWindow)
 
 void DrawPixel(int x, int y)
 {
-    var ppuControllerState = context.Ppu.Controller;
-    var nametableIndex = ppuControllerState & 0b0000_0011;
-    var baseNametableAddress = nametableIndex switch
-    {
-        0 => 0x0000,
-        1 => 0x0400,
-        2 => 0x0000, // TODO : 0x0800,
-        3 => 0x0400, // TODO : 0x0C00,
-        _ => throw new ArgumentOutOfRangeException()
-    };
-    var bgTilesBaseAddress = (ppuControllerState & 0b0001_0000) == 0 ? 0x0000 : 0x1000;
-    var tileSizePixels = 8;
-    var nametableX = x / tileSizePixels;
-    var nametableY = y / tileSizePixels;
-    var nametableWidthTiles = 32;
-    var nametableAddress = baseNametableAddress + nametableX + nametableY * nametableWidthTiles;
-    var tile = context.Ppu.ReadRam(nametableAddress);
-    var tileSizeBytes = 16;
-    var tileStart = bgTilesBaseAddress + tile * tileSizeBytes;
-    var tileX = x % tileSizePixels;
-    var tileY = y % tileSizePixels;
-    var upper = context.Rom.ChrRom[tileStart + tileY];
-    upper = (byte)(upper << tileX);
-    var lower = context.Rom.ChrRom[tileStart + tileY + 8];
-    lower = (byte)(lower << tileX);
-    var colorCode = (upper & 0b1000_0000) > 0 ? 2 : 0 +
-                    (lower & 0b1000_0000) > 0 ? 1 : 0;
-    var color = colors[colorCode];
+    var color = context.Ppu.GetBgPixelColor(x, y);
     renderingImage.SetPixel(x, y, color[0], color[1], color[2]);
 }
 
