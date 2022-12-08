@@ -4,7 +4,7 @@
     {
         protected override ushort Match(int nameTableIndex, ushort address)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException();
         }
     }
 }

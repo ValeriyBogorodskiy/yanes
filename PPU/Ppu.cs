@@ -9,6 +9,8 @@ namespace YaNes.PPU
     {
         private readonly byte[] ram = new byte[2048];
         private readonly byte[] paletteTable = new byte[32];
+        private readonly byte[] oamData = new byte[256];
+
         private MirroringMode mirroringMode = new UnknownMirroringMode();
         private IRom? rom;
         private IInterruptsListener? interruptsListener;
@@ -139,11 +141,6 @@ namespace YaNes.PPU
             }
         }
 
-        public byte ReadRam(int address)
-        {
-            return ram[address];
-        }
-
         public byte[] GetBgPixelColor(int x, int y)
         {
             var nametableIndex = Controller & 0b0000_0011; // TODO : add method to Controller class
@@ -160,7 +157,7 @@ namespace YaNes.PPU
             var nametableY = y / tileSizePixels;
             var nametableWidthTiles = 32;
             var nametableAddress = baseNametableAddress + nametableX + nametableY * nametableWidthTiles;
-            var tile = ReadRam(nametableAddress);
+            var tile = ram[nametableAddress];
             var tileSizeBytes = 16;
             var bgTilesBaseAddress = (Controller & 0b0001_0000) == 0 ? 0x0000 : 0x1000; // TODO : add method to Controller class
             var tileStart = bgTilesBaseAddress + tile * tileSizeBytes;
@@ -181,7 +178,7 @@ namespace YaNes.PPU
             var metaTileY = nametableY / 4;
             var attributeTableIndex = metaTileX + metaTileY * 8;
             var metaTileAttributeAddress = baseNametableAddress + attributeTableOffset + attributeTableIndex;
-            var metaTileAttribute = ReadRam(metaTileAttributeAddress);
+            var metaTileAttribute = ram[metaTileAttributeAddress];
             var metaTileInnerX = (nametableX % 4) / 2;
             var metaTileInnerY = (nametableY % 4) / 2;
             var paletteIndex = 0;
@@ -210,6 +207,12 @@ namespace YaNes.PPU
                 3 => Palette.GetColor(paletteTable[1 + paletteIndex * 4 + 2]),
                 _ => throw new ArgumentOutOfRangeException(),
             };
+        }
+
+        public void WriteOamData(byte[] buffer)
+        {
+            for (int i = 0; i < buffer.Length; i++)
+                oamData[oamAddress++] = buffer[i];
         }
     }
 }

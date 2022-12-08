@@ -6,6 +6,8 @@ namespace YaNES.CPU
     internal class Bus : ICpuBus
     {
         private readonly Ram ram = new();
+        private readonly IOamDmaTransferListener oamDmaTransferListener;
+        private readonly byte[] oamDmaBuffer = new byte[256];
 
         // TODO : it makes sense to move this field to PPU module
         // http://nemulator.com/files/nes_emu.txt
@@ -14,6 +16,11 @@ namespace YaNES.CPU
         private IRom? rom;
         private IPpu? ppu;
 
+        public Bus(IOamDmaTransferListener oamDmaTransferListener)
+        {
+            this.oamDmaTransferListener = oamDmaTransferListener;
+        }
+
         private ushort MapAddress(ushort address)
         {
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
@@ -21,9 +28,6 @@ namespace YaNES.CPU
 
             if (address.InRange(ReservedAddresses.PrgAddressSpace) || address == ReservedAddresses.PpuOamDma)
             {
-                if (rom == null)
-                    throw new NullReferenceException();
-
                 var mappedAddress = address - 0x8000;
 
                 if (rom.PrgRomLength == 0x4000 && mappedAddress >= 0x4000)
@@ -64,9 +68,6 @@ namespace YaNES.CPU
 
         private byte Read8BitPpu(ushort address)
         {
-            if (ppu == null)
-                throw new NullReferenceException();
-
             var mappedAddress = MapAddress(address);
 
             return mappedAddress switch
@@ -102,9 +103,13 @@ namespace YaNES.CPU
             }
             else if (address == ReservedAddresses.PpuOamDma)
             {
-                // TODO : OAM DMA 0x4014
-                // https://wiki.nesdev.com/w/index.php/PPU_programmer_reference#OAM_DMA_.28.244014.29_.3E_write
-                // https://github.com/bugzmanov/nes_ebook/blob/master/code/ch6.4/src/bus.rs
+                ushort dataStart = (ushort)(value << 8);
+
+                for (var i = 0; i < oamDmaBuffer.Length; i++)
+                    oamDmaBuffer[i] = Read8bit((ushort)(dataStart + i));
+
+                ppu.WriteOamData(oamDmaBuffer);
+                oamDmaTransferListener.Trigger();
             }
             else if (address.InRange(ReservedAddresses.ApuAddressSpace) || address == ReservedAddresses.ApuExtraAddress)
             {
@@ -122,9 +127,6 @@ namespace YaNES.CPU
 
         private void Write8BitPpu(ushort address, byte value)
         {
-            if (ppu == null)
-                throw new NullReferenceException();
-
             var mappedAddress = MapAddress(address);
 
             switch (mappedAddress)

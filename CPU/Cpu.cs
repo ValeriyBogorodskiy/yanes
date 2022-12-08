@@ -4,7 +4,7 @@ using YaNES.CPU.Registers;
 
 namespace YaNES.CPU
 {
-    public class Cpu : ICpu, IInterruptsListener
+    public class Cpu : ICpu, IInterruptsListener, IOamDmaTransferListener
     {
         // values are chosen to match first line of nestest.log
         private static readonly CpuInstructionExecutionReport ProcessInitialized = new(CpuInstructionExecutionResult.Success, 0, 7);
@@ -14,15 +14,19 @@ namespace YaNES.CPU
         public IInterruptsListener InterruptsListener => this;
 
         private readonly CpuSettings settings;
-        private readonly Bus bus = new();
+        private readonly Bus bus;
         private readonly RegistersProvider registers = new();
         private readonly InstructionsProvider instructions = new();
         private readonly bool[] interrupts = new bool[2];
         private readonly ushort[] interruptsVectors = new ushort[2] { 0xFFFE, 0xFFFA };
 
+        private int previousCommandCyclesMod = 0;
+        private bool oamDmaTransferOccured = false;
+
         public Cpu(CpuSettings settings)
         {
             this.settings = settings;
+            bus = new(this);
         }
 
         public CpuInstructionExecutionReport InsertCartridge(IRom rom)
@@ -73,13 +77,21 @@ namespace YaNES.CPU
             if (opcode == 0)
             {
                 registers.ProgramCounter.State++;
-                cycles += HandleInterrupt(Interrupt.BRK) + 5; // TODO
+                cycles += HandleInterrupt(Interrupt.BRK);
             }
             else
             {
                 var instruction = instructions.GetInstructionForOpcode(opcode);
                 cycles += instruction.Execute(bus, registers);
             }
+
+            if (oamDmaTransferOccured)
+            {
+                cycles += 513 + previousCommandCyclesMod % 2;
+                oamDmaTransferOccured = false;
+            }
+
+            previousCommandCyclesMod = (previousCommandCyclesMod + cycles) % 2;
 
             return new CpuInstructionExecutionReport(CpuInstructionExecutionResult.Success, opcode, cycles);
         }
@@ -104,15 +116,24 @@ namespace YaNES.CPU
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.InterruptDisable, true);
             registers.ProgramCounter.State = bus.Read16bit(interruptsVectors[(int)interrupt]);
 
-            return 2;
+            return interrupt switch
+            {
+                Interrupt.BRK => 7,
+                Interrupt.NMI => 2
+            };
         }
 
-        public void Trigger(Interrupt interrupt)
+        void IInterruptsListener.Trigger(Interrupt interrupt)
         {
             if (registers.ProcessorStatus.Get(ProcessorStatus.Flags.InterruptDisable) && interrupt != Interrupt.NMI)
                 return;
 
             interrupts[(int)interrupt] = true;
+        }
+
+        void IOamDmaTransferListener.Trigger()
+        {
+            oamDmaTransferOccured = true;
         }
     }
 }

@@ -14,5 +14,6 @@
         void AttachRom(IRom rom);
         void AttachInterruptsListener(IInterruptsListener interruptsSource);
         void Update(int cycles);
+        void WriteOamData(byte[] buffer);
     }
 }
