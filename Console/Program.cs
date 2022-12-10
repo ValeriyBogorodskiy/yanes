@@ -49,7 +49,7 @@ void OnUpdateFrame(GameWindow2D yanesWindow)
 
 void DrawPixel(int x, int y)
 {
-    var color = context.Ppu.GetBgPixelColor(x, y);
+    var color = context.Ppu.GetPixelColor(x, y);
     renderingImage.SetPixel(x, y, color[0], color[1], color[2]);
 }
 

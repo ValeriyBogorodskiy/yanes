@@ -7,9 +7,12 @@ namespace YaNes.PPU
 {
     public class Ppu : IPpu
     {
+        private const byte OamSpriteSizeBytes = 4;
+
         private readonly byte[] ram = new byte[2048];
         private readonly byte[] paletteTable = new byte[32];
-        private readonly byte[] oamData = new byte[256];
+        private readonly byte[] oamData = new byte[64 * OamSpriteSizeBytes];
+        private readonly byte[] secondaryOamData = new byte[8 * OamSpriteSizeBytes];
 
         private MirroringMode mirroringMode = new UnknownMirroringMode();
         private IRom? rom;
@@ -126,7 +129,11 @@ namespace YaNes.PPU
                 ScanlineCycle -= 341;
                 Scanline++;
 
-                if (Scanline == 241)
+                if (Scanline < 241)
+                {
+                    FetchCurrentScanlineSprites();
+                }
+                else if (Scanline == 241)
                 {
                     status.Set(Registers.Status.Flags.VerticalBlank, true);
 
@@ -141,7 +148,43 @@ namespace YaNes.PPU
             }
         }
 
-        public byte[] GetBgPixelColor(int x, int y)
+        // TODO : it can be performed one time per each WriteOamData call but it will take 256 * 8 * 4 bytes to store the result (it works for me)
+        private void FetchCurrentScanlineSprites()
+        {
+            var secondaryDataPointer = 0;
+
+            for (var primaryDataPointer = 0; primaryDataPointer < oamData.Length; primaryDataPointer += OamSpriteSizeBytes)
+            {
+                var spriteTopY = oamData[primaryDataPointer];
+
+                if (Scanline < spriteTopY)
+                    continue;
+
+                var spriteBottomY = spriteTopY + 7;
+
+                if (Scanline > spriteBottomY)
+                    continue;
+
+                secondaryOamData[secondaryDataPointer++] = oamData[primaryDataPointer];
+                secondaryOamData[secondaryDataPointer++] = oamData[primaryDataPointer + 1];
+                secondaryOamData[secondaryDataPointer++] = oamData[primaryDataPointer + 2];
+                secondaryOamData[secondaryDataPointer++] = oamData[primaryDataPointer + 3];
+            }
+
+            for (var i = secondaryDataPointer; i < secondaryOamData.Length; i++)
+            {
+                secondaryOamData[i] = 255;
+            }
+        }
+
+        public byte[] GetPixelColor(int x, int y)
+        {
+            var bgPixelColor = GetBgPixelColor(x, y);
+            var spritePixelColor = GetSpritePixelColor(x, y, bgPixelColor);
+            return spritePixelColor;
+        }
+
+        private byte[] GetBgPixelColor(int x, int y)
         {
             var nametableIndex = Controller & 0b0000_0011; // TODO : add method to Controller class
             var baseNametableAddress = nametableIndex switch
@@ -207,6 +250,39 @@ namespace YaNes.PPU
                 3 => Palette.GetColor(paletteTable[1 + paletteIndex * 4 + 2]),
                 _ => throw new ArgumentOutOfRangeException(),
             };
+        }
+
+        private byte[] GetSpritePixelColor(int x, int y, byte[] bgPixelColor)
+        {
+            var result = bgPixelColor;
+
+            // loop is reversed to properly prioritize overlapping sprites 
+            // https://www.nesdev.org/wiki/PPU_OAM
+            for (var spriteStart = secondaryOamData.Length - 4; spriteStart > 0; spriteStart -= OamSpriteSizeBytes)
+            {
+                var spriteLeftX = secondaryOamData[spriteStart + 3];
+
+                if (x < spriteLeftX)
+                    continue;
+
+                var spriteRightX = spriteLeftX + 7;
+
+                if (x > spriteRightX)
+                    continue;
+
+                var attributes = secondaryOamData[spriteStart + 2];
+
+                // TODO : check if bg color is zero
+                // https://www.nesdev.org/wiki/PPU_rendering
+                var isBackgroundPriority = (attributes & 0b0010_0000) > 1;
+
+                if (isBackgroundPriority)
+                    return result;
+
+                // TODO : get sprite pixel color
+            }
+
+            return result;
         }
 
         public void WriteOamData(byte[] buffer)
