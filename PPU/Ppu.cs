@@ -279,7 +279,36 @@ namespace YaNes.PPU
                 if (isBackgroundPriority)
                     return result;
 
-                // TODO : get sprite pixel color
+                var tileIndex = secondaryOamData[spriteStart + 1];
+                var spritePatternTableIndex = Controller & 0b0000_1000; // TODO : add method to Controller class
+                var spritePatternBaseAddress = spritePatternTableIndex == 0 ? 0x0000 : 0x1000;
+
+                var tileSizeBytes = 16;
+                var tileStart = spritePatternBaseAddress + tileIndex * tileSizeBytes;
+
+                var spriteSpaceX = x - spriteLeftX;
+                var flipHorizontally = (attributes & 0b0100_0000) > 1;
+                spriteSpaceX = flipHorizontally ? 7 - spriteSpaceX : spriteSpaceX;
+
+                var spriteSpaceY = y - secondaryOamData[spriteStart];
+                var flipVertically = (attributes & 0b1000_0000) > 1;
+                spriteSpaceY = flipVertically ? 7 - spriteSpaceY : spriteSpaceY;
+
+                // TODO : copy paste
+                var firstByte = rom!.Read8bitChr((ushort)(tileStart + spriteSpaceY));
+                firstByte = (byte)(firstByte << spriteSpaceX);
+                var secondByte = rom!.Read8bitChr((ushort)(tileStart + spriteSpaceY + 8));
+                secondByte = (byte)(secondByte << spriteSpaceX);
+                var colorCode = (firstByte & 0b1000_0000) > 0 ? 1 : 0 +
+                                (secondByte & 0b1000_0000) > 0 ? 2 : 0;
+
+                var transparentPixel = colorCode == 0;
+
+                if (transparentPixel)
+                    continue;
+
+                var paletteIndex = attributes & 0b0000_0011;
+                result = Palette.GetColor(paletteTable[17 + paletteIndex * 4 + colorCode]); // min sprite palette is 4 => 17 = 4 * 4 + 1  
             }
 
             return result;
