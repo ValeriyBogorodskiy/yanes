@@ -256,9 +256,7 @@ namespace YaNes.PPU
         {
             var result = bgPixelColor;
 
-            // loop is reversed to properly prioritize overlapping sprites 
-            // https://www.nesdev.org/wiki/PPU_OAM
-            for (var spriteStart = secondaryOamData.Length - 4; spriteStart > 0; spriteStart -= OamSpriteSizeBytes)
+            for (var spriteStart = 0; spriteStart < secondaryOamData.Length; spriteStart += OamSpriteSizeBytes)
             {
                 var spriteLeftX = secondaryOamData[spriteStart + 3];
 
