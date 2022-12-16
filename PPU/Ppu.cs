@@ -12,7 +12,7 @@ namespace YaNes.PPU
         private readonly byte[] ram = new byte[2048];
         private readonly byte[] paletteTable = new byte[32];
         private readonly byte[] oamData = new byte[64 * OamSpriteSizeBytes];
-        private readonly byte[] secondaryOamData = new byte[8 * OamSpriteSizeBytes];
+        private readonly byte[] secondaryOamData = new byte[64 * OamSpriteSizeBytes]; // TODO : should be 8 * OamSpriteSizeBytes
 
         private MirroringMode mirroringMode = new UnknownMirroringMode();
         private IRom? rom;
@@ -41,7 +41,7 @@ namespace YaNes.PPU
             get
             {
                 var result = dataBuffer;
-                var dataAddress = MirrorDataAddress(address.Buffer);
+                var dataAddress = address.Buffer;
                 address.Increment(controller.VramIncrement);
 
                 if (dataAddress.InRange(ReservedAddresses.ChrRomAddressSpace))
@@ -69,7 +69,7 @@ namespace YaNes.PPU
             }
             set
             {
-                var dataAddress = MirrorDataAddress(address.Buffer);
+                var dataAddress = address.Buffer;
                 address.Increment(controller.VramIncrement);
 
                 if (dataAddress.InRange(ReservedAddresses.RamAddressSpace))
@@ -87,17 +87,6 @@ namespace YaNes.PPU
                     throw new InvalidOperationException();
                 }
             }
-        }
-
-        private static ushort MirrorDataAddress(ushort address)
-        {
-            if (address == 0x3F10 ||
-                address == 0x3F14 ||
-                address == 0x3F18 ||
-                address == 0x3F1C)
-                address = (ushort)(address - 0x10);
-
-            return address;
         }
 
         private static ushort MirrorPaletteTableAddress(ushort address)
@@ -156,6 +145,10 @@ namespace YaNes.PPU
             for (var primaryDataPointer = 0; primaryDataPointer < oamData.Length; primaryDataPointer += OamSpriteSizeBytes)
             {
                 var spriteTopY = oamData[primaryDataPointer];
+
+                // TODO : fix secondaryOamData length
+                // if (spriteTopY == 0)
+                //    continue;
 
                 if (Scanline < spriteTopY)
                     continue;
@@ -306,7 +299,8 @@ namespace YaNes.PPU
                     continue;
 
                 var paletteIndex = attributes & 0b0000_0011;
-                result = Palette.GetColor(paletteTable[17 + paletteIndex * 4 + colorCode]); // min sprite palette is 4 => 17 = 4 * 4 + 1  
+                var color = paletteTable[(4 + paletteIndex) * 4 + colorCode]; // min sprite palette is 4
+                result = Palette.GetColor(color);
             }
 
             return result;
