@@ -203,8 +203,9 @@ namespace YaNes.PPU
             firstByte = (byte)(firstByte << tileX);
             var secondByte = rom!.Read8bitChr((ushort)(tileStart + tileY + 8));
             secondByte = (byte)(secondByte << tileX);
-            var colorCode = (firstByte & 0b1000_0000) > 0 ? 1 : 0 +
-                            (secondByte & 0b1000_0000) > 0 ? 2 : 0;
+            var colorCode =
+                ((firstByte & 0b1000_0000) > 0 ? 1 : 0) +
+                ((secondByte & 0b1000_0000) > 0 ? 2 : 0);
 
             if (colorCode == 0)
                 return Palette.GetColor(paletteTable[0]);
@@ -238,9 +239,9 @@ namespace YaNes.PPU
 
             return colorCode switch
             {
-                1 => Palette.GetColor(paletteTable[1 + paletteIndex * 4]),
-                2 => Palette.GetColor(paletteTable[1 + paletteIndex * 4 + 1]),
-                3 => Palette.GetColor(paletteTable[1 + paletteIndex * 4 + 2]),
+                1 => Palette.GetColor(paletteTable[colorCode + paletteIndex * 4]),
+                2 => Palette.GetColor(paletteTable[colorCode + paletteIndex * 4]),
+                3 => Palette.GetColor(paletteTable[colorCode + paletteIndex * 4]),
                 _ => throw new ArgumentOutOfRangeException(),
             };
         }
@@ -290,8 +291,9 @@ namespace YaNes.PPU
                 firstByte = (byte)(firstByte << spriteSpaceX);
                 var secondByte = rom!.Read8bitChr((ushort)(tileStart + spriteSpaceY + 8));
                 secondByte = (byte)(secondByte << spriteSpaceX);
-                var colorCode = (firstByte & 0b1000_0000) > 0 ? 1 : 0 +
-                                (secondByte & 0b1000_0000) > 0 ? 2 : 0;
+                var colorCode =
+                    ((firstByte & 0b1000_0000) > 0 ? 1 : 0) +
+                    ((secondByte & 0b1000_0000) > 0 ? 2 : 0);
 
                 var transparentPixel = colorCode == 0;
 
