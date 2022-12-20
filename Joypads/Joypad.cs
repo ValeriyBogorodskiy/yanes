@@ -25,7 +25,8 @@ namespace YaNes.Joypads
             if (nextButtonToRead > 7)
                 return PressedButton;
 
-            var result = (buttonsStatus & (JoypadButton)nextButtonToRead) != JoypadButton.None ? PressedButton : NotPressedButton;
+            var readableButton = (JoypadButton)(1 << nextButtonToRead);
+            var result = (buttonsStatus & readableButton) != JoypadButton.None ? PressedButton : NotPressedButton;
 
             if (!strobeOn)
                 nextButtonToRead++;
