@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ROM", "ROM\ROM.csproj", "{C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPU", "PPU\PPU.csproj", "{16BC1E62-4EB6-4BD0-AFA3-A4ADCDABBCA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{87EF0003-6313-41DD-BDBC-8BFE3A35F9DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "Console\Console.csproj", "{87EF0003-6313-41DD-BDBC-8BFE3A35F9DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Joypads", "Joypads\Joypads.csproj", "{C47A8C3B-F23B-4145-A1FF-180506C9ECE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{87EF0003-6313-41DD-BDBC-8BFE3A35F9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87EF0003-6313-41DD-BDBC-8BFE3A35F9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87EF0003-6313-41DD-BDBC-8BFE3A35F9DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C47A8C3B-F23B-4145-A1FF-180506C9ECE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47A8C3B-F23B-4145-A1FF-180506C9ECE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47A8C3B-F23B-4145-A1FF-180506C9ECE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47A8C3B-F23B-4145-A1FF-180506C9ECE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

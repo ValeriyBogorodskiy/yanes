@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CPU\CPU.csproj" />
+    <ProjectReference Include="..\Joypads\Joypads.csproj" />
     <ProjectReference Include="..\PPU\PPU.csproj" />
     <ProjectReference Include="..\ROM\ROM.csproj" />
   </ItemGroup>

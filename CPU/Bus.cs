@@ -15,6 +15,7 @@ namespace YaNES.CPU
 
         private IRom? rom;
         private IPpu? ppu;
+        private IJoypad[]? joypads;
 
         public Bus(IOamDmaTransferListener oamDmaTransferListener)
         {
@@ -30,7 +31,7 @@ namespace YaNES.CPU
             {
                 var mappedAddress = address - 0x8000;
 
-                if (rom.PrgRomLength == 0x4000 && mappedAddress >= 0x4000)
+                if (rom!.PrgRomLength == 0x4000 && mappedAddress >= 0x4000)
                 {
                     mappedAddress %= 0x4000;
                 }
@@ -59,9 +60,11 @@ namespace YaNES.CPU
             if (address.InRange(ReservedAddresses.ApuAddressSpace) || address == ReservedAddresses.ApuExtraAddress)
                 return 0;
 
-            // TODO : implement joypads
-            if (address == ReservedAddresses.Joypad1Address || address == ReservedAddresses.Joypad2Address)
-                return 0;
+            if (address == ReservedAddresses.Joypad1Address)
+                return joypads![0].Read();
+
+            if (address == ReservedAddresses.Joypad2Address)
+                return joypads![1].Read();
 
             throw new ArgumentOutOfRangeException();
         }
@@ -72,9 +75,9 @@ namespace YaNES.CPU
 
             return mappedAddress switch
             {
-                0x2002 => ppu.Status,
+                0x2002 => ppu!.Status,
                 0x2004 => 0, // ppu.OamData, TODO : implement
-                0x2007 => ppu.Data,
+                0x2007 => ppu!.Data,
                 0x4014 => 0, // TODO : implement PpuOamDma
                 _ => ppuOpenBus
             };
@@ -91,6 +94,7 @@ namespace YaNES.CPU
             throw new ArgumentOutOfRangeException();
         }
 
+        // TODO : order if cases by frequency
         public void Write8Bit(ushort address, byte value)
         {
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
@@ -108,16 +112,20 @@ namespace YaNES.CPU
                 for (var i = 0; i < oamDmaBuffer.Length; i++)
                     oamDmaBuffer[i] = Read8bit((ushort)(dataStart + i));
 
-                ppu.WriteOamData(oamDmaBuffer);
+                ppu!.WriteOamData(oamDmaBuffer);
                 oamDmaTransferListener.Trigger();
             }
             else if (address.InRange(ReservedAddresses.ApuAddressSpace) || address == ReservedAddresses.ApuExtraAddress)
             {
                 // TODO : implement APU
             }
-            else if (address == ReservedAddresses.Joypad1Address || address == ReservedAddresses.Joypad2Address)
+            else if (address == ReservedAddresses.Joypad1Address)
             {
-                // TODO : implement joypads
+                joypads![0].Write(value);
+            }
+            else if (address == ReservedAddresses.Joypad2Address)
+            {
+                joypads![1].Write(value);
             }
             else
             {
@@ -132,22 +140,22 @@ namespace YaNES.CPU
             switch (mappedAddress)
             {
                 case 0x2000:
-                    ppu.Controller = value;
+                    ppu!.Controller = value;
                     break;
                 case 0x2001:
-                    ppu.Mask = value;
+                    ppu!.Mask = value;
                     break;
                 case 0x2003:
-                    ppu.OamAddress = value;
+                    ppu!.OamAddress = value;
                     break;
                 case 0x2005:
-                    ppu.Scroll = value;
+                    ppu!.Scroll = value;
                     break;
                 case 0x2006:
-                    ppu.Address = value;
+                    ppu!.Address = value;
                     break;
                 case 0x2007:
-                    ppu.Data = value;
+                    ppu!.Data = value;
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
@@ -167,14 +175,24 @@ namespace YaNES.CPU
             }
         }
 
-        public void AttachRom(IRom rom)
-        {
-            this.rom = rom;
-        }
-
         public void AttachPpu(IPpu ppu)
         {
             this.ppu = ppu;
+        }
+
+        public void AttachJoypads(IJoypad[] joypads)
+        {
+            if (joypads.Length != 2)
+            {
+                throw new InvalidOperationException("Wrong number of joypads. Should be 2");
+            }
+
+            this.joypads = joypads;
+        }
+
+        public void AttachRom(IRom rom)
+        {
+            this.rom = rom;
         }
     }
 }

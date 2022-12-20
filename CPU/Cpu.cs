@@ -119,7 +119,8 @@ namespace YaNES.CPU
             return interrupt switch
             {
                 Interrupt.BRK => 7,
-                Interrupt.NMI => 2
+                Interrupt.NMI => 2,
+                _ => throw new NotImplementedException()
             };
         }
 

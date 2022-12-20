@@ -8,5 +8,6 @@
         void Write16Bit(ushort address, ushort value);
 
         void AttachPpu(IPpu ppu);
+        void AttachJoypads(IJoypad[] joypads);
     }
 }
