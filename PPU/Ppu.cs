@@ -186,13 +186,13 @@ namespace YaNes.PPU
                 3 => 0x0400,
                 _ => throw new ArgumentOutOfRangeException()
             };
-            var tileSizePixels = 8;
+            const byte tileSizePixels = 8;
             var nametableX = x / tileSizePixels;
             var nametableY = y / tileSizePixels;
-            var nametableWidthTiles = 32;
+            const byte nametableWidthTiles = 32;
             var nametableAddress = baseNametableAddress + nametableX + nametableY * nametableWidthTiles;
             var tile = ram[nametableAddress];
-            var tileSizeBytes = 16;
+            const byte tileSizeBytes = 16;
             var bgTilesBaseAddress = (Controller & 0b0001_0000) == 0 ? 0x0000 : 0x1000; // TODO : add method to Controller class
             var tileStart = bgTilesBaseAddress + tile * tileSizeBytes;
             var tileX = x % tileSizePixels;
@@ -201,14 +201,12 @@ namespace YaNes.PPU
             firstByte = (byte)(firstByte << tileX);
             var secondByte = rom!.Read8bitChr((ushort)(tileStart + tileY + 8));
             secondByte = (byte)(secondByte << tileX);
-            var colorCode =
-                ((firstByte & 0b1000_0000) > 0 ? 1 : 0) +
-                ((secondByte & 0b1000_0000) > 0 ? 2 : 0);
+            var colorCode = ((firstByte & 0b1000_0000) >> 7) + ((secondByte & 0b1000_0000) >> 6);
 
             if (colorCode == 0)
                 return Palette.GetColor(paletteTable[0]);
 
-            var attributeTableOffset = 0x3C0;
+            const int attributeTableOffset = 0x3C0;
             var metaTileX = nametableX / 4;
             var metaTileY = nametableY / 4;
             var attributeTableIndex = metaTileX + metaTileY * 8;
@@ -216,32 +214,10 @@ namespace YaNes.PPU
             var metaTileAttribute = ram[metaTileAttributeAddress];
             var metaTileInnerX = (nametableX % 4) / 2;
             var metaTileInnerY = (nametableY % 4) / 2;
-            var paletteIndex = 0;
+            var shift = (metaTileInnerX * 2) + (metaTileInnerY * 4);
+            var paletteIndex = (metaTileAttribute >> shift) & 0b11;
 
-            if (metaTileInnerX == 0 && metaTileInnerY == 0)
-            {
-                paletteIndex = metaTileAttribute & 0b11;
-            }
-            else if (metaTileInnerX == 1 && metaTileInnerY == 0)
-            {
-                paletteIndex = (metaTileAttribute >> 2) & 0b11;
-            }
-            else if (metaTileInnerX == 0 && metaTileInnerY == 1)
-            {
-                paletteIndex = (metaTileAttribute >> 4) & 0b11;
-            }
-            else if (metaTileInnerX == 1 && metaTileInnerY == 1)
-            {
-                paletteIndex = (metaTileAttribute >> 6) & 0b11;
-            }
-
-            return colorCode switch
-            {
-                1 => Palette.GetColor(paletteTable[colorCode + paletteIndex * 4]),
-                2 => Palette.GetColor(paletteTable[colorCode + paletteIndex * 4]),
-                3 => Palette.GetColor(paletteTable[colorCode + paletteIndex * 4]),
-                _ => throw new ArgumentOutOfRangeException(),
-            };
+            return Palette.GetColor(paletteTable[colorCode + paletteIndex * 4]);
         }
 
         private byte[] GetSpritePixelColor(int x, int y, byte[] bgPixelColor)
@@ -294,9 +270,7 @@ namespace YaNes.PPU
                 firstByte = (byte)(firstByte << spriteSpaceX);
                 var secondByte = rom!.Read8bitChr((ushort)(tileStart + spriteSpaceY + 8));
                 secondByte = (byte)(secondByte << spriteSpaceX);
-                var colorCode =
-                    ((firstByte & 0b1000_0000) > 0 ? 1 : 0) +
-                    ((secondByte & 0b1000_0000) > 0 ? 2 : 0);
+                var colorCode = ((firstByte & 0b1000_0000) >> 7) + ((secondByte & 0b1000_0000) >> 6);
 
                 var transparentPixel = colorCode == 0;
 
