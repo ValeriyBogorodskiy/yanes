@@ -164,10 +164,8 @@ namespace YaNes.PPU
                 secondaryOamData[secondaryDataPointer++] = oamData[primaryDataPointer + 3];
             }
 
-            for (var i = secondaryDataPointer; i < secondaryOamData.Length; i++)
-            {
-                secondaryOamData[i] = 255;
-            }
+            if (secondaryDataPointer < secondaryOamData.Length)
+                secondaryOamData[secondaryDataPointer] = 255;
         }
 
         public byte[] GetPixelColor(int x, int y)
@@ -252,6 +250,11 @@ namespace YaNes.PPU
 
             for (var spriteStart = 0; spriteStart < secondaryOamData.Length; spriteStart += OamSpriteSizeBytes)
             {
+                var spriteTopY = secondaryOamData[spriteStart];
+
+                if (spriteTopY == 255)
+                    return result;
+
                 var spriteLeftX = secondaryOamData[spriteStart + 3];
 
                 if (x < spriteLeftX)
