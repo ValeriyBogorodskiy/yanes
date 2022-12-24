@@ -1,6 +1,6 @@
 ﻿namespace YaNES.Core
 {
-    public enum CpuInstructionExecutionResult
+    public enum CpuInstructionExecutionResult : byte
     {
         Success,
         Failure

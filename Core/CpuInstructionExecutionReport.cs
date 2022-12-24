@@ -1,12 +1,12 @@
 ﻿namespace YaNES.Core
 {
-    public class CpuInstructionExecutionReport
+    public struct CpuInstructionExecutionReport
     {
-        public CpuInstructionExecutionResult Result { get; }
-        public ushort Opcode { get; }
-        public int Cycles { get; }
+        public int Cycles;
+        public CpuInstructionExecutionResult Result;
+        public byte Opcode;
 
-        public CpuInstructionExecutionReport(CpuInstructionExecutionResult result, ushort opcode, int cycles)
+        public CpuInstructionExecutionReport(CpuInstructionExecutionResult result, byte opcode, int cycles)
         {
             Result = result;
             Opcode = opcode;
