@@ -1,4 +1,5 @@
 ﻿using YaNes.PPU.Mirroring;
+using YaNes.PPU.Preprocessing;
 using YaNes.PPU.Registers;
 using YaNES.Core;
 using YaNES.Core.Utils;
@@ -7,12 +8,12 @@ namespace YaNes.PPU
 {
     public class Ppu : IPpu
     {
-        private const byte OamSpriteSizeBytes = 4;
-
         private readonly byte[] ram = new byte[2048];
         private readonly byte[] paletteTable = new byte[32];
-        private readonly byte[] oamData = new byte[64 * OamSpriteSizeBytes];
-        private readonly byte[] secondaryOamData = new byte[64 * OamSpriteSizeBytes]; // TODO : should be 8 * OamSpriteSizeBytes
+        private readonly byte[] oamData = new byte[64 * Constants.Ppu.OamSpriteSizeBytes];
+        private readonly byte[] secondaryOamData = new byte[64 * Constants.Ppu.OamSpriteSizeBytes];
+
+        private readonly PixelsPreprocessor preprocessor = new PixelsPreprocessor();
 
         private MirroringMode mirroringMode = new UnknownMirroringMode();
         private IRom? rom;
@@ -137,18 +138,13 @@ namespace YaNes.PPU
             }
         }
 
-        // TODO : it can be performed one time per each WriteOamData call but it will take 256 * 8 * 4 bytes to store the result (it works for me)
         private void FetchCurrentScanlineSprites()
         {
             var secondaryDataPointer = 0;
 
-            for (var primaryDataPointer = 0; primaryDataPointer < oamData.Length; primaryDataPointer += OamSpriteSizeBytes)
+            for (var primaryDataPointer = 0; primaryDataPointer < oamData.Length; primaryDataPointer += Constants.Ppu.OamSpriteSizeBytes)
             {
                 var spriteTopY = oamData[primaryDataPointer];
-
-                // TODO : fix secondaryOamData length
-                // if (spriteTopY == 0)
-                //    continue;
 
                 if (Scanline < spriteTopY)
                     continue;
@@ -170,12 +166,12 @@ namespace YaNes.PPU
 
         public byte[] GetPixelColor(int x, int y)
         {
-            var bgPixelColor = GetBgPixelColor(x, y);
+            var bgPixelColor = GetBgPixelColor(preprocessor.GetBgPixel(x, y));
             var spritePixelColor = GetSpritePixelColor(x, y, bgPixelColor);
             return spritePixelColor;
         }
 
-        private byte[] GetBgPixelColor(int x, int y)
+        private byte[] GetBgPixelColor(PrecomputedBgPixelValues precomputed)
         {
             var nametableIndex = Controller & 0b0000_0011; // TODO : add method to Controller class
             var baseNametableAddress = nametableIndex switch
@@ -186,36 +182,24 @@ namespace YaNes.PPU
                 3 => 0x0400,
                 _ => throw new ArgumentOutOfRangeException()
             };
-            const byte tileSizePixels = 8;
-            var nametableX = x / tileSizePixels;
-            var nametableY = y / tileSizePixels;
-            const byte nametableWidthTiles = 32;
-            var nametableAddress = baseNametableAddress + nametableX + nametableY * nametableWidthTiles;
+
+            var nametableAddress = baseNametableAddress + precomputed.NametableAddressShift;
             var tile = ram[nametableAddress];
-            const byte tileSizeBytes = 16;
             var bgTilesBaseAddress = (Controller & 0b0001_0000) == 0 ? 0x0000 : 0x1000; // TODO : add method to Controller class
-            var tileStart = bgTilesBaseAddress + tile * tileSizeBytes;
-            var tileX = x % tileSizePixels;
-            var tileY = y % tileSizePixels;
-            var firstByte = rom!.Read8bitChr((ushort)(tileStart + tileY));
-            firstByte = (byte)(firstByte << tileX);
-            var secondByte = rom!.Read8bitChr((ushort)(tileStart + tileY + 8));
-            secondByte = (byte)(secondByte << tileX);
+            var tileStart = bgTilesBaseAddress + tile * Constants.Ppu.TileSizeBytes;
+
+            var firstByte = rom!.Read8bitChr((ushort)(tileStart + precomputed.TileSpaceY));
+            firstByte = (byte)(firstByte << precomputed.TileSpaceX);
+            var secondByte = rom!.Read8bitChr((ushort)(tileStart + precomputed.TileSpaceY + 8));
+            secondByte = (byte)(secondByte << precomputed.TileSpaceX);
             var colorCode = ((firstByte & 0b1000_0000) >> 7) + ((secondByte & 0b1000_0000) >> 6);
 
             if (colorCode == 0)
                 return Palette.GetColor(paletteTable[0]);
 
-            const int attributeTableOffset = 0x3C0;
-            var metaTileX = nametableX / 4;
-            var metaTileY = nametableY / 4;
-            var attributeTableIndex = metaTileX + metaTileY * 8;
-            var metaTileAttributeAddress = baseNametableAddress + attributeTableOffset + attributeTableIndex;
+            var metaTileAttributeAddress = baseNametableAddress + Constants.Ppu.AttributeTableOffset + precomputed.AttributeTableIndex;
             var metaTileAttribute = ram[metaTileAttributeAddress];
-            var metaTileInnerX = (nametableX % 4) / 2;
-            var metaTileInnerY = (nametableY % 4) / 2;
-            var shift = (metaTileInnerX * 2) + (metaTileInnerY * 4);
-            var paletteIndex = (metaTileAttribute >> shift) & 0b11;
+            var paletteIndex = (metaTileAttribute >> precomputed.AttributeShift) & 0b11;
 
             return Palette.GetColor(paletteTable[colorCode + paletteIndex * 4]);
         }
@@ -224,7 +208,7 @@ namespace YaNes.PPU
         {
             var result = bgPixelColor;
 
-            for (var spriteStart = 0; spriteStart < secondaryOamData.Length; spriteStart += OamSpriteSizeBytes)
+            for (var spriteStart = 0; spriteStart < secondaryOamData.Length; spriteStart += Constants.Ppu.OamSpriteSizeBytes)
             {
                 var spriteTopY = secondaryOamData[spriteStart];
 

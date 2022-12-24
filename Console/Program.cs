@@ -8,14 +8,12 @@ using YaNES.Core.Utils;
 using YaNES.CPU;
 using YaNES.ROM;
 
-var context = new Context("../../../../PacMan.nes");
 var frameRate = 60;
-var nesScreenDimensions = new Vector2i(256, 240);
-var renderingImage = new RenderingImage(nesScreenDimensions.X, nesScreenDimensions.Y);
 var screenScalingFactor = 4;
-var ppuScanlines = 262;
-var scanlineCyclesDuration = 341;
-var ppuCyclesPerFrame = ppuScanlines * scanlineCyclesDuration;
+
+var context = new Context("../../../../PacMan.nes");
+var renderingImage = new RenderingImage(Constants.Nes.ScreenWidth, Constants.Nes.ScreenHeight);
+var nesScreenDimensions = new Vector2i(Constants.Nes.ScreenWidth, Constants.Nes.ScreenHeight);
 
 using (GameWindow2D yanesWindow = new(frameRate, nesScreenDimensions, screenScalingFactor))
 {
@@ -30,18 +28,14 @@ void OnUpdateFrame(GameWindow2D yanesWindow)
 {
     var ppuCyclesPerformed = 0;
 
-    while (ppuCyclesPerformed < ppuCyclesPerFrame)
+    while (ppuCyclesPerformed < Constants.Ppu.CyclesPerFrame)
     {
         var cpuReport = context.Cpu.ExecuteNextInstruction();
-        var cpuCyclesTaken = cpuReport.Cycles;
-        var ppuCyclesBudget = cpuCyclesTaken * 3;
+        var ppuCyclesBudget = cpuReport.Cycles * Constants.Ppu.CyclesPerCpuCycle;
 
-        for (int i = 0; i < ppuCyclesBudget; i++)
+        for (var i = 0; i < ppuCyclesBudget; i++)
         {
-            var visibleScanline = context.Ppu.Scanline < 240;
-            var visiblePixel = context.Ppu.ScanlineCycle < 256;
-
-            if (visibleScanline && visiblePixel)
+            if (context.Ppu.Scanline < Constants.Nes.ScreenHeight && context.Ppu.ScanlineCycle < Constants.Nes.ScreenWidth)
                 DrawPixel(context.Ppu.ScanlineCycle, context.Ppu.Scanline);
 
             context.Ppu.Update(1);
