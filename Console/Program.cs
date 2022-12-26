@@ -90,10 +90,10 @@ void DrawPixel(int x, int y)
 
 class Context
 {
-    public Rom Rom { get; }
-    public Cpu Cpu { get; }
-    public Ppu Ppu { get; }
-    public Joypad[] Joypads { get; }
+    public IRom Rom { get; }
+    public ICpu Cpu { get; }
+    public IPpu Ppu { get; }
+    public IJoypad[] Joypads { get; }
 
     public Context(string romPath)
     {
@@ -102,7 +102,7 @@ class Context
         Ppu = new Ppu();
         Joypads = new[] { new Joypad(), new Joypad() };
 
-        Ppu.AttachInterruptsListener(Cpu);
+        Ppu.AttachInterruptsListener(Cpu.InterruptsListener);
         Ppu.AttachRom(Rom);
 
         Cpu.Bus.AttachPpu(Ppu);

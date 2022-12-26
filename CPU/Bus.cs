@@ -71,10 +71,10 @@ namespace YaNES.CPU
 
             return mappedAddress switch
             {
-                0x2002 => ppu!.Status,
-                0x2004 => ppu!.OamData,
-                0x2007 => ppu!.Data,
-                _ => ppu!.OpenBus
+                0x2002 => ppu!.Registers.Status,
+                0x2004 => ppu!.Registers.OamData,
+                0x2007 => ppu!.Registers.Data,
+                _ => ppu!.Registers.OpenBus
             };
         }
 
@@ -134,22 +134,22 @@ namespace YaNES.CPU
             switch (mappedAddress)
             {
                 case 0x2000:
-                    ppu!.Controller = value;
+                    ppu!.Registers.Controller = value;
                     break;
                 case 0x2001:
-                    ppu!.Mask = value;
+                    ppu!.Registers.Mask = value;
                     break;
                 case 0x2003:
-                    ppu!.OamAddress = value;
+                    ppu!.Registers.OamAddress = value;
                     break;
                 case 0x2005:
-                    ppu!.Scroll = value;
+                    ppu!.Registers.Scroll = value;
                     break;
                 case 0x2006:
-                    ppu!.Address = value;
+                    ppu!.Registers.Address = value;
                     break;
                 case 0x2007:
-                    ppu!.Data = value;
+                    ppu!.Registers.Data = value;
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
