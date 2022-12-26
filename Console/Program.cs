@@ -8,11 +8,13 @@ using YaNES.Core.Utils;
 using YaNES.CPU;
 using YaNES.ROM;
 
+// TODO : read from file
+var pathToRom = "../../../../PacMan.nes";
 var frameRate = 60;
 var screenScalingFactor = 4;
 
-var context = new Context("../../../../PacMan.nes");
-var renderingImage = new RenderingImage(Constants.Nes.ScreenWidth, Constants.Nes.ScreenHeight);
+var context = new Context(pathToRom);
+var renderBuffer = new RenderBuffer(Constants.Nes.ScreenWidth, Constants.Nes.ScreenHeight, false, true);
 var nesScreenDimensions = new Vector2i(Constants.Nes.ScreenWidth, Constants.Nes.ScreenHeight);
 
 using (GameWindow2D yanesWindow = new(frameRate, nesScreenDimensions, screenScalingFactor))
@@ -44,7 +46,7 @@ void OnUpdateFrame(GameWindow2D yanesWindow)
         ppuCyclesPerformed += ppuCyclesBudget;
     }
 
-    yanesWindow.SetImage(renderingImage.Pixels);
+    yanesWindow.SetImage(renderBuffer.Pixels);
 }
 
 void OnKeyDown(KeyboardKeyEventArgs args)
@@ -55,7 +57,7 @@ void OnKeyDown(KeyboardKeyEventArgs args)
         context.Joypads[0].SetButtonPressed(joypadButton, true);
 }
 
-// TODO : read mapping from file
+// TODO : read from file
 JoypadButton MapKeyToJoypadButton(OpenTK.Windowing.GraphicsLibraryFramework.Keys key)
 {
     return key switch
@@ -83,7 +85,7 @@ void OnKeyUp(KeyboardKeyEventArgs args)
 void DrawPixel(int x, int y)
 {
     var color = context.Ppu.GetPixelColor(x, y);
-    renderingImage.SetPixel(x, y, color[0], color[1], color[2]);
+    renderBuffer.SetPixel(x, y, color[0], color[1], color[2]);
 }
 
 class Context

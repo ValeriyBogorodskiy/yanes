@@ -20,22 +20,29 @@ namespace YaNes.PPU
         private IInterruptsListener? interruptsListener;
 
         private readonly Controller controller = new(0b1000_0000);
-        private byte mask = 0;
         private readonly Status status = new();
-        private byte oamAddress = 0;
-        private byte scroll = 0;
         private readonly Address address = new();
+
         private byte dataBuffer;
 
         public int Scanline { get; private set; } = 0;
         public int ScanlineCycle { get; private set; } = 0;
 
-        public byte Controller { get => controller.State; set => controller.State = value; }
-        public byte Mask { get => throw new NotImplementedException(); set => mask = value; }
-        public byte Status { get => status.State; set => status.State = value; }
-        public byte OamAddress { get => throw new NotImplementedException(); set => oamAddress = value; }
-        public byte OamData { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public byte Scroll { get => throw new NotImplementedException(); set => scroll = value; }
+        public byte Controller
+        {
+            private get => controller.State;
+            set
+            {
+                controller.State = value;
+                OpenBus = value;
+            }
+        }
+
+        public byte Mask { private get; set; }
+        public byte Status { get => status.State; private set => status.State = value; }
+        public byte OamAddress { private get; set; }
+        public byte OamData { get => throw new NotImplementedException(); }
+        public byte Scroll { private get; set; }
         public byte Address { get => address.State; set => address.State = value; }
         public byte Data
         {
@@ -89,6 +96,7 @@ namespace YaNes.PPU
                 }
             }
         }
+        public byte OpenBus { get; private set; }
 
         private static ushort MirrorPaletteTableAddress(ushort address)
         {
@@ -272,7 +280,7 @@ namespace YaNes.PPU
         public void WriteOamData(byte[] buffer)
         {
             for (int i = 0; i < buffer.Length; i++)
-                oamData[oamAddress++] = buffer[i];
+                oamData[OamAddress++] = buffer[i];
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace YaNes.PPU
 {
-    // TODO : load palette from file
+    // TODO : read from file
     internal static class Palette
     {
         public static byte[][] Colors = new byte[64][] {

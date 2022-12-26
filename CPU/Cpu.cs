@@ -12,6 +12,7 @@ namespace YaNES.CPU
         public ICpuBus Bus => bus;
         public ICpuRegisters Registers => registers;
         public IInterruptsListener InterruptsListener => this;
+        public IOamDmaTransferListener OamDmaTransferListener => this;
 
         private readonly CpuSettings settings;
         private readonly Bus bus;

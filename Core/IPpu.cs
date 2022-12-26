@@ -2,14 +2,15 @@
 {
     public interface IPpu
     {
-        byte Controller { get; set; }
-        byte Mask { get; set; }
-        byte Status { get; set; }
-        byte OamAddress { get; set; }
-        byte OamData { get; set; }
-        byte Scroll { get; set; }
-        byte Address { get; set; }
+        byte Controller { set; }
+        byte Mask { set; }
+        byte Status { get; }
+        byte OamAddress { set; }
+        byte OamData { get; }
+        byte Scroll { set; }
+        byte Address { set; }
         byte Data { get; set; }
+        byte OpenBus { get; }
 
         void AttachRom(IRom rom);
         void AttachInterruptsListener(IInterruptsListener interruptsSource);

@@ -9,10 +9,6 @@ namespace YaNES.CPU
         private readonly IOamDmaTransferListener oamDmaTransferListener;
         private readonly byte[] oamDmaBuffer = new byte[256];
 
-        // TODO : it makes sense to move this field to PPU module
-        // http://nemulator.com/files/nes_emu.txt
-        private byte ppuOpenBus = 0;
-
         private IRom? rom;
         private IPpu? ppu;
         private IJoypad[]? joypads;
@@ -76,10 +72,9 @@ namespace YaNES.CPU
             return mappedAddress switch
             {
                 0x2002 => ppu!.Status,
-                0x2004 => 0, // ppu.OamData, TODO : implement
+                0x2004 => ppu!.OamData,
                 0x2007 => ppu!.Data,
-                0x4014 => 0, // TODO : implement PpuOamDma
-                _ => ppuOpenBus
+                _ => ppu!.OpenBus
             };
         }
 
@@ -94,7 +89,6 @@ namespace YaNES.CPU
             throw new ArgumentOutOfRangeException();
         }
 
-        // TODO : order if cases by frequency
         public void Write8Bit(ushort address, byte value)
         {
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
@@ -159,8 +153,6 @@ namespace YaNES.CPU
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
-
-            ppuOpenBus = value;
         }
 
         public void Write16Bit(ushort address, ushort value)
