@@ -1,4 +1,4 @@
-﻿namespace YaNes.PPU.Registers
+﻿namespace YaNES.PPU.Registers
 {
     internal class Address
     {

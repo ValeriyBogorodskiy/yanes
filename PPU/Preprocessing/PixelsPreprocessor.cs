@@ -1,7 +1,7 @@
 ﻿
 using YaNES.Core.Utils;
 
-namespace YaNes.PPU.Preprocessing
+namespace YaNES.PPU.Preprocessing
 {
     internal class PixelsPreprocessor
     {

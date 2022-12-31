@@ -1,8 +1,8 @@
-﻿using YaNes.PPU.Registers;
+﻿using YaNES.PPU.Registers;
 using YaNES.Core;
 using YaNES.Core.Utils;
 
-namespace YaNes.PPU
+namespace YaNES.PPU
 {
     // https://www.nesdev.org/wiki/PPU_registers#OAMDATA
     public partial class Ppu : IPpu, IPpuRegisters

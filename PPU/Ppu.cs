@@ -1,7 +1,7 @@
-﻿using YaNes.PPU.Mirroring;
+﻿using YaNES.PPU.Mirroring;
 using YaNES.Core;
 
-namespace YaNes.PPU
+namespace YaNES.PPU
 {
     public partial class Ppu : IPpu, IPpuRegisters
     {

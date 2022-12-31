@@ -1,8 +1,8 @@
-﻿using YaNes.PPU.Preprocessing;
+﻿using YaNES.PPU.Preprocessing;
 using YaNES.Core;
 using YaNES.Core.Utils;
 
-namespace YaNes.PPU
+namespace YaNES.PPU
 {
     public partial class Ppu : IPpu, IPpuRegisters
     {

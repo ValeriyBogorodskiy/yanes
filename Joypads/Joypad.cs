@@ -1,6 +1,6 @@
 ﻿using YaNES.Core;
 
-namespace YaNes.Joypads
+namespace YaNES.Joypads
 {
     public class Joypad : IJoypad
     {

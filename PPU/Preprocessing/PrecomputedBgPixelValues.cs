@@ -1,4 +1,4 @@
-﻿namespace YaNes.PPU.Preprocessing
+﻿namespace YaNES.PPU.Preprocessing
 {
     internal struct PrecomputedBgPixelValues
     {

@@ -1,4 +1,4 @@
-﻿namespace YaNes.PPU
+﻿namespace YaNES.PPU
 {
     // TODO : read from file
     internal static class Palette

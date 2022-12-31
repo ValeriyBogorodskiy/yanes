@@ -1,7 +1,7 @@
 ﻿using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using YaNes.Joypads;
-using YaNes.PPU;
+using YaNES.Joypads;
+using YaNES.PPU;
 using YaNES.Console;
 using YaNES.Core;
 using YaNES.Core.Utils;
