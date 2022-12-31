@@ -13,12 +13,12 @@ namespace YaNes.PPU.Preprocessing
             {
                 for (var y = 0; y < Constants.Nes.ScreenHeight; y++)
                 {
-                    bgData[y * Constants.Nes.ScreenWidth + x] = ComputeBgPixel(x, y);
+                    bgData[y * Constants.Nes.ScreenWidth + x] = ComputeBgPixelValues(x, y);
                 }
             }
         }
 
-        private static PrecomputedBgPixelValues ComputeBgPixel(int x, int y)
+        private static PrecomputedBgPixelValues ComputeBgPixelValues(int x, int y)
         {
             var nametableX = x / Constants.Ppu.TileDimensionPixels;
             var nametableY = y / Constants.Ppu.TileDimensionPixels;
@@ -57,7 +57,7 @@ namespace YaNes.PPU.Preprocessing
             };
         }
 
-        public PrecomputedBgPixelValues GetBgPixel(int x, int y)
+        public PrecomputedBgPixelValues GetBgPixelValues(int x, int y)
         {
             return bgData[y * Constants.Nes.ScreenWidth + x];
         }

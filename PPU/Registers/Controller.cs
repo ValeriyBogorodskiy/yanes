@@ -18,6 +18,12 @@ namespace YaNes.PPU.Registers
 
         public int VramIncrement => Get(Flags.VramAddIncrement) ? 32 : 1;
 
+        public int BaseNametableAddress => State & 0b0000_0011;
+
+        public int BgPatternTableAddress => (State & 0b0001_0000) == 0 ? 0x0000 : 0x1000;
+
+        public int SpritePatternTableAddress => (State & 0b0000_1000) == 0 ? 0x0000 : 0x1000;
+
         public Controller(byte initialState)
         {
             State = initialState;

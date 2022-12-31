@@ -8,17 +8,16 @@ using YaNES.Core.Utils;
 using YaNES.CPU;
 using YaNES.ROM;
 
+var screenScale = 4;
 // TODO : read from file
 var pathToRom = "../../../../PacMan.nes";
-var frameRate = 60;
-var screenScalingFactor = 4;
-
 var context = new Context(pathToRom);
 var renderBuffer = new RenderBuffer(Constants.Nes.ScreenWidth, Constants.Nes.ScreenHeight, false, true);
 var nesScreenDimensions = new Vector2i(Constants.Nes.ScreenWidth, Constants.Nes.ScreenHeight);
 
-using (GameWindow2D yanesWindow = new(frameRate, nesScreenDimensions, screenScalingFactor))
+using (GameWindow2D yanesWindow = new(Constants.Nes.FramesPerSecond, nesScreenDimensions, screenScale))
 {
+    yanesWindow.Title = "YaNES";
     yanesWindow.UpdateFrame += args => OnUpdateFrame(yanesWindow);
     yanesWindow.KeyDown += args => OnKeyDown(args);
     yanesWindow.KeyUp += args => OnKeyUp(args);

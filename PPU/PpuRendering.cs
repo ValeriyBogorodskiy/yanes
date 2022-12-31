@@ -44,15 +44,14 @@ namespace YaNes.PPU
 
         public byte[] GetPixelColor(int x, int y)
         {
-            var bgPixelColor = GetBgPixelColor(preprocessor.GetBgPixel(x, y));
+            var bgPixelColor = GetBgPixelColor(preprocessor.GetBgPixelValues(x, y));
             var spritePixelColor = GetSpritePixelColor(x, y, bgPixelColor);
             return spritePixelColor;
         }
 
         private byte[] GetBgPixelColor(PrecomputedBgPixelValues precomputed)
         {
-            var nametableIndex = Controller & 0b0000_0011; // TODO : add method to Controller class
-            var baseNametableAddress = nametableIndex switch
+            var baseNametableAddress = controller.BaseNametableAddress switch
             {
                 0 => 0x0000,
                 1 => 0x0400,
@@ -63,8 +62,7 @@ namespace YaNes.PPU
 
             var nametableAddress = baseNametableAddress + precomputed.NametableAddressShift;
             var tile = ram[nametableAddress];
-            var bgTilesBaseAddress = (Controller & 0b0001_0000) == 0 ? 0x0000 : 0x1000; // TODO : add method to Controller class
-            var tileStart = bgTilesBaseAddress + tile * Constants.Ppu.TileSizeBytes;
+            var tileStart = controller.BgPatternTableAddress + tile * Constants.Ppu.TileSizeBytes;
 
             var firstByte = rom!.Read8bitChr((ushort)(tileStart + precomputed.TileSpaceY));
             firstByte = (byte)(firstByte << precomputed.TileSpaceX);
@@ -113,11 +111,8 @@ namespace YaNes.PPU
                     return result;
 
                 var tileIndex = secondaryOamData[spriteStart + 1];
-                var spritePatternTableIndex = Controller & 0b0000_1000; // TODO : add method to Controller class
-                var spritePatternBaseAddress = spritePatternTableIndex == 0 ? 0x0000 : 0x1000;
-
                 var tileSizeBytes = 16;
-                var tileStart = spritePatternBaseAddress + tileIndex * tileSizeBytes;
+                var tileStart = controller.SpritePatternTableAddress + tileIndex * tileSizeBytes;
 
                 var spriteSpaceX = x - spriteLeftX;
                 var flipHorizontally = (attributes & 0b0100_0000) > 1;
@@ -127,7 +122,7 @@ namespace YaNes.PPU
                 var flipVertically = (attributes & 0b1000_0000) > 1;
                 spriteSpaceY = flipVertically ? 7 - spriteSpaceY : spriteSpaceY;
 
-                // TODO : copy paste
+                // TODO : copy paste from GetBgPixelColor()
                 var firstByte = rom!.Read8bitChr((ushort)(tileStart + spriteSpaceY));
                 firstByte = (byte)(firstByte << spriteSpaceX);
                 var secondByte = rom!.Read8bitChr((ushort)(tileStart + spriteSpaceY + 8));
@@ -140,7 +135,7 @@ namespace YaNes.PPU
                     continue;
 
                 var paletteIndex = attributes & 0b0000_0011;
-                var color = paletteTable[(4 + paletteIndex) * 4 + colorCode]; // min sprite palette is 4
+                var color = paletteTable[(Constants.Ppu.StartingSpritePaletteIndex + paletteIndex) * 4 + colorCode];
                 result = Palette.GetColor(color);
             }
 

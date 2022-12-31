@@ -6,6 +6,8 @@
         {
             public const int ScreenWidth = 256;
             public const int ScreenHeight = 240;
+
+            public const double FramesPerSecond = 60.098814;
         }
 
         public static class Ppu
@@ -23,6 +25,8 @@
             public const int AttributeTableOffset = 0x3C0;
 
             public const int OamSpriteSizeBytes = 4;
+
+            public const int StartingSpritePaletteIndex = 4;
         }
     }
 }

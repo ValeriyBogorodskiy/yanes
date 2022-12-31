@@ -7,13 +7,9 @@ namespace YaNES.ROM
         private const int PrgRomPageSize = 1024 * 16; // 16 kB
         private const int ChrRomPageSize = 1024 * 8; // 8 kB
 
-        // TODO : check if this code is cross-platform
         // https://www.nesdev.org/wiki/INES
         public static Rom FromFile(string fileName)
         {
-            if (!File.Exists(fileName))
-                throw new FileNotFoundException();
-
             using var stream = File.Open(fileName, FileMode.Open);
             using var reader = new BinaryReader(stream, Encoding.ASCII, false);
 

@@ -12,11 +12,11 @@ namespace YaNES.Console
         private int vertexBufferObject;
 
         private readonly float[] vertices = {
-        //   Position 3D   Texture coordinates 2D
-             1f, 1f, 0.0f, 1.0f, 1.0f, // top right
-             1f, -1f, 0.0f, 1.0f, 0.0f, // bottom right
-            -1f, -1f, 0.0f, 0.0f, 0.0f, // bottom left
-            -1f, 1f, 0.0f, 0.0f, 1.0f  // top left
+        //   Position 3D     Texture coordinates 2D
+             1f,  1f, 0.0f,  1.0f, 1.0f, // top right
+             1f, -1f, 0.0f,  1.0f, 0.0f, // bottom right
+            -1f, -1f, 0.0f,  0.0f, 0.0f, // bottom left
+            -1f,  1f, 0.0f,  0.0f, 1.0f  // top left
         };
 
         private int elementBufferObject;
@@ -35,11 +35,11 @@ namespace YaNES.Console
         private byte[]? image;
         private readonly Vector2i originalSize;
 
-        public GameWindow2D(int frameRate, Vector2i originalSize, int scale) : base(
+        public GameWindow2D(double updateFrequency, Vector2i originalSize, int scale) : base(
             new GameWindowSettings()
             {
-                RenderFrequency = frameRate,
-                UpdateFrequency = frameRate
+                RenderFrequency = updateFrequency,
+                UpdateFrequency = updateFrequency
             },
             new NativeWindowSettings() // TODO : override native settings for macOS
             {
@@ -126,8 +126,6 @@ namespace YaNES.Console
 
             if (image == null)
                 return;
-
-            Title = "YaNES (Vsync: " + VSync.ToString() + ") FPS: " + (1f / args.Time).ToString("0.");
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, originalSize.X, originalSize.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, image);
 
