@@ -11,7 +11,7 @@ namespace YaNES.PPU
         private byte mask = 0;
         private readonly Status status = new();
         private byte oamAddress = 0;
-        private byte scroll = 0;
+        private readonly Scroll scroll = new();
         private readonly Address address = new();
 
         private byte dataBuffer;
@@ -40,7 +40,11 @@ namespace YaNES.PPU
 
         public byte Status
         {
-            get => status.State;
+            get
+            {
+                scroll.ResetLatch();
+                return status.State;
+            }
             private set
             {
                 status.State = value;
@@ -62,10 +66,9 @@ namespace YaNES.PPU
 
         public byte Scroll
         {
-            private get => scroll;
             set
             {
-                scroll = value;
+                scroll.State = value;
                 OpenBus = value;
             }
         }
