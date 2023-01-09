@@ -7,6 +7,7 @@ namespace YaNES.PPU.Registers
         public enum Flags : byte
         {
             VerticalBlank = 1 << 7,
+            Sprite0Hit = 1 << 6
         }
     }
 }
