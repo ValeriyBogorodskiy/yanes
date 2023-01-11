@@ -21,6 +21,8 @@ namespace YaNES.PPU
 
             if (rom.Mirroring == 0)
                 mirroringMode = new HorizontalMirroringMode();
+            else if (rom.Mirroring == 1)
+                mirroringMode = new VerticalMirroringMode();
             else
                 throw new NotImplementedException();
         }

@@ -62,7 +62,7 @@ namespace YaNES.PPU
             }
         }
 
-        public byte OamData { get => throw new NotImplementedException(); }
+        public byte OamData => oamData[oamAddress];
 
         public byte Scroll
         {
