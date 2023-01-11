@@ -5,13 +5,13 @@
         public byte ScrollX { get; private set; }
         public byte ScrollY { get; private set; }
 
-        private bool latch = false;
+        private bool latch = true;
 
         public byte State
         {
             set
             {
-                if (!latch)
+                if (latch)
                     ScrollX = value;
                 else
                     ScrollY = value;

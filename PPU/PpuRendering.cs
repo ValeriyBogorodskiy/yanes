@@ -44,23 +44,41 @@ namespace YaNES.PPU
 
         public byte[] GetPixelColor(int x, int y)
         {
-            var bgPixelColor = GetBgPixelColor(preprocessor.GetBgPixelValues(x, y));
+            var bgPixelColor = GetBgPixelColor(x, y);
             var spritePixelColor = GetSpritePixelColor(x, y, bgPixelColor);
             return spritePixelColor;
         }
 
-        private byte[] GetBgPixelColor(PrecomputedBgPixelValues precomputed)
+        private byte[] GetBgPixelColor(int x, int y)
         {
-            var baseNametableAddress = controller.BaseNametableAddress switch
+            var shiftedX = x + scroll.ScrollX;
+            var shiftedY = y + scroll.ScrollY;
+            var nametableCode = controller.BaseNametableAddress;
+
+            // TODO : it won't work when scroll occurs on both X & Y
+            if (shiftedX >= Constants.Nes.ScreenWidth)
             {
-                0 => 0x0000,
-                1 => 0x0400,
-                2 => 0x0000,
-                3 => 0x0400,
+                shiftedX -= Constants.Nes.ScreenWidth;
+                nametableCode = (nametableCode + 1) % 4;
+            }
+            else if (shiftedY >= Constants.Nes.ScreenHeight)
+            {
+                shiftedY -= Constants.Nes.ScreenHeight;
+                nametableCode = (nametableCode + 2) % 4;
+            }
+
+            var baseNametableAddress = nametableCode switch
+            {
+                0 => 0x2000,
+                1 => 0x2400,
+                2 => 0x2800,
+                3 => 0x2C00,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            var nametableAddress = baseNametableAddress + precomputed.NametableAddressShift;
+            var mirroredBaseNametableAddress = mirroringMode.MirrorVramAddress((ushort)baseNametableAddress);
+            var precomputed = preprocessor.GetBgPixelValues(shiftedX, shiftedY);
+            var nametableAddress = mirroredBaseNametableAddress + precomputed.NametableAddressShift;
             var tile = ram[nametableAddress];
             var tileStart = controller.BgPatternTableAddress + tile * Constants.Ppu.TileSizeBytes;
 
@@ -73,7 +91,7 @@ namespace YaNES.PPU
             if (colorCode == 0)
                 return Palette.GetColor(paletteTable[0]);
 
-            var metaTileAttributeAddress = baseNametableAddress + Constants.Ppu.AttributeTableOffset + precomputed.AttributeTableIndex;
+            var metaTileAttributeAddress = mirroredBaseNametableAddress + Constants.Ppu.AttributeTableOffset + precomputed.AttributeTableIndex;
             var metaTileAttribute = ram[metaTileAttributeAddress];
             var paletteIndex = (metaTileAttribute >> precomputed.AttributeShift) & 0b11;
 

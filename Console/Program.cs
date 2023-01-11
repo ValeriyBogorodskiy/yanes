@@ -37,7 +37,7 @@ void OnUpdateFrame(GameWindow2D yanesWindow)
         for (var i = 0; i < ppuCyclesBudget; i++)
         {
             if (context.Ppu.Scanline < Constants.Nes.ScreenHeight && context.Ppu.ScanlineCycle < Constants.Nes.ScreenWidth)
-                DrawPixel(context.Ppu.ScanlineCycle, context.Ppu.Scanline);
+                SetBufferPixel(context.Ppu.ScanlineCycle, context.Ppu.Scanline);
 
             context.Ppu.Update(1);
         }
@@ -81,7 +81,7 @@ void OnKeyUp(KeyboardKeyEventArgs args)
         context.Joypads[0].SetButtonPressed(joypadButton, false);
 }
 
-void DrawPixel(int x, int y)
+void SetBufferPixel(int x, int y)
 {
     var color = context.Ppu.GetPixelColor(x, y);
     renderBuffer.SetPixel(x, y, color[0], color[1], color[2]);
