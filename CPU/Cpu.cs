@@ -49,7 +49,7 @@ namespace YaNES.CPU
 
         private void SetupProgramCounter()
         {
-            registers.ProgramCounter.State = settings.StartingProgramAddress;
+            registers.ProgramCounter.State = bus.Read16bit(0xFFFC);
         }
 
         private void SetupStackPointer()
