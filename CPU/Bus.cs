@@ -83,10 +83,25 @@ namespace YaNES.CPU
             if (address.InRange(ReservedAddresses.CpuAddressSpace))
                 return ram.Read16bit(MapAddress(address));
 
+            if (address.InRange(ReservedAddresses.PpuAddressSpace) || address == ReservedAddresses.PpuOamDma)
+                return Read16BitPpu(address);
+
             if (address.InRange(ReservedAddresses.PrgAddressSpace))
                 return rom!.Read16bitPrg(MapAddress(address));
 
             throw new ArgumentOutOfRangeException();
+        }
+
+        // TODO : Reading a nominally "write-only" register returns the latch's current value, as do the unused bits of PPUSTATUS (https://www.nesdev.org/wiki/PPU_registers)
+        private ushort Read16BitPpu(ushort address)
+        {
+            var mappedAddress = MapAddress(address);
+
+            return mappedAddress switch
+            {
+                0x2000 => 0,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         public void Write8Bit(ushort address, byte value)

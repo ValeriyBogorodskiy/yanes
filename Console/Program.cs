@@ -97,7 +97,7 @@ class Context
     public Context(string romPath)
     {
         Rom = RomParser.FromFile(romPath);
-        Cpu = new Cpu(new CpuSettings { InitialProcessorStatus = 0x24 });
+        Cpu = new Cpu(new CpuSettings { InitialProcessorStatus = 0x84 });
         Ppu = new Ppu();
         Joypads = new[] { new Joypad(), new Joypad() };
 

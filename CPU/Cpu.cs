@@ -112,17 +112,22 @@ namespace YaNES.CPU
             bus.Write8Bit((ushort)(ReservedAddresses.StackBottom + registers.StackPointer.State), registers.ProcessorStatus.State);
             registers.StackPointer.State -= 1;
 
-            // TODO : set BFlag or BreakCommand?
+            // TODO : set BreakCommand?
 
             registers.ProcessorStatus.Set(ProcessorStatus.Flags.InterruptDisable, true);
             registers.ProgramCounter.State = bus.Read16bit(interruptsVectors[(int)interrupt]);
 
-            return interrupt switch
+            switch (interrupt)
             {
-                Interrupt.BRK => 7,
-                Interrupt.NMI => 2,
-                _ => throw new NotImplementedException()
-            };
+                case Interrupt.BRK:
+                    registers.ProcessorStatus.Set(ProcessorStatus.Flags.BFlag, true);
+                    return 7;
+                case Interrupt.NMI:
+                    registers.ProcessorStatus.Set(ProcessorStatus.Flags.BFlag, false);
+                    return 2;
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         void IInterruptsListener.Trigger(Interrupt interrupt)
