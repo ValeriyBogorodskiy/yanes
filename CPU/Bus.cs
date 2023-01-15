@@ -166,7 +166,9 @@ namespace YaNES.CPU
                 case 0x2007:
                     ppu!.Registers.Data = value;
                     break;
-                default: throw new ArgumentOutOfRangeException();
+                default:
+                    // TODO : wwiting any value to any PPU port, fill PPUGenLatch. 
+                    break;
             }
         }
 
