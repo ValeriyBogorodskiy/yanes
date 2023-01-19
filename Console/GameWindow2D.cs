@@ -41,12 +41,27 @@ namespace YaNES.Console
                 RenderFrequency = updateFrequency,
                 UpdateFrequency = updateFrequency
             },
-            new NativeWindowSettings() // TODO : override native settings for macOS
-            {
-                Size = originalSize * scale
-            })
+            GetNativeWindowSettings(originalSize, scale))
         {
             this.originalSize = originalSize;
+        }
+
+        private static NativeWindowSettings GetNativeWindowSettings(Vector2i originalSize, int scale)
+        {
+            if (OperatingSystem.IsMacOS())
+            {
+                return new NativeWindowSettings()
+                {
+                    Size = originalSize * scale,
+                    Profile = ContextProfile.Core,
+                    Flags = ContextFlags.ForwardCompatible
+                };
+            }
+
+            return new NativeWindowSettings()
+            {
+                Size = originalSize * scale
+            };
         }
 
         // https://github.com/opentk/LearnOpenTK/blob/master/Chapter1/2-HelloTriangle/Window.cs
