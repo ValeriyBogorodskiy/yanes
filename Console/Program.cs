@@ -10,7 +10,9 @@ using YaNES.ROM;
 
 var screenScale = 4;
 // TODO : read from file
-var pathToRom = "../../../../PacMan.nes";
+var pathToExecutable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+var pathToExecutableDirectory = Path.GetDirectoryName(pathToExecutable);
+var pathToRom = Path.Combine(pathToExecutableDirectory, "yanes.nes");
 var context = new Context(pathToRom);
 var renderBuffer = new RenderBuffer(Constants.Nes.ScreenWidth, Constants.Nes.ScreenHeight, false, true);
 var nesScreenDimensions = new Vector2i(Constants.Nes.ScreenWidth, Constants.Nes.ScreenHeight);
