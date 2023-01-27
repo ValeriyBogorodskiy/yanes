@@ -11,7 +11,7 @@ var cycles = 0;
 
 using var streamWriter = new StreamWriter("yanes.log");
 
-do
+while (executionReport.Result == CpuInstructionExecutionResult.Success)
 {
     cycles += executionReport.Cycles;
 
@@ -25,8 +25,4 @@ do
     $" CYC:{cycles}");
 
     executionReport = cpu.ExecuteNextInstruction();
-
-    if (executionReport.Result != CpuInstructionExecutionResult.Success)
-        break;
 }
-while (true);
